@@ -1,0 +1,51 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.EgsAccountInfoViewModel
+@{
+    ViewData["Title"] = "Update AccountInfo";
+}
+
+
+<div class="col-12">
+    <h1>  Update Account Information </h1>
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb pt-0">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="separator mb-5"></div>
+</div>
+
+<div class="card-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="col-mb-12">
+                <div class="float-left mr-3">
+                    <a asp-action="AccountInfoList" class="btn btn-warning float-left">List of Banks</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-mb-12">
+
+        <form asp-action="UpdateAccountInfo" asp-controller="AccountInfo" method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <input asp-for="BankID" placeholder="Enter AccountInfo" class="form-control" />
+                <span asp-validation-for="BankName" class="text-danger"></span>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <input type="hidden" asp-for="BankID" />
+                <input type="submit" value="Update AccountInfo" class="btn btn-info" />
+                </div>
+        </form>
+    </div>
+</div>

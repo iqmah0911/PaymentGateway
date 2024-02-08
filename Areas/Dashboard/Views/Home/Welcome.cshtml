@@ -1,0 +1,1230 @@
+﻿@model PaymentGateway21052021.Areas.Dashboard.Models.DashboardViewModel
+@*@model PaymentGateway21052021.Areas.Dashboard.Models.HoldDisplayProduct*@
+@using Microsoft.AspNetCore.Identity
+@using System.Net.Http;
+@using PaymentGateway21052021.Helpers;
+@using Newtonsoft.Json;
+@using System.Globalization;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    //var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.ProductList.Select(x=>x.TotalAmount));
+    //var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.CompletedTransactionValue);
+
+    ViewData["Title"] = "Welcome";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+@*@{
+        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.chartReporttDatas.Select(x => x.DimensionOne).ToList());
+        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Quantity).ToList());
+        ViewData["Title"] = "Line Chart";
+    }*@
+<style>
+    .gradient-deepblue {
+        background: #6a11cb;
+        background: -webkit-linear-gradient(45deg, #6a11cb, #2575fc) !important;
+        background: linear-gradient(45deg, #6a11cb, #2575fc) !important;
+    }
+
+    .gradient-orange {
+        background: #fc4a1a;
+        background: -webkit-linear-gradient(45deg, #fc4a1a, #f7b733) !important;
+        background: linear-gradient(45deg, #fc4a1a, #f7b733) !important;
+    }
+
+    .gradient-yellow {
+        background: #fcc71a;
+        background: -webkit-linear-gradient(45deg, #fcc71a, #f7b733) !important;
+        background: linear-gradient(45deg, #fcc71a, #f7b733) !important;
+    }
+
+    .gradient-ohhappiness {
+        background: #00b09b;
+        background: -webkit-linear-gradient(45deg, #00b09b, #96c93d) !important;
+        background: linear-gradient(45deg, #00b09b, #96c93d) !important;
+    }
+
+    .gradient-ibiza {
+        background: #ee0979;
+        background: -webkit-linear-gradient(45deg, #ee0979, #ff6a00) !important;
+        background: linear-gradient(45deg, #ee0979, #ff6a00) !important;
+    }
+
+    .text-orange {
+        color: #FF8C00;
+    }
+
+
+    .text-white {
+        color: #fff;
+    }
+
+    .mt-1, .my-1 {
+        margin-top: .25rem !important;
+    }
+
+    .mt-2, .my-2 {
+        margin-top: .5rem !important;
+    }
+
+    .align-items-center {
+        align-items: center !important;
+    }
+
+    .d-flex {
+        display: flex !important;
+    }
+
+    .card {
+        margin-bottom: 20px;
+        border: 1px solid rgba(0,0,0,.1);
+    }
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid #e9ecef;
+        border-radius: 0;
+    }
+
+        .card .card-title {
+            position: relative;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+    html[dir=ltr] body .p-b-0 {
+        padding-bottom: 0;
+    }
+
+    .bg-gradient-info {
+        background: linear-gradient( 87deg, #11cdef 0, #1171ef 100%) !important;
+    }
+</style>
+<style>
+    a.tooltip {
+        position: relative;
+    }
+
+        a.tooltip:hover {
+            text-decoration: none;
+        }
+
+        a.tooltip:after {
+            content: attr(tip);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 90%;
+            line-height: 1.2em;
+            color: #fff;
+            width: 200px;
+            padding: 5px 10px;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            background: #c00d3f;
+            background: -webkit-linear-gradient(#c00d3f, #7b0a2a);
+            background: -moz-linear-gradient(#c00d3f, #7b0a2a);
+            background: -o-linear-gradient(#c00d3f, #7b0a2a);
+            background: -ms-linear-gradient(#c00d3f, #7b0a2a);
+            background: linear-gradient(#c00d3f, #7b0a2a);
+            -moz-box-shadow: 3px 3px 4px rgba(0,0,0, .65);
+            -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, .65);
+            box-shadow: 3px 3px 4px rgba(0,0,0, .65);
+            position: absolute;
+            top: 27px;
+            left: -10px;
+            display: none;
+        }
+
+        a.tooltip:before {
+            z-index: 1000;
+            position: absolute;
+            content: "";
+            top: 15px;
+            left: 0px;
+            border-right: 7px transparent solid;
+            border-left: 7px transparent solid;
+            display: none;
+        }
+
+        a.tooltip:hover {
+            z-index: 1000;
+            position: relative;
+            color: #8325f7;
+        }
+
+            a.tooltip:hover:after {
+                display: block;
+            }
+
+            a.tooltip:hover:before {
+                display: block;
+            }
+
+
+</style>
+
+<br />
+<div class="container-fluid mb-2 mt-5">
+    <div class="row">
+        <div class="col-lg-12 col-xl-12">
+
+            @if (Model.RoleName.ToUpper().Equals("CUSTOMER CARE"))
+            {
+                <div class="row">
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            @*<div class="card-body">
+                            <p class="card-title mb-0">Top Teller Transactions</p>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-borderless">
+                                    <thead>
+                                        <tr>666666666
+                                            <th>Teller</th>
+                                            <th>Amount</th>
+                                        </tr>64
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ProductList)
+                                        {
+                                            <tr>
+                                                <td>@item.ProductName</td>
+                                                <td class="font-weight-bold"><span>&#8358;</span>@item.TotalAmount</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>*@
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            @if (Model.RoleName.ToUpper().Equals("CUSTOMER") || Model.RoleName.ToUpper().Contains("AUDIT AND CONTROL"))
+            {
+                <div class="row">
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title text-center text-orange h4 ">Transaction History</p>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Transaction ID</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.HoldAllTransactionHistory)
+                                            {
+                                                <tr>
+                                                    <td>@item.TransactionID</td>
+                                                    <td>
+                                                        @if (item.TransactionType.ToUpper() == "DEBIT")
+                                                        {
+                                                            <span class="text-danger font-weight-bold">@item.Amount</span>
+
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-success font-weight-bold">@item.Amount</span>
+                                                        }
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="">
+                            <div class=" mb-4 mb-lg-0">
+                                <div class="card-deck mb-2">
+                                    <div class="card ">
+                                        <div class="card-body ">
+                                            <a asp-area="EgsOperations" asp-action="FundWallet" asp-controller="EgsWallet" class="nav-link active"> <i class="fas fa-wallet fa-3x"></i></a>
+                                            <div class="text-center text-orange font-weight-bold">Fund Wallet</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card ">
+                                        <div class="card-body ">
+                                            <a asp-action=" " asp-controller="" class="nav-link active"> <i class="fas fa-money-bill-wave-alt fa-3x">  </i></a>
+                                            <div class="text-center text-orange font-weight-bold">Send Money</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <a asp-area="Wallets" asp-action="Mobile" asp-controller="WalletServices" asp-route-ID="1" class="nav-link active"> <i class="fas fa-phone fa-3x"></i> </a>
+                                            <div class="text-center text-orange font-weight-bold">Mobile Recharge</div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <a asp-area="Wallets" asp-action="Mobile" asp-controller="WalletServices" asp-route-ID="2" class="nav-link active"> <i class="fas fa-wifi fa-3x ">  </i>  </a>
+                                            <div class="text-center text-orange font-weight-bold">Data/Internet</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-deck ">
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <a asp-area="Wallets" asp-action="Mobile" asp-controller="OrderInfo" asp-route-ID="22" class="nav-link active"> <i class="fas fa-car-alt fa-3x">  </i></a>
+                                            <div class="text-center text-orange font-weight-bold">AutoReg</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <a asp-action=" " asp-controller="" class="nav-link active"> <i class="fas fa-tv fa-3x">  </i></a>
+                                            <div class="text-center text-orange font-weight-bold">Cable</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <a asp-area="Wallets" asp-action="Mobile" asp-controller="WalletServices" asp-route-ID="3" class="nav-link active"> <i class="fas fa-lightbulb fa-3x ">  </i>  </a>
+                                            <div class="text-center text-orange font-weight-bold">Electricity</div>
+                                        </div>
+                                    </div>
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <a asp-area="Wallets" asp-action="Mobile" asp-controller="WalletServices" asp-route-ID="4" class="nav-link active"> <i class="fas fa-tint fa-3x">  </i> </a>
+                                            <div class="text-center text-orange font-weight-bold">Water</div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.RoleName.ToUpper().Contains("AGENT"))
+            {
+                <div class="icon-cards-row">
+                    <div class="glide dashboard-numbers">
+                        <div class="glide__track" data-glide-el="track">
+                            <ul class="glide__slides">
+                                <li style="width: 300px; margin-right: 1.5px;">
+                                    <a href="#" class="card">
+                                        <div class="card-body text-center">
+                                            <i class="iconsminds-clock"></i>
+                                            <p class="card-text mb-0">Transaction Count</p>
+                                            <p class="lead text-center">@Model.TransactionCount</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li style="width: 300px; margin-right: 1.5px;">
+                                    <a href="#" class="card">
+                                        <div class="card-body text-center">
+                                            <i class="iconsminds-basket-coins"></i>
+                                            <p class="card-text mb-0">Transaction Value</p>
+                                            <p class="lead text-center">@Model.TransactionValue</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li style="width: 300px; margin-right: 1.5px;">
+                                    <a href="#" class="card">
+                                        <div class="card-body text-center">
+                                            <i class="iconsminds-basket-coins"></i>
+                                            <p class="card-text mb-0">Completed Transaction Count</p>
+                                            <p class="lead text-center">@Model.CompletedTransactionCount</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li style="width: 300px; margin-right: 1.5px;">
+                                    <a href="#" class="card">
+                                        <div class="card-body text-center">
+                                            <i class="iconsminds-arrow-refresh"></i>
+                                            <p class="card-text mb-0">UnCompleted Transaction Count</p>
+                                            <p class="lead text-center">@Model.UnCompletedTransactionCount</p>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.RoleName.ToUpper().Contains("MERCHANT"))
+            {
+                <div class="row">
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title mb-0">Top Moving Products</p>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ProductList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ProductName</td>
+                                                    <td class="font-weight-bold"><span>&#8358;</span>@item.TotalAmount</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card bg-gradient-info">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Transaction Count</span>
+                                            <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <p class="text-center">Today's</p>
+                                            <p class="lead text-center">@Model.TransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-orange">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Transaction Value</span>
+                                            <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Today's</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.TransactionValue</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-ohhappiness">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Paid Transaction</span>
+                                            <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Today's Count</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.CompletedTransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-ibiza">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">UnPaid Transaction</span>
+                                            <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="AgentsController" asp-route-id="1">View</a></span>
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Today's Count</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.UnCompletedTransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.RoleName.ToUpper().Contains("SUPER ADMIN"))
+            {
+                <div class="container-fluid">
+                    <div class="row m-1 d-flex">
+                        <div class="card-deck col-12">
+                            <div class="card gradient-orange m-lg-3 m-md-2 ">
+                                <div class="card-heading pt-2">
+                                    <h6 class="mb-0 d-flex">
+                                        <span class="text-uppercase text-white mx-auto">Merchant Total Count (@Model.TotalMerchantCount)</span>
+                                    </h6>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="mt-2 d-flex text-white">
+                                        <div class="d-inline-block mr-auto">
+                                            <p class="">Active</p>
+                                            <span class="lead">@Model.ActiveMerchantCount</span>
+                                        </div>
+                                        <div class="d-inline-block ml-auto">
+                                            <p class="">Inactive</p>
+                                            <span class="lead ">@Model.InActiveMerchantCount</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card gradient-orange m-lg-3 m-md-2 ">
+                                <div class="card-heading pt-2">
+                                    <h6 class="mb-0 d-flex">
+                                        <span class="text-uppercase text-white mx-auto">Agent Total Count (@Model.TotalAgentsCount)</span>
+                                    </h6>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="mt-2 d-flex text-white">
+                                        <div class="d-inline-block mr-auto">
+                                            <p class="">Active</p>
+                                            <span class="lead">@Model.ActiveAgentCount</span>
+                                        </div>
+                                        <div class="d-inline-block ml-auto">
+                                            <p class="">Inactive</p>
+                                            <span class="lead ">@Model.InActiveAgentCount</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card  gradient-orange m-lg-3 m-md-2">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">New Agents</span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.dAgentsCount</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card  gradient-orange m-lg-3 m-md-2">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Bank Charges</span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.TotalBankCharges</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row m-1 d-flex">
+                        <div class="card-deck mt-4 mt-md-3 col-12">
+                            <div class="card  gradient-orange m-lg-3 m-md-2 ">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Total InFlow</span>
+                                        <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="WalletHistory" asp-controller="WalletHistory">View</a></span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.TotalTransfer</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card  gradient-orange m-lg-3 m-md-2">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Wallet Balance</span>
+                                        <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="WalletHistory" asp-controller="WalletHistory">View</a></span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.TotalWalletBal</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card gradient-orange m-lg-3 m-md-2">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Paid Transaction Count</span>
+                                        <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="WalletHistory" asp-controller="WalletHistory">View</a></span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.CompletedTransactionCount</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card gradient-orange m-lg-3 m-md-2">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Unpaid Transacation Count</span>
+                                        <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="WalletHistory" asp-controller="WalletHistory">View</a></span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.UnCompletedTransactionCount</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+            @if (Model.RoleName.ToUpper().Contains("FINANCE"))
+            {
+                <div class="row">
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title mb-0">Top Teller Transactions</p>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Teller</th>
+                                                <th>Amount</th>
+                                            </tr>64
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ProductList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ProductName</td>
+                                                    <td class="font-weight-bold"><span>&#8358;</span>@item.TotalAmount</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-yellow">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Transaction Count</span>
+                                            @*<span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>*@
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <p class="text-center">Todays</p>
+                                            <p class="lead text-center">@Model.TransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-yellow">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Transaction Value</span>
+                                            @*<span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>*@
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Todays</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.TransactionValue</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-yellow">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Completed Transaction</span>
+                                            @*<span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>*@
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Todays Count</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.CompletedTransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-yellow">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">UnCompleted Transaction</span>
+                                            @*<span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="AgentsController" asp-route-id="1">View</a></span>*@
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Todays Count</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.UnCompletedTransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.RoleName.ToUpper().Contains("CONTROL"))
+            {
+                <div class="row">
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title mb-0">Top Teller Transactions</p>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Teller</th>
+                                                <th>Amount</th>
+                                            </tr>64
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ProductList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ProductName</td>
+                                                    <td class="font-weight-bold"><span>&#8358;</span>@item.TotalAmount</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-yellow">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Transaction Count</span>
+                                            @*<span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>*@
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <p class="text-center">Todays</p>
+                                            <p class="lead text-center">@Model.TransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-yellow">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Transaction Value</span>
+                                            @*<span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>*@
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Todays</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.TransactionValue</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-yellow">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">Completed Transaction</span>
+                                            @*<span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="Agents" asp-route-id="1">View</a></span>*@
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Todays Count</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.CompletedTransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <div class="card gradient-yellow">
+                                    <div class="card-heading" style="padding: 1rem 2rem;">
+                                        <h6 class="mb-0">
+                                            <span class="text-uppercase text-white">UnCompleted Transaction</span>
+                                            @*<span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="AgentReport" asp-controller="AgentsController" asp-route-id="1">View</a></span>*@
+                                        </h6>
+                                        <div class="mini-stat-icon float-right text-white">
+                                            <i class="display-6 mdi mdi-briefcase-check"></i>
+                                        </div>
+                                        <div class="mt-2 text-white">
+                                            <span class="">
+                                                <p class="text-center">Todays Count</p>
+                                            </span>
+                                            <p class="lead text-center">@Model.UnCompletedTransactionCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.RoleName.ToUpper().Contains("CUSTOMER RECONCILATION"))
+            {
+                <div class="container-fluid">
+                    
+                    <div class="row m-1 d-flex">
+                        <div class="card-deck mt-4 mt-md-3 col-12">
+                            <div class="card  gradient-orange m-lg-3 m-md-2 ">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Total InFlow</span>
+                                        <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="WalletHistory" asp-controller="WalletHistory">View</a></span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.TotalTransfer</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card  gradient-orange m-lg-3 m-md-2">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Wallet Balance</span>
+                                        <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="WalletHistory" asp-controller="WalletHistory">View</a></span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.TotalWalletBal</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card gradient-orange m-lg-3 m-md-2">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Paid Transaction Count</span>
+                                        <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="WalletHistory" asp-controller="WalletHistory">View</a></span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.CompletedTransactionCount</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card gradient-orange m-lg-3 m-md-2">
+                                <div class="card-heading" style="padding: 1rem 2rem;">
+                                    <h6 class="mb-0">
+                                        <span class="text-uppercase text-white">Unpaid Transacation Count</span>
+                                        <span class="float-right"><a class="btn btn-xs btn-primary" asp-area="Reports" asp-action="WalletHistory" asp-controller="WalletHistory">View</a></span>
+                                    </h6>
+                                    <div class="mt-2 text-white">
+                                        <p class="text-center">Todays</p>
+                                        <p class="lead text-center">@Model.UnCompletedTransactionCount</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+
+
+        </div>
+    </div>
+</div>
+@*@{
+        var user = await UserManager.GetUserAsync(User);
+        var user2 = await _unitOfWork.User.GetSysUsers(user.UserID.ToString());
+        var roleid = user2.Role.RoleID;
+        var roleName_ = user2.Role.RoleName;
+    }
+
+    @if (roleid.ToString() == "1")
+    {
+        var getAggagents = await _unitOfWork.AggregatorRequest.GetProcessedAggregatorRequest(Convert.ToInt32(user2.AggregatorID));
+        List<string> IDList = new List<string>();
+        var idList = string.Empty;
+        @foreach (var getag in getAggagents)
+        {
+            IDList.Add(getag.Agent.UserID.ToString()) /*+',')*/;
+            idList = idList + getag.Agent.UserID.ToString() + ',';
+        }
+        IDList.Add(user2.UserID.ToString());
+        idList = idList + user2.UserID.ToString();
+
+        DateTime MyDateTime = new DateTime();
+        //MyDateTime = null;
+        var invoices = await GeneralSqlClient.RPT_AggregatorCommission(MyDateTime, MyDateTime, idList, "Aggregator Commission");
+        var commissum = invoices.Where(u => u.IsAggregatorSettled == false).Sum(u => u.Commisionamount);
+        var commissettledsum = invoices.Where(u => u.IsAggregatorSettled == true).Sum(u => u.Commisionamount);
+        ViewBag.Commissionamount = commissum.ToString("N", CultureInfo.InvariantCulture);
+        ViewBag.CommissionPaid = commissettledsum.ToString("N", CultureInfo.InvariantCulture);
+
+    }*@
+
+
+@if (Model.RoleName.ToUpper().Contains("AGGREGATOR"))
+{
+    <div class="container-fluid">
+        <div class="row pb-5">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Commission Information</h5>
+                        <hr />
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="row sortable">
+
+                                    <div class="col-xl-3 col-lg-6 mb-4">
+                                        <div class="card">
+                                            <div class="card-header p-0 position-relative">
+
+                                            </div>
+                                            <ul class="justify-content-start justify-content-md-end mb-3 mt-2">
+                                                <h6 class="mb-1">Current Commission</h6>
+                                                <h1 style="font-size: 18px;" class="badge badge-success m-2">&nbsp;@Model.UnPaidCommisionValue &nbsp; </h1>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-3 col-lg-6 mb-4">
+                                        <div class="card">
+                                            <div class="card-header p-0 position-relative">
+
+                                            </div>
+                                            <ul class="justify-content-start justify-content-md-end mb-3 mt-2" id="ulPaidComm">
+                                                <h6 class="mb-1">Paid Commission</h6>
+                                                <h1 style="font-size: 18px;" class="badge badge-info m-2">&nbsp;@ViewBag.CommissionPaid &nbsp; </h1>
+                                                @*<button class="btn simple-icon-arrow-right font-weight-bold m-2 badge badge-success " id="btnpushpayment" type="submit">
+        </button>*@
+                                                <button id="btnpushpayment" type="submit" style="font-size: 16px;" 
+                                                        class="btn simple-icon-action-redo font-weight-bold m-2 badge badge-info "
+                                                        title="Click to move commission!">
+                                                </button>
+                                            </ul>
+                                        </div>
+                                        <div class="Onsuccesssfulverification">
+                                            <span id="submittsucc" class="alert-success font-weight-bold"></span>
+                                        </div>
+                                        <div class="Onerrorverification">
+                                            <span id="submitterr" class="alert-danger font-weight-bold"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 mb-6 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p class="card-title mb-0 font-weight-bold">Top Transacting Agents</p><br />
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-borderless">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Agent(s) / Teller(s)</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.AgentsList)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.AccountInfo</td>
+                                                                    <td class="font-weight-bold"><span>&#8358;</span>@item.TotalAmount.ToString("N", CultureInfo.InvariantCulture)</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //alert("hello ready for this");
+
+        $(".Onsuccesssfulverification").hide();
+        $(".Onerrorverification").hide();
+    });
+
+    $('#btnpushpayment').click(function () {
+        //alert('clicked')
+        $.ajax({
+            type: "post",
+            cache: false,
+            url: "/Dashboard/Home/PushCommissionToWallet",
+            data: "",
+            dataType: "json",
+            contentType: "application/json",
+            success: function (result) {
+                //alert("success");
+                var res = JSON.stringify(result);
+
+                if (res.indexOf("Commission successfully moved to wallet balance.") >= 1) {
+                    //setInterval('location.reload()', 2000);
+                    $(".Onerrorverification").hide();
+                    $(".Onsuccesssfulverification").show();
+                    $("#submittsucc").text(res);
+                    setInterval('location.reload()', 3000);
+                    //alert("reloaded if");
+                }
+                else {
+                    $("#submitterr").text(res);
+                    $(".Onsuccesssfulverification").hide();
+                    $(".Onerrorverification").show();
+                    //alert(res);
+                    //$("#ulPaidComm").load(location.href + " #ulPaidComm");
+                    //setInterval('location.reload()', 2000);
+                    //alert("reloaded else");
+                }
+            },
+            error: function (result) {
+                alert("No Connection to server");
+            },
+        });
+
+    });
+
+
+</script>
+@if (!(Model.RoleName.ToUpper().Contains("AGGREGATOR")))
+ {
+<div class="container-fluid">
+    <div class="row pb-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"> Dashboard </h5>
+                    <div class="dashboard-line-chart chart">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-xl-12">
+            <div class="row sortable">
+                <div class="col-xl-3 col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header p-0 position-relative">
+                            <div class="position-absolute handle card-icon">
+                                <i class="simple-icon-shuffle"></i>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Payment Status</h6>
+                            <div role="progressbar" class="progress-bar-circle position-relative" data-color="#922c88"
+                                 data-trailColor="#d7d7d7" aria-valuemax="100" aria-valuenow="40"
+                                 data-show-percent="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header p-0 position-relative">
+                            <div class="position-absolute handle card-icon">
+                                <i class="simple-icon-shuffle"></i>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Payment Progress</h6>
+                            <div role="progressbar" class="progress-bar-circle position-relative" data-color="#922c88"
+                                 data-trailColor="#d7d7d7" aria-valuemax="100" aria-valuenow="64"
+                                 data-show-percent="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header p-0 position-relative">
+                            <div class="position-absolute handle card-icon">
+                                <i class="simple-icon-shuffle"></i>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Completed Transactions</h6>
+                            <div role="progressbar" class="progress-bar-circle position-relative" data-color="#922c88"
+                                 data-trailColor="#d7d7d7" aria-valuemax="100" aria-valuenow="75"
+                                 data-show-percent="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header p-0 position-relative">
+                            <div class="position-absolute handle card-icon">
+                                <i class="simple-icon-shuffle"></i>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Pending Payments</h6>
+                            <div role="progressbar" class="progress-bar-circle position-relative" data-color="#922c88"
+                                 data-trailColor="#d7d7d7" aria-valuemax="100" aria-valuenow="32"
+                                 data-show-percent="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+}
+
+<script src="~/uii/js/dore.scripts.js"></script>
+
+
+@*<script>
+        var tdata = '@ViewBag.allTrans';
+        var ctdata = '@ViewBag.completedTrans';
+
+
+        if (document.getElementById("salesChart")) {
+            var salesChart = document.getElementById("salesChart").getContext("2d");
+            var myChart = new Chart(salesChart, {
+                type: "LineWithShadow",
+                options: {
+                    plugins: {
+                        datalabels: {
+                            display: false
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [
+                            {
+                                gridLines: {
+                                    display: true,
+                                    lineWidth: 1,
+                                    color: "rgba(0,0,0,0.1)",
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    beginAtZero: true,
+                                    stepSize: 5,
+                                    min: 50,
+                                    max: 70,
+                                    padding: 20
+                                }
+                            }
+                        ],
+                        xAxes: [
+                            {
+                                gridLines: {
+                                    display: false
+                                }
+                            }
+                        ]
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: chartTooltip
+                },
+                data: {
+                    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], //tdata,
+                    datasets: [
+                        {
+                            label: "",
+                            data: [54, 63, 60, 65, 60, 68, 60],  //ctdata,
+                            borderColor: themeColor1,
+                            pointBackgroundColor: foregroundColor,
+                            pointBorderColor: themeColor1,
+                            pointHoverBackgroundColor: themeColor1,
+                            pointHoverBorderColor: foregroundColor,
+                            pointRadius: 6,
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 8,
+                            fill: false
+                        }
+                    ]
+                }
+            });
+        }
+    </script>*@
+

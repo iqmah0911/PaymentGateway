@@ -1,0 +1,111 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.EgsProductViewModel
+
+@{
+    ViewData["Title"] = "Product";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body col-12">
+    <div class="card">
+        <div class="card-body">
+            <a asp-action="ProductList" class="btn btn-warning float-left">All Products</a>
+
+            @if (ViewBag.Message != null)
+            {
+                <span class="alert-success">@ViewBag.Message</span>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="card-body col-12">
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Product" asp-controller="EgsProduct" method="post">
+                @Html.AntiForgeryToken()
+                <div class="form-group row">
+                    <div class="form-group col-lg-4 pl-2">
+                        <label>Merchant</label>
+                        <select asp-for="UserID" asp-items="@(new SelectList(ViewBag.Merchant, "UserID", "CompanyName"))"
+                                class="form-control"></select>
+                        <span asp-validation-for="UserID" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-lg-4 pr-2">
+                        <label>Product Category</label>
+                        <select asp-for="ProductCategoryID" asp-items="@(new SelectList(ViewBag.ProductCategory, "ProductCategoryID", "ProductCategoryName"))"
+                                class="form-control"></select>
+                        <span asp-validation-for="ProductCategoryID" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group col-lg-4 pl-2">
+                        <label>Invoice Mode</label>
+                        <select asp-for="InvoiceModeID" asp-items="@(new SelectList(ViewBag.InvoiceMode, "InvoiceModeID", "InvoiceModeType"))"
+                                class="form-control"></select>
+                        <span asp-validation-for="InvoiceModeID" class="text-danger"></span>
+                    </div>
+                </div>
+                <br />
+
+                <br />
+                @*<input id="Checkbox1" type="checkbox" /><textarea id="TextArea1" rows="2" cols="20"></textarea>*@
+                <div class="form-group row">
+                    <div class="form-group col-lg-6 pl-2 position-relative error-l-50">
+                        <label> Product Code </label>
+                        <input asp-for="ProductCode" type="text" class="form-control" required="">
+                    </div>
+
+                    <div class="form-group col-lg-6 pl-2">
+                        <label>Product Name</label>
+                        <input asp-for="ProductName" placeholder="Enter Product Name" class="form-control" />
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="form-group col-lg-6 pl-2 position-relative error-l-50">
+                        <label> Notification </label>
+                        <input asp-for="Notification" type="text" class="form-control" >
+                        <span asp-validation-for="Notification" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-6 pl-2 position-relative error-l-50">
+                        <label> Verification </label>
+                        <input asp-for="Verification" type="text" class="form-control" >
+                        <span asp-validation-for="Verification" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input asp-for="Image" type="file" class="form-control" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+                <br />
+                <div class="form-group">
+                    <label>Product Description</label>
+                    <textarea asp-for="ProductDescription" rows="2" cols="20" class="form-control"></textarea>
+                    <span asp-validation-for="ProductDescription" class="text-danger"></span>
+                </div>
+                <div class="container form-group row">
+                    <div class="form-group col-lg-4 pl-2 custom-control custom-checkbox">
+                        <input asp-for="IsFixedAmount" type="checkbox" value="true" class="custom-control-input" id="customCheck1" name="jQueryCheckbox">
+                        <label class="custom-control-label" for="customCheck1"> Select if Product is fixed Amount </label>
+                    </div>
+                 
+                    <div class="d-none d-md-inline-block align-text-bottom mr-3">
+                        <div class="custom-switch custom-switch-primary-inverse custom-switch-small pl-1"
+                             data-toggle="tooltip" data-placement="left" title="Activate /Deactivate Product ">
+                            <input asp-for="IsActive" type="checkbox" value="true" class="custom-switch-input" id="switchDark" >
+                            <label class="custom-switch-btn" for="switchDark"> </label>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <input type="submit" value="Save" class="btn btn-info" />
+            </form>
+        </div>
+    </div>
+</div>
+
+
+

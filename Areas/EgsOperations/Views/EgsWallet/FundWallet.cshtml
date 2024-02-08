@@ -1,0 +1,75 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.FundWalletViewModel
+
+
+@{
+    ViewData["Title"] = "Fund Wallet";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid disable-text-selection">
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-2">
+                <h1>Fund Wallet</h1>
+
+                <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                    <ol class="breadcrumb pt-0">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Wallet</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+
+
+            <div class="separator mb-5"></div>
+        </div>
+    </div>
+
+
+    <div class="card-body">
+        <h1 class="mb-2">@ViewData["wallet"]</h1>
+        <br /> <div class="card">
+    
+    <div class="card-body">
+        <div class="col-md-12">
+            <div style="text-align:center; ">
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <span class="alert-danger">@ViewBag.ErrorMessage</span>
+                }
+            </div><br />
+            <div style="text-align:center; ">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div><br />
+            <form asp-action="FundWallet" asp-controller="EgsWallet" method="post">
+                @Html.AntiForgeryToken()
+                <select id="TransactionMethodid" asp-for="TransactionMethodID" asp-items="@(new SelectList(ViewBag.TransactionMethodList, "itemValue", "itemName"))"
+                        class="form-control" placeholder="TransactionMethods">
+
+                    <option value="">Select Fund Type</option>
+                </select>
+                @Html.AntiForgeryToken()
+
+                <input asp-for="Amount" placeholder="Enter the Amount to fund" class="form-control col-md-6" autocomplete="off" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+                <br />
+                @Html.AntiForgeryToken()
+
+                <input type="submit" value="Fund" class="btn btn-info" />
+            </form>
+
+
+
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>

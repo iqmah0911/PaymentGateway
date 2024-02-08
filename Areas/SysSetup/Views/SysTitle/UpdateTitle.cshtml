@@ -1,0 +1,39 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysTitleViewModel
+@{
+    ViewData["Title"] = "Update Title";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h2 class="mb-2">UpdateTitle</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="Titles" class="btn btn-warning float-left">List of Titles</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 mb-6">
+
+        <form asp-action="UpdateTitle" asp-controller="SysTitle" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="TitleName" placeholder="Enter Title Name" class="form-control" />
+            <span asp-validation-for="TitleName" class="text-danger"></span>
+            <br />
+            <input type="hidden" asp-for="TitleID" />
+            <input type="submit" value="Update Title" class="btn btn-info" />
+        </form>
+    </div>
+</div>

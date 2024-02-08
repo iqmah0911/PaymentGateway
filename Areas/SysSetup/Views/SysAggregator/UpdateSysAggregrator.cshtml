@@ -1,0 +1,41 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysAggregatorViewModel
+@{
+    ViewData["Title"] = "Update System Aggregator";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="card-body">
+
+    <h2 class="mb-2">Update SysAggregator</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="SysAggregatorList" class="btn btn-warning float-left">List of Aggregator</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 mb-6">
+
+        <form asp-action="UpdateSysAggregator" asp-controller="SysAggregator" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="AggregatorID" placeholder="Enter Aggregator Type" class="form-control" />
+            <span asp-validation-for="AggregatorName" class="text-danger"></span>
+            <br /><br />
+            <input type="hidden" asp-for="AggregatorID" />
+            <input type="submit" value="Update SysAggregator" class="btn btn-info" />
+        </form>
+    </div>
+</div>

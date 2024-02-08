@@ -1,0 +1,101 @@
+﻿@model  PaymentGateway21052021.Areas.Wallets.Models.PinViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Pin Creation";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-2">
+                <h1>Wallet</h1>
+
+                <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                    <ol class="breadcrumb pt-0">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Transfer</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Create Pin</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="separator mb-5"></div>
+        </div>
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-body">
+            <div class="col-12 mb-5">
+                <div class="float-left mr-3">
+                    <h4 class="mb-2">
+                        Pin Creation
+                    </h4>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <span class="alert-danger">@ViewBag.ErrorMessage</span>
+                    }
+                </div>
+            </div>
+
+
+           
+            <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+                <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+
+
+                    <form asp-action="PinCreation" asp-controller="Transfer" method="post">
+                        @Html.AntiForgeryToken()
+                        <h5 style="color:darkorange;">Any four digits accepted for pin creation</h5>
+                        <br />
+                        <div class="form-group">
+                            <input asp-for="Pin" placeholder="Enter Pin" class="form-control" type="number" required />
+                            <span asp-validation-for="Pin" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="ConfirmPin" placeholder="Confirm Pin" class="form-control" type="number" required />
+                            <span asp-validation-for="ConfirmPin" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-info" /><br />
+                        </div>
+                    </form>
+
+                     
+                </div>
+                 
+            </div>
+        </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

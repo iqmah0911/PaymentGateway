@@ -1,0 +1,101 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.UpdateUserViewModel
+
+@{
+    ViewData["Title"] = "Update System User";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+            <div class="float-left mr-3">
+                <a asp-action="SystemUsers" asp-controller="SysUser" class="btn btn-warning float-left">List of System Users</a>
+            </div>
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+        </div>
+
+
+
+        <div class="col-10 mb-5">
+            <form asp-action="UpdateSystemUser" asp-controller="SysUser" method="post">
+                @Html.AntiForgeryToken()
+                <br />
+                <input asp-for="UserID" hidden="hidden" />
+                @*<label>Image</label>
+                <input asp-for="Image" type="file" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>*@
+                <br />
+                <label>Enter First Name</label>
+                <input asp-for="FirstName" placeholder="Enter First Name" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <br />
+                <label>Enter Middle Name</label>
+                <input asp-for="MiddleName" placeholder="Enter MiddleName" class="form-control" />
+                <span asp-validation-for="MiddleName" class="text-danger"></span>
+                <br />
+                <label>Enter Last Name</label>
+                <input asp-for="LastName" placeholder="Enter LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+                <br />
+                <label>Enter Email</label>
+                <input asp-for="Email" placeholder="Enter Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <br />
+                <label>Enter Phone Number</label>
+                <input asp-for="PhoneNumber" placeholder="Enter Phone Number" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                <br />
+                <label>Enter Date of Birth</label>
+                <input asp-for="DOB" class="form-control" />
+                <span asp-validation-for="DOB" class="text-danger"></span>
+                <br />
+                <label>Enter Gender</label>
+                <input asp-for="Gender" placeholder="Enter Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+                <br />
+                <label>Select State</label>
+                <select id="StateID" asp-for="StateID" asp-items="@(new SelectList(ViewBag.State, "StateID", "StateName"))"
+                        class="form-control" placeholder="Service Type"></select>
+                <span asp-validation-for="StateID" class="text-danger"></span>
+                <br />
+                <label>Select Account Type</label>
+                <select id="RoleID" asp-for="AccountTypeID" asp-items="@(new SelectList(ViewBag.AccountType, "AccountTypeID", "AccountTypeName"))"
+                        class="form-control"></select>
+                <span asp-validation-for="AccountTypeID" class="text-danger"></span>
+                <br />
+                <label>Enter Company</label>
+                <input asp-for="CompanyName" placeholder="Enter Company Name" class="form-control" />
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
+                <br />
+                <label>Enter Address</label>
+                <input asp-for="Address" placeholder="Enter Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+                <br />
+                <label>Select Transaction Limit</label>
+                <select id="RoleID" asp-for="TransactionLimitID" asp-items="@(new SelectList(ViewBag.TransactionLimit, "TransactionLimitID", "TransactionLimitName"))"
+                        class="form-control"></select>
+                <span asp-validation-for="TransactionLimitID" class="text-danger"></span>
+                <br />
+                <label class="font-weight-bold form-check-label mb-3" for="isactive">IsActive</label>
+                <input asp-for="IsActive" placeholder="" type="checkbox" class="form-check-input ml-3" id="isactive" />
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+                <br />
+                <label class="font-weight-bold form-check-label mb-3" for="isactive">IsVerified</label>
+                <input asp-for="IsVerified" placeholder="" type="checkbox" class="form-check-input ml-3" id="IsVerified" />
+                <span asp-validation-for="IsVerified" class="text-danger"></span>
+                <br />
+
+                <input type="submit" value="Update" class="btn btn-info" />
+            </form>
+
+        </div>
+         
+    </div>
+</div>
+
+

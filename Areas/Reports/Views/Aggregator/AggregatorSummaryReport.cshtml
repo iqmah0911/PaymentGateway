@@ -1,0 +1,209 @@
+﻿@model PaymentGateway21052021.Areas.Reports.Models.AggregatorReportModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Aggregator Summary Report";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="mb-2">Aggregator Summary Report</h1>
+            <div class="card-body">
+                <div class="col-10 mb-5">
+                    <div class="float-left mr-3">
+                    </div>
+                    <div class="float-left">
+                        @if (ViewBag.Message != null)
+                        {
+                            <span class="alert-success">@ViewBag.Message</span>
+                        }
+                    </div>
+                </div>
+
+
+                <ul class="nav nav-tabs justify-content-center">
+                    <li class="active"><a data-toggle="tab" href="#home" class="btn btn-primary">Search By Date Range</a></li>
+                    @*@if (ViewBag.role == 5)
+                    {
+                        <li><a data-toggle="tab" href="#menu1" class="btn btn-primary">Search by SubAgent Account</a></li>
+                    }*@
+                    @*@if (ViewBag.role == 2 || ViewBag.role == 7 || ViewBag.role == 8)
+                    {
+                        <li><a data-toggle="tab" href="#menu1" class="btn btn-primary">Search by SubAgent Account</a></li>
+                    }*@
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <br />
+                        <div class="col-lg-12">
+                            <br />
+                            <div class="row">
+                                <h4>Search by Date Range -> Report Period [Start Date to End Date] </h4>
+                            </div><br />
+                            <form asp-action=" " asp-controller="Aggregator" method="post">
+                                <div class="row">
+                                  
+                                    <div class="col-md-4">
+                                        <label>Agent Account</label> 
+                                        <select asp-for="UserID" asp-items="@(new SelectList(ViewBag.Agents, "UserId", "Email"))"
+                                                class="form-control select2" placeholder="Agents">
+                                            <option value="0"> -- Select -- </option>
+                                        </select>
+
+                                    </div>
+                                 
+                                    <section class="col-md-4">
+                                        <label style="width: 100%;">
+                                            Start Date
+                                            <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                        </label>
+                                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                                    </section>
+
+                                    <section class="col-md-4">
+                                        <label style="width: 100%;">
+                                            End Date
+                                            <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                        </label>
+                                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                                    </section>
+                                </div>
+
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </form>
+                        </div>
+                    </div>
+                    @*<div id="menu1" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <br />
+                            <div class="row">
+                                <h4>Search by SubAgent Account -> Report Period [Start Date to End Date] </h4>
+                            </div><br />
+                            <form asp-action="TransactionSummarySubAgent" asp-controller="Agents" method="post">
+                                <div class="row">
+                                    @if (ViewBag.role == 2)
+                                    {
+                                        <div class="col-md-4">
+                                            SubAgent Account
+                                            <select id="Userid" asp-for="UserID" asp-items="@(new SelectList(ViewBag.SubAgentList, "itemValue", "itemName"))"
+                                                    class="form-control select2" placeholder="Agents">
+                                                <option value=""> -- Select -- </option>
+                                            </select>
+                                        </div>
+                                    }
+                                    <section class="col-md-4">
+                                        <label style="width: 100%;">
+                                            Start Date
+                                            <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                        </label>
+                                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                                    </section>
+
+                                    <section class="col-md-4">
+                                        <label style="width: 100%;">
+                                            End Date
+                                            <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                        </label>
+                                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                                    </section>
+                                </div>
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </form>
+                        </div>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <br />
+                            <div class="row">
+                                <h4>Search by Wallet Account -> Select Summary Report [Start Date to End Date] </h4>
+                            </div><br />
+                            <form asp-action="TransactionSummaryWallet" asp-controller="Agents" method="post">
+                                <div class="row">
+                                    @if (ViewBag.role == 2)
+                                    {
+                                        <div class="col-md-4">
+                                            Wallet Account
+                                            <select id="Userid" asp-for="UserID" asp-items="@(new SelectList(ViewBag.AgentList, "itemValue", "itemName"))"
+                                                    class="form-control select2" placeholder="Agents">
+                                                <option value=""> -- Select -- </option>
+                                            </select>
+                                        </div>
+                                    }
+                                    <section class="col-md-4">
+                                        <label style="width: 100%;">
+                                            Start Date
+                                            <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                        </label>
+                                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                                    </section>
+
+                                    <section class="col-md-4">
+                                        <label style="width: 100%;">
+                                            End Date
+                                            <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                        </label>
+                                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                                    </section>
+                                </div>
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </form>
+                        </div>
+                    </div>*@
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript"> 
+    $('.select2').select2();
+
+    //$("#StartDate").datepicker({
+    //    format: "dd/MM/yyyy",
+    //    startDate: "-10y",
+    //    endDate: "0d",
+    //    calendarWeeks: true
+    //});
+
+    //$("#EndDate").datepicker({
+    //    format: "dd/MM/yyyy",
+    //    startDate: "-10y",
+    //    endDate: "0d",
+    //    calendarWeeks: true
+    //});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

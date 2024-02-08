@@ -1,0 +1,362 @@
+﻿@model PaymentGateway21052021.Models.HoldProductsAlike
+
+<div id="content">
+
+    @*@if (ViewBag.DateFirstWeek != null)
+        {
+            <div class="mt-4 mt-lg-0">
+                <span class="alert-danger">@ViewBag.DateFirstWeek</span>
+                <span class="alert-danger">@ViewBag.DateLastWeek</span>
+                <span class="alert-danger">@ViewBag.DateNextDay</span>
+                <span class="alert-danger">@ViewBag.firstDayOfThisMonth</span>
+                <span class="alert-danger">@ViewBag.lastDayOfThisMonth</span>
+            </div>
+        }*@
+
+    <div class="hero-wrap py-2 py-md-3 py-lg-2">
+        <div class="hero-mask opacity-4 bg-dark"></div>
+        <div class="hero-bg hero-bg-scroll" style="background-image: url('/ui/images/bg/image-2.jpg');"></div>
+        <div class="hero-content py-3 py-lg-5 my-3 my-md-3">
+            <div class="container my-5 py-4">
+                <div class="container mb-5" style="float: none; margin: 0 auto;">
+                    <ul class="nav nav-tabs border-bottom style-3" id="myTab" role="tablist">
+                        <li class="nav-item"> <a class="nav-link" id="first-tab" @*data-toggle="tab"*@ @*href="#first"*@ role="tab" aria-controls="first" aria-selected="true"><span><i class="fas fa-mobile-alt"></i></span> Mobile Recharge</a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="second-tab" @*data-toggle="tab"*@ @*href="#second"*@ role="tab" aria-controls="second" aria-selected="false"><span><i class="fas fa-car"></i></span> AutoReg</a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="third-tab" @*data-toggle="tab"*@ @*href="#third"*@ role="tab" aria-controls="third" aria-selected="false"><span><i class="fas fa-tv"></i></span> Pay TV </a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="fourth-tab" @*data-toggle="tab"*@ @*href="#fourth"*@ role="tab" aria-controls="fourth" aria-selected="false"><span><i class="fas fa-shopping-cart"></i></span> Online Shopping </a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="fifth-tab" @*data-toggle="tab"*@ @*href="#fifth"*@ role="tab" aria-controls="fifth" aria-selected="false"><span><i class="fas fa-plane-departure"></i></span> Travel & Hotel </a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="sixth-tab" @*data-toggle="tab"*@ @*href="#sixth"*@ role="tab" aria-controls="sixth" aria-selected="false"><span><i class="fas fa-ticket-alt"></i></span> Event Tickets </a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="seventh-tab" @*data-toggle="tab"*@ @*href="#seventh"*@ role="tab" aria-controls="seventh" aria-selected="false"><span><i class="fas fa-lightbulb"></i></span> Electricity</a> </li>
+                        <li class="nav-item"> <a class="nav-link" id="tenth-tab" @*data-toggle="tab"*@ @*href="#tenth"*@ role="tab" aria-controls="tenth" aria-selected="false"><span><i class="fas fa-plug"></i></span> Utility </a> </li>
+                    </ul>
+                </div>
+
+                <form asp-action="Index" asp-controller="HomeStore" method="post">
+                    <div class="row no-gutters search-input-2 align-items-center" style="float: none; margin: 0 auto; width: 70%;">
+
+                        @*<div class="col-md-2 col-lg-2 form-group">*@
+             
+                <select asp-for="ProductCategoryID" name="prodCategory" asp-items="@(new SelectList(@ViewBag.ProductCategory,"ProductCategoryID","ProductCategoryName"))" class="custom-select" hidden="hidden"> </select>
+
+                        @*</div>*@
+                        
+                        <div class="col-md-8 col-lg-10 form-group">
+                            <div class="iti iti--allow-dropdown iti--separate-dial-code input-lg">
+                                <input asp-for="searchText" type="text" class="form-control shadow form-control-lg" data-bv-field="number" style="padding-left: 20px;"
+                                       name="searchText" required placeholder="Enter product / service" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-xl-2 form-group">
+                            <a class="btn btn-primary p-0">
+                                <input type="submit" value="SEARCH >>>" class="btn btn-primary shadow btn-block btn-lg" />
+                            </a>
+                        </div>
+                    </div>
+                </form>
+                <h2 class="text-12 text-center font-weight-400 mb-2 mt-2 text-white" ">Online Quick Recharge. Save Time and Money!</h2>
+                <p class="text-5 text-center mb-2 text-white">Send credit to your family and friends anywhere in the world!</p>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-white shadow-md py-5">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="text-9 font-weight-500 text-center">Welcome to EgolePay</h2>
+                <div class="bar"></div>
+                <p class="lead text-center mb-4">Get Best Offers on Bill Payments</p>
+            </div>
+            <div class="owl-carousel owl-theme owl-loaded owl-drag" data-autoplay="true" data-loop="true" data-nav="true" data-margin="30" data-items-xs="1" data-items-sm="2" data-items-md="2" data-items-lg="3">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage" style="transform: translate3d(-1170px, 0px, 0px); transition: all 0.25s ease 0s; width: 3510px;">
+                        <div class="owl-item active" style="width: 360px; margin-right: 30px; display: none;">
+                            <div class="item">
+                                <a href="#"><img class="img-fluid rounded" src="~/ui/images/slider/small-banner-1.jpg" alt="banner"></a>
+                            </div>
+                        </div>
+                        <div class="owl-item active" style="width: 360px; margin-right: 30px;">
+                            <div class="item">
+                                <a href="#"><img class="img-fluid rounded" src="~/ui/images/slider/small-banner-2.jpg" alt="banner"></a>
+                            </div>
+                        </div>
+                        <div class="owl-item active" style="width: 360px; margin-right: 30px;">
+                            <div class="item">
+                                <a href="#"><img class="img-fluid rounded" src="~/ui/images/slider/small-banner-1.jpg" alt="banner"></a>
+                            </div>
+                        </div>
+                        <div class="owl-item active" style="width: 360px; margin-right: 30px;">
+                            <div class="item">
+                                <a href="#"><img class="img-fluid rounded" src="~/ui/images/slider/small-banner-3.jpg" alt="banner"></a>
+                            </div>
+                        </div>
+                        <div class="owl-item active" style="width: 360px; margin-right: 30px;">
+                            <div class="item">
+                                <a href="#"><img class="img-fluid rounded" src="~/ui/images/slider/small-banner-4.jpg" alt="banner"></a>
+                            </div>
+                        </div>
+                        <div class="owl-item active" style="width: 360px; margin-right: 30px;">
+                            <div class="item">
+                                <a href="#"><img class="img-fluid rounded" src="~/ui/images/slider/small-banner-5.jpg" alt="banner"></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="owl-nav disabled">
+                    <button type="button" role="presentation" class="owl-prev"><i class="fa fa-chevron-left"></i></button>
+                    <button type="button" role="presentation" class="owl-next"><i class="fa fa-chevron-right"></i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <section class="what-we-do relative sec-before3 section-padding-100" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="fadeInUp" data-wow-delay="0.3s">Smart <span class="gradient-text blue normal">Payment</span> Solution</h2>
+                <div class="bar"></div>
+            </div>
+            <div class="section-heading text-center">
+                <p class="fadeInUp" data-wow-delay="0.4s"> Merchants, marketplaces, stores, and platforms use <strong>EgolePay Payments</strong> platform to transact virtually using available gateway or payment service. Explore the new markets fast, make secure payments easily. We are ready to support your business growth.</p>
+            </div>
+            <div class="clearfix"></div>
+            <div class="outer">
+                <!--Logo-->
+                <div class="inner-circle"><a href="#"><img class="phone" src="~/ui/images/app-design.png" alt="image"></a></div>
+                <div class="invoicing-image">
+
+                    <div class="main-mobile-image">
+                        <img src="~/ui/images/invoicing-main-pic.b506da36.png" alt="image">
+                    </div>
+                    <div class="circle-image">
+                        <img src="data:image/png;base64,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" alt="image"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMcAAADCCAMAAADKFiZHAAAA7VBMVEUAAADN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8djN8dhEzm9N0XZI0HKO4aho2It53Jid5bN93ZvB7s+87cup6L2E3qBT0nvE79K27Mdf1YRc1IFX037J8NWw6sKg5rbK8Nat6cBz2pOT4qyI4KMo7cM3AAAANHRSTlMA/M8GAhCCCtZH8O7isUDn9H0VBMtuWiTRaSsaloj4xrx0YCbqwaGej2ReIKmlmkww3jW3WBXpRAAABoZJREFUeNrt3YdW2zAUBuBrOx7ZCwIJAULC3tBfSaBA2ZQO3v9xuk5Laes4uZJjyfR7Ax1bsizdQbFwetktr73XsY/K+bwFK58vH9mdvba3le05ZAL/eGuzU8Ao5c7m1rFP+pprtG0L47HsdmOO9FNrrJcxqfJ6o0YaaXkzFngs22uRFg69AHIC75AS5s7aUMGedSk5pd0lqLK0W6JEOF0batldh6bNrZahXrnq0jS5Xg7xyHmhIzFoFNMcSb25initNusUu2yA+AVZitdOEdNR3KH41FcqmJbKSp1icmhjmuxDikO9amG6rGqdlJtbxvQtz5Fi2xUkobJNKvn7SMq+r3C1tZEcW9kKXMojSfkSKdG0kCyrSfIym0jeZoYk+UXooOiTFHcNelhzSULNhi7sGrEtBNBHsEBMNZ2GAQQ15jDmoZd51kBcfebGTzZjsjsd6Kfj0IQyu9BRMUOTaUNPbZrILHQ1SxMoWdCVlaWx7axCX7k5GpOv34r7u3mfxrMBvW3QWBrQXYPGMJeD7saZIs4M9DfjUJQqTFClCK0lmGCpFbGtMuGt+mYmQ6OswBQrNMJCBaaoLFC4PZhjj0KVYJJS6CTXe1/1p/mwqd6FUhePw9OT2/urvuhf3d+enA4fL6BUN+RLfgRlbj5/6ou/9T99voEyBSfef8CbyysR7upSxVDC/w39MlS4Ht6JKHfDa6hQ9uN6HBdnAzGOwdkFOKIfiFOAtPPnUYwxknOwRMyQbcj6MByISQyGHyBrm/6QCSDp452Y1N1HSAoy9FIWcj5cCo5L2UeSpZeKkHJxK3huLyCl+MdG14KMd33B1X8HGdaCwr/ZtwPBN3gLGdUXs7wACUMhZwgJhYyqDfulkHUJCSV6tg++JyHvCXz79IuTB9tnocIQbHmHfjoA26NQ4xFsB/TTOrhuBkKN/g241n+tVnkwXd8LVe4ewJTPSK9Wn4Q6p+Aq0Q8emN4Kld6CaZF+mAHPeV+o1D8Hzwx951rgORVfafBmWa7Ulv29UO09eA6kpseJUO0E4aInyBpY3gn13oFlmb6qVxAm+nHo8UCW6kTUQrjo2aHHDGmxr5mfFysdlqwGES2C46Ev4tB/AMciEb1BhKhPuQYf9TdEVECEqFmuwUwvEDkWGK5FXK7BYDnUQ4TI10qHF6sXvSuJXq00WLGy1ATHvYjLPTiavN3VuYjPORgWaQORovdWie+xNqgIhqGIzxAMRVoGw5mIzxkYlilApOivYOJfwoD3Ob8V8bkFQ4FyYLgS8bkCQ443jr6ITx8MFQLHQMRnAA4Ch4gTOF7389BufiAl61UlZBymfT9yId9B077nhZB9iWn7qyBkn2jafnc5ZN9u2v9HMeQ/yrT/wY2w40TD/s8XQ88ZzDovaYae+5h1fpUNPYcz6jwRvfBzUZPOdy0n/JzapPP2Qvi9gVH3H29G3eMYdB+1OOpezaD7wcboe05T7mvRGn3vbMr9+VI9Ig7AkHiG5ai4DEPiSxaj42RMiPfBQXTckgnxV5Y7RhyZAfFwM+PF9Wkfn7g4Zpyl5vGiKI0b96p3/G4+M3Ycstbx1OuMuPC4joCG4DtQEqePSyHvEnx5Z8K8CU3zP/Ynz2PRMR8HJUZekYb5UYUMJ89Lu3w1VLl5d3rlD1oLSvMg8cDM53yAnKJUXqo2+bXIyuYJ65HvHGTk87Y1yD/HtqI8+oTrARSc2MpMXA+j9/L3w2sosRJRZ0LOx7OR9TLOPkKRsh937cf465eE14R0ClDq4vHp9OTu6tt4+ld3J6dPquvJFJywujhm6aa8TlFa6kaZVcdr9xXUVUtLnbvU1B1MSx3I1NTlTE2d1LTUrU1NHeHU1HUmX7cGDS/N+6+s7rnedegP0tEXYOVV9mmgjB79lp4x+2aQr2MfkzX/1faVSU2fn9T0XUpNHyyimj6b+JkaSfDT0ScuNX37UtNHMTV9Lb/KJtxnNEuKzM0jOfNzpIy/h6Ts+aRSN6G+yN3/farT3Tc8gT7ux/Tsf1/9f9opYjqKOxSvbID4BVmKXb25initNus0Da6XQ3xynkshDBoJbxR8brUM9cpVl6bN6dpQy+46lIjS7hJUWdotUXLcWRsq2LMuJezQCyAn8A5JCy3PtsBj2V6LNFJrrJcxqfJ6o0b66W23bWvs59De7pG+/OOtzU4Zo5Q7m1vHPpnA72W3vPZuxz5azecB5POrR/NrxX1vK9uLZwRfAJhMIFWSo89HAAAAAElFTkSuQmCC" alt="image">
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <!--Left Column-->
+                    <div class="left-column col-lg-4 col-md-6 col-sm-6 col-xs-12">
+
+                        <!--Service Box-->
+                        <div class="service-box-three">
+                            <div class="inner-box">
+                                <div class="icon-box"><img src="~/ui/images/icons/m1.png" alt=""></div>
+                                <h3><a>Secure Payments</a></h3>
+                                <div class="text"> safer, faster, more secure way to pay online with your wallet directly. </div>
+                            </div>
+                        </div>
+
+                        <!--Service Box-->
+                        <div class="service-box-three">
+                            <div class="inner-box">
+                                <div class="icon-box"><img src="~/ui/images/icons/m2.png" alt=""></div>
+                                <h3><a>Amazing Experiences</a></h3>
+                                <div class="text"> Offering a great online experience and smooth checkout. </div>
+                            </div>
+                        </div>
+
+                        <!--Service Box-->
+                        <div class="service-box-three">
+                            <div class="inner-box">
+                                <div class="icon-box"><img src="~/ui/images/icons/m3.png" alt=""></div>
+                                <h3><a>Fast Transfer</a></h3>
+                                <div class="text"> Enables you to send money super easy and superfast online. </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!--Right Column-->
+                    <div class="right-column col-lg-4 col-md-6 col-sm-6 col-xs-12">
+
+                        <!--Service Box-->
+                        <div class="service-box-four">
+                            <div class="inner-box">
+                                <div class="icon-box"><img src="~/ui/images/icons/m4.png" alt=""></div>
+                                <h3><a>Low Transaction Fee</a></h3>
+                                <div class="text"> Enjoy our low transaction fee on all payment, easy and safe. </div>
+                            </div>
+                        </div>
+
+                        <!--Service Box-->
+                        <div class="service-box-four">
+                            <div class="inner-box">
+                                <div class="icon-box"><img src="~/ui/images/icons/m5.png" alt=""></div>
+                                <h3><a> Easy Wallet Funding </a></h3>
+                                <div class="text"> You can easily fund your wallet by making a direct transfer. </div>
+                            </div>
+                        </div>
+
+                        <!--Service Box-->
+                        <div class="service-box-four">
+                            <div class="inner-box">
+                                <div class="icon-box"><img src="~/ui/images/icons/m6.png" alt=""></div>
+                                <h3><a> Online Payment Processing </a></h3>
+                                <div class="text"> Our API allows you to optimize your payments. </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="how-it-works-area ptb-40 banner-section bg-white">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <div class="bar"></div>
+                <p>You can easily set up your account by following steps below.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 col-md-6">
+                    <div class="single-how-it-works">
+                        <img src="~/ui/images/1.png" alt="image">
+                        <h3>1. Register for free</h3>
+                        <p>Join EgolePay! Create a free online account in under a minute.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-md-6">
+                    <div class="single-how-it-works">
+                        <img src="~/ui/images/2.png" alt="image">
+                        <h3>2. Select available services </h3>
+                        <p>You can select a product variation in the Add Products screen.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-md-6">
+                    <div class="single-how-it-works">
+                        <img src="~/ui/images/3.png" alt="image">
+                        <h3>3. Add recipient’s details</h3>
+                        <p>You'll need to enter some information about your recipient's.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-md-6">
+                    <div class="single-how-it-works">
+                        <img src="~/ui/images/4.png" alt="image">
+                        <h3>4. Verify your identity</h3>
+                        <p>We provide the strongest online identity verification available to prevent fraud.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-md-6">
+                    <div class="single-how-it-works">
+                        <img src="~/ui/images/5.png" alt="image">
+                        <h3>5. Pay for transaction</h3>
+                        <p>make an online payment, receive money or set up a merchant account.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-md-6">
+                    <div class="single-how-it-works">
+                        <img src="~/ui/images/6.png" alt="image">
+                        <h3>6. That’s it</h3>
+                        <p>Enjoy our robust consumer services platform for convenient services.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="app-download-area" style="background: #dadef5;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-12">
+                    <div class="app-image">
+                        <div class="main-image">
+                            <img src="~/ui/images/mobile-app1.699b1682.png" alt="image">
+                            <img src="~/ui/images/mobile-app2.e26bba46.png" alt="image">
+                        </div>
+                        <div class="main-mobile-image">
+                            <img src="~/ui/images/main-mobile.c59a7bff.png" alt="image">
+                        </div>
+                        <div class="circle-img">
+                            <img src="~/ui/images/circle.286b8949.png" alt="image">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="app-download-content">
+                        <h2>You can find all the thing you need on EgolePay</h2>
+                        <div class="bar"></div>
+                        <p>Download our app for the fastest, most convenient way to Recharge & Bill Payment, Booking and more....</p>
+                        <div class="btn-box">
+                            <a href="#" class="app-store-btn"><i class="flaticon-apple"></i> Download on <span>App Store</span></a>
+                            <a href="#" class="play-store-btn"><i class="flaticon-play-store"></i> Download on <span>Google play</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-plans" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Search</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="plans">
+                        Content
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-signup" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-sm-3">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"> <a id="login-tab" class="nav-link active text-4" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a> </li>
+                        <li class="nav-item"> <a id="signup-tab" class="nav-link text-4" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="false">Sign Up</a> </li>
+                    </ul>
+                    <div class="tab-content pt-4">
+
+                        <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                            <form id="account" method="post">
+                                <div class="form-group">
+                                    <input class="form-control" id="loginMobile" required placeholder="Mobile or Email ID">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="loginPassword" required placeholder="Password">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-sm">
+                                        <div class="form-check custom-control custom-checkbox">
+                                            <input id="remember-me" name="remember" class="custom-control-input" type="checkbox">
+                                            <label class="custom-control-label" for="remember-me">Remember Me</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm text-right"> <a id="forgot-password" href="./ForgotPassword" class="justify-content-end">Forgot Password ?</a> </div>
+                                </div>
+                                <button class="btn btn-primary btn-block" type="submit">Login</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+                            <form>
+                                <div class="form-group">
+                                    <a href="./Register" class="btn btn-primary btn-block"> Create Individual Account </a>
+                                    &nbsp;
+                                    <a href="./Register" class="btn btn-primary btn-block"> Create Corporate Account </a>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,99 @@
+﻿@model PaymentGateway21052021.Areas.Wallets.Models.WalletServices
+
+@{
+    ViewData["Title"] = "Moblie";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+<section class="page-header page-header-text-light bg-secondary">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1>Product Recharge </h1>
+            </div>
+            <div class="col-md-4">
+                <ul class="breadcrumb justify-content-start justify-content-md-end mb-0">
+                    <li><a href="#">Wallet</a></li>
+                    <li><a href="#">My Services</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+    <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+        <div>
+            <form asp-action="ProductWallet" asp-controller="HomeStore" method="post">
+                @if (@Model.ProductModeID.ToString() == "1")
+                {
+                    @Html.AntiForgeryToken()
+                    <br />
+                    <label>Email Address</label>
+                    <input asp-for="Email" type="email" value="@Model.Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <input asp-for="Email" value="@Model.Email" hidden="hidden" class="form-control" />
+                    <br />
+                    <label>Phone Number</label>
+                    <input asp-for="PhoneNumber" value="@Model.PhoneNumber" class="form-control" maxlength="11" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <input asp-for="PhoneNumber" value="@Model.PhoneNumber" hidden="hidden" class="form-control" />
+                    <br />
+
+                    <label>Product Item</label>
+                    <input asp-for="ProductItemName" value="@Model.ProductItemName" class="form-control" />
+                    <span asp-validation-for="ProductItemName" class="text-danger"></span>
+                    <br />
+
+                    <label>Amount</label>
+                    <input asp-for="AmountRate" value="@Model.AmountRate" class="form-control" id="Rate" />
+                    <input asp-for="AmountRate" value="@Model.AmountRate" hidden="hidden" class="form-control" />
+                    <input asp-for="ProductModeID" type="hidden" class="form-control" value="@Model.ProductModeID" />
+                    <input asp-for="ProductID" type="hidden" class="form-control" id="ProductID" value="@Model.ProductID" />
+                    <input asp-for="ProductItemID" type="hidden" class="form-control" id="ProductItemID" value="@Model.ProductItemID" />
+                    <input asp-for="ProductName" type="hidden" class="form-control" id="ProductName" value="@Model.ProductName" />
+                    <input asp-for="ProductItemName" type="hidden" class="form-control" id="ProductItemName" value="@Model.ProductItemName" />
+                    <br />
+                    <div class="d-flex">
+                        <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                    </div>
+                }
+
+                else if (@Model.ProductModeID.ToString() == "2")
+                {
+                    <br />
+                    <input asp-for="ReferenceNo" placeholder="Enter Reference Number" class="form-control" id="refNo" value="@Model.ReferenceNo" />
+                    <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" value="@Model.ProductModeID" />
+
+                    <br />
+                    <div class="d-flex">
+                        <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                    </div>
+                }
+                else if (@Model.ProductModeID.ToString() == "3")
+                {
+                    <label>Email Address</label>
+                    <input asp-for="Email" type="email" value="@Model.Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <input asp-for="Email" value="@Model.Email" hidden="hidden" class="form-control" />
+                    <br />
+                    <label>Phone Number</label>
+                    <input asp-for="PhoneNumber" value="@Model.PhoneNumber" class="form-control" maxlength="11" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <input asp-for="PhoneNumber" value="@Model.PhoneNumber" hidden="hidden" class="form-control" />
+                    <br />
+                    <input asp-for="ReferenceNo" value="@Model.ReferenceNo" placeholder="Enter Reference Number" class="form-control" id="refNo" />
+                    <span asp-validation-for="ReferenceNo" class="text-danger"></span>
+                    <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" />
+                    <br />
+
+                    <div class="d-flex">
+                        <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                    </div>
+
+                }
+
+            </form>
+        </div>
+    </div>
+</div>

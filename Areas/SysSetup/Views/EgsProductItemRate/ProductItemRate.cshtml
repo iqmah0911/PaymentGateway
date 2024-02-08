@@ -1,0 +1,102 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.EgsProductItemRateViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Welcome";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>@ViewData["ProductItemRate"]</h1>
+
+<div class="card-body">
+
+    <h1 class="mb-2">@ViewData["ProductItemRate"]</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="ProductItemRates" class="btn btn-warning float-left">List of Product Item Rate(s)</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+            <br /> @*onchange="getProductitems()"*@
+            <div class="col-6 mb-6">
+                <form asp-action="ProductItemRate" asp-controller="EgsProductItemRate" method="post">
+                    @Html.AntiForgeryToken()
+                    <br />
+                    <label>Select Product</label>
+                    <select id="productid" asp-for="ProductID" asp-items="@(new SelectList(ViewBag.ProductList, "ProductID", "ProductName"))"
+                            class="form-control" onchange="getProductitems()"></select>
+                    <span asp-validation-for="ProductID" class="text-danger"></span>
+                    <br />
+                    <label>Select Product Item</label>              
+                    <select id="productitemid" asp-for="ProductItemID" asp-items="@(new SelectList(ViewBag.ProductItemList, "ProductItemID", "ProductItemName"))"
+                            class="form-control"></select>
+                    <span asp-validation-for="ProductItemID" class="text-danger"></span>
+                    <br />
+                    <label>Item Rate</label>
+                    <input asp-for="AmountRate" placeholder="Enter Item Rate" class="form-control" />
+                    <span asp-validation-for="AmountRate" class="text-danger"></span>
+                    <br />
+                    <br />
+                    <input type="submit" value="Save" class="btn btn-info" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+
+<script type="text/javascript">
+
+    //$(document).ready(function () {
+    //    var items = "<option value='0'>--Select--</option>";
+    //    //$('#productid').html(items);
+    //    $('#productitemid').html(items);
+    //});
+
+
+
+    function getProductitems() { 
+        var url = '@Url.Content("~/")' + "SysSetup/EgsProductItemRate/GetProductitems";
+        var select = document.getElementById("productid");
+            var option = select.options[select.selectedIndex];
+        var selectedValue = $('#productid').val();
+
+        if (selectedValue != "selectedValue") {
+                    //alert() getJSON
+            $.get(url, { productid: selectedValue }, function (data) {
+                console.log(data);
+                    var items = '';
+                $("#productitemid").empty();
+                        $.each(data, function (i, products) {
+                            items += "<option value='" + products.value + "'>" + products.text + "</option>";
+                        });
+                $('#productitemid').html(items);
+                });
+            }
+    }
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+

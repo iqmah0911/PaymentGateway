@@ -1,0 +1,102 @@
+﻿@*@model PaymentGateway21052021.Areas.EgsOperations.Models.AggregatorViewModel*@ 
+
+@model PaymentGateway21052021.Areas.EgsOperations.Models.HoldAggregatorsDisplayViewModel
+
+@{
+    ViewData["Title"] = "Request Aggregator";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="card-body col-10">
+
+    <div class="card">
+        <br />
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+            <ol class="breadcrumb pt-0">
+                <li class="breadcrumb-item">
+                    <a href="#">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#">Aggregator</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Request</li>
+            </ol>
+        </nav><br />
+              <div class="card-body"> 
+                  <div class="float-left">
+                      @if (ViewBag.Message != null)
+                      {
+                          <span class="alert-success">@ViewBag.Message</span>
+                      }
+                      @if (ViewBag.ErrorMessage != null)
+                      {
+                          <span class="alert-danger">@ViewBag.Error</span>
+                      }
+                  </div><br />
+                  <div class="col-10 mb-10">
+
+                      <form asp-action="AggregatorRequest" asp-controller="EgsAggregatorRequest" asp-area="EgsOperations" method="get">
+                          <div class="float-left mr-5">
+                              <input name="searchText" placeholder="Enter Aggregator Code" class="form-control" autocomplete="off" />
+                          </div>
+                          <input type="submit" value="Search" class="btn btn-info" />
+                      </form>
+
+                  </div>
+                  <br />
+
+                  @if (Model != null)
+                  {
+                   
+                        
+          @foreach (var item in Model.HoldsAggregatorInfo)
+                   {
+              <form asp-action="AggregatorRequest" asp-controller="EgsAggregatorRequest" asp-area="EgsOperations" method="post">
+                  <div class="row">
+                      <div class="col-12 list">
+
+                          <div class="card d-flex flex-row mb-3">
+                              <div class="d-flex flex-grow-1 min-width-zero">
+                                  <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+ 
+
+                                      <h5 class="mb-0 text-muted text-small w-15 w-xs-100">
+                                          @Html.DisplayFor(modelItem => item.AggregatorID)
+                                      </h5>
+                                      <h5 class="mb-0 text-muted text-small w-15 w-xs-100">
+                                          @Html.DisplayFor(modelItem => item.AggregatorCode)
+                                      </h5>
+                                      <h5 class="mb-0 text-muted text-small w-15 w-xs-100">@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</h5>
+                                      <h5 class="mb-0 text-muted text-small w-15 w-xs-100">@Html.DisplayFor(modelItem => item.Email)</h5>
+
+                                      <input type="text" asp-for="aggID" value="@item.AggregatorID" hidden="hidden" id="aggID" />
+
+                                      <input type="submit" value="Request Aggregator" class="btn btn-info" />
+
+
+                                      @*<a href="@Url.Action("AggregatorRequest","EgsAggregatorRequest"  ,new {  id=item.AggregatorID  })" class="btn btn-primary btn-sm"> Request Aggregator</a>*@
+
+
+                                  </div>
+                              </div>
+                          </div>
+
+                      </div>
+                  </div>
+              </form>
+
+                     }
+                          
+                  }
+                  else if (Model == null)
+                  {
+                      <h2>No Aggregator(s) Returned</h2>
+                  }
+              </div>
+
+
+    </div>
+
+</div>

@@ -1,0 +1,44 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.UpdateStateViewModel
+@{
+    ViewData["Title"] = "Update State";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <div class="card">
+        <div class="card-body">
+            <h2 class="mb-2">Update State</h2>
+            <br />
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="States" class="btn btn-warning float-left">List of States</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-6 mb-6">
+        <form asp-action="UpdateState" asp-controller="SysState" method="post">
+            @Html.AntiForgeryToken()
+
+            <label>State Name</label>
+            <input asp-for="StateName" placeholder="Enter State Name" class="form-control" />
+            <span asp-validation-for="StateName" class="text-danger"></span>
+            <br />
+
+
+            <br />
+            <input type="hidden" asp-for="StateID" />
+            <input type="submit" value="Update" class="btn btn-info" />
+        </form>
+    </div>
+</div>
+

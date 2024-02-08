@@ -1,0 +1,68 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.CreateUserViewModel
+
+@{
+    ViewData["Title"] = "Create System User";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+            <div class="float-left mr-3">
+                <a asp-action="SystemUsers" asp-controller="SysUser" class="btn btn-warning float-left">List of System Users</a>
+            </div>
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+        </div><br />
+
+
+
+
+        <div class="col-10 mb-10">
+            <form asp-action="SystemUser" asp-controller="SysUser" method="post">
+                @Html.AntiForgeryToken()
+                <label>Enter Email</label>
+                <input asp-for="Email" placeholder="Enter Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <br />
+                <label>Enter First Name</label>
+                <input asp-for="FirstName" placeholder="Enter First Name" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <br />
+                <label>Enter Middle Name</label>
+                <input asp-for="MiddleName" placeholder="Enter MiddleName" class="form-control" />
+                <span asp-validation-for="MiddleName" class="text-danger"></span>
+                <br />
+                <label>Enter Last Name</label>
+                <input asp-for="LastName" placeholder="Enter LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+                <br />
+                <label>Enter Company</label>
+                <input asp-for="CompanyName" placeholder="Enter Company Name" class="form-control" />
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
+                <br />
+                <label>Select State</label>
+                <select id="StateID" asp-for="StateID" asp-items="@(new SelectList(ViewBag.ListofState, "StateID", "StateName"))"
+                        class="form-control" placeholder="Service Type"></select>
+                <span asp-validation-for="StateID" class="text-danger"></span>
+                <br />
+                <label>Select Role</label>
+                <select id="RoleID" asp-for="RoleID" asp-items="@(new SelectList(ViewBag.ListofRole, "RoleID", "RoleName"))"
+                        class="form-control"></select>
+                <span asp-validation-for="RoleID" class="text-danger"></span>
+                <br />
+
+                <input type="submit" value="Save" class="btn btn-info" />
+            </form>
+
+        </div>
+
+         
+
+    </div>
+</div>
+

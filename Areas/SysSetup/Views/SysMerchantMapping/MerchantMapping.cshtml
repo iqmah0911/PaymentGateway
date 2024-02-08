@@ -1,0 +1,180 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysMerchantMappingViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Sub Merchant Mapping";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card-body">
+
+    <h1 class="mb-2">@ViewData["Sub Merchant Mapping"]</h1>
+
+
+    <div class="row">
+        <div class="col-12 col-md-12 col-xl-8 col-left">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form asp-action="" asp-controller="SysMerchantMapping">
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label class="control-label">Select Merchant</label>
+                            <select id="ddlMerchant" asp-for="MerchantID" class="custom-select"
+                                    asp-items="@(new SelectList(ViewBag.Merchant, "MerchantID", "MerchantName"))">
+                                <option value="">Select Merchant</option>
+                            </select>
+                        </div>
+
+                        @*<span asp-validation-for="MerchantID" class="text-danger"></span>*@
+
+                        <div class="form-group">
+                            <label class="control-label">Select Sub Merchant</label>
+                            <select id="ddlMerchant" asp-for="SubMerchantID" class="custom-select"
+                                    asp-items="@(new SelectList(ViewBag.Merchant, "MerchantID", "MerchantName"))">
+                                <option value="">Select Sub Merchant</option>
+                            </select>
+                        </div>
+                        @*<input type="submit" value="Create" class="btn btn-default" id="btn" />*@
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12 col-xl-4 col-right">
+            <div class="card mb-4">
+                <div class="card-body mx-auto">
+                    <div class="float-left mr-3">
+                        <a asp-action="MerchantMappingList" class="btn btn-warning float-left">List of SubMerchant Mapping</a>
+                    </div>
+                    <div class="float-left">
+                        @if (ViewBag.Message != null)
+                        {
+                            <span class="alert-success">@ViewBag.Message</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    $("#ddlMerchant").change(function () {
+        //alert("changed");
+            var urlSource = '@Url.Action("GetSubMerchant", "SysMerchantMapping")';
+            var selectedValue = $(this).val();
+            if (selectedValue != "") {
+                $.ajax({
+                    url: urlSource,
+                    method: "GET",
+                    data: {
+                        "merchantId": selectedValue
+                    },
+                    success: function (result) {
+                        $('#checkboxContainer').empty();
+                        var items = '';
+                        $.each(result, function (i, products) {
+                            items += "<input type='checkbox' name='myCheckbox' value='" + products.value + "'/>" + products.text;
+                        });
+
+                        $('#checkboxContainer').html(items);
+                        }
+                });
+            } else {
+                $('#checkboxContainer').empty();
+
+            }
+    });
+        @*$('#btn').click(function () {
+            alert("clicked");
+            var urlSource = '@Url.Action("CreateResponseReview", "SysMerchantMapping")';
+            var values = get_selected_checkboxes_array();
+
+            alert(values)
+            console.log(values)
+            $.ajax({
+                url: urlSource,
+                method: "GET",
+                data: {
+                    "mqvm": JSON.stringify(values)
+                },
+                success: function (result) {
+
+                }
+            });
+            //return false;
+        });*@
+
+
+        //
+//end here
+    //function insertSubMerchant(arg) {
+    //    //alert("Button clicked");
+    //    var abc = ""
+    //    //Iterating the collection of checkboxes which checked marked
+    //    console.log(get_selected_checkboxes_array());
+    //    $('input[type=checkbox]').each(function () {
+    //        if (this.checked) {
+    //            abc = "" + abc + $(this).val() + ","
+    //            //assign set value to hidden field
+    //            //alert(abc.slice(0, -1));
+    //            $('#listId').val(get_selected_checkboxes_array());
+
+    //        }
+    //    });
+
+    //    }
+
+        function get_selected_checkboxes_array() {
+            var ch_list = Array(); $("input:checkbox[type=checkbox]:checked").
+                each(function () { ch_list.push($(this).val()); });
+            return ch_list;
+        }
+
+</script>
+@*<script type="text/javascript" language="javascript">
+        function PopulateCheckBoxList() {
+            $.ajax({
+                type: "POST",
+                url: "CheckBoxList/GetCheckBoxDetails",
+                contentType: "application/json; charset=utf-8",
+                data: "{}",
+                dataType: "json",
+                success: AjaxSucceeded,
+                error: AjaxFailed
+            });
+        }
+        function AjaxSucceeded(result) {
+            BindCheckBoxList(result);
+        }
+        function AjaxFailed(result) {
+            alert('Failed to load checkbox list');
+        }
+        function BindCheckBoxList(result) {
+
+            var items = JSON.parse(result.d);
+            CreateCheckBoxList(items);
+        }
+
+        function CreateCheckBoxList(checkboxlistItems) {
+            var table = $('<table></table>');
+            var counter = 0;
+            $(checkboxlistItems).each(function () {
+                table.append($('<tr></tr>').append($('<td></td>').append($('<input>').attr({
+                    type: 'checkbox', name: 'chklistitem', value: this.Value, id: 'chklistitem' + counter
+                })).append(
+                    $('<label>').attr({
+                        for: 'chklistitem' + counter++
+                    }).text(this.Name))));
+            });
+
+            $('#dvCheckBoxListControl').append(table);
+        }
+    </script>*@
+    </div>

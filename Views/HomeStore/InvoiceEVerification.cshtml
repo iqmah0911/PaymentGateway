@@ -1,0 +1,143 @@
+﻿@model PaymentGateway21052021.Areas.Invoices.Models.EBuyPowerItem
+
+@{
+    ViewData["Title"] = "Confirm Order Details";
+}
+
+
+<section class="page-header page-header-text-light bg-secondary">
+    <div class="container">
+        <div class="row align-items-center">
+
+        </div>
+    </div>
+</section>
+
+
+
+<section class="container">
+
+    <hr class="mx-n4">
+    <div class="row">
+        @*@if (@Model.ReferenceNo != null)
+            {
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            }*@
+        <!-- Side Panel Order Summary Details
+        ============================================= -->
+
+        <aside class="col-lg-5 mt-4 mt-lg-0">
+
+            @*<form asp-action="ConfirmDetails" asp-controller="HomeStore" method="get">
+                <input asp-for="ProductID" type="hidden" class="form-control" id="ProductID" value="@Model.ProductID" />
+                <input asp-for="ProductItemID" type="hidden" class="form-control" id="ProductItemID" value="@Model.ProductItemID" />
+                <input asp-for="InvoiceID" type="hidden" class="form-control" id="InvoiceID" value="@Model.InvoiceID" />
+                <input asp-for="AmountRate" type="hidden" class="form-control" id="AmountRate" value="@Model.AmountRate" />
+                <input asp-for="ReferenceNo" type="hidden" class="form-control" id="ReferenceNo" value="@Model.ReferenceNo" />
+                <input asp-for="RegNumber" type="hidden" class="form-control" id="RegNumber" value="@Model.RegNumber" />
+                <input asp-for="PhoneEmail" type="hidden" class="form-control" id="PhoneEmail" value="@Model.PhoneEmail" /></form>*@
+            <div class="bg-white shadow-md rounded p-3">
+                <h3 class="text-5 mb-3">Order Summary Details</h3>
+                <hr class="mx-n3">
+                <p>
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">Order ID <span class="float-right text-2 font-weight-500 text-dark">@Model.orderId</span></li>
+                    <li class="mb-2">Meter No <span class="float-right text-2 font-weight-500 text-dark">@Model.meterNo </span></li>
+                    <li class="mb-2">Customer Name <span class="float-right text-2 font-weight-500 text-dark">@Model.name </span></li>
+                    <li class="mb-2">Address <span class="float-right text-2 font-weight-500 text-dark">@Model.address</span></li>
+                    <li class="mb-2">DiscoCode <span class="float-right text-2 font-weight-500 text-dark">@Model.discoCode</span></li>
+                    <li class="mb-2">vendType<span class="float-right text-2 font-weight-500 text-dark">@Model.vendType</span></li>
+                    <li class="mb-2">minVendAmount<span class="float-right text-2 font-weight-500 text-dark">@Model.minVendAmount</span></li>
+                    <li class="mb-2">maxVendAmount<span class="float-right text-2 font-weight-500 text-dark">@Model.maxVendAmount</span></li>
+                    <li class="mb-2">outstanding<span class="float-right text-2 font-weight-500 text-dark">@Model.outstanding</span></li>
+                    <li class="mb-2">debtRepayment<span class="float-right text-2 font-weight-500 text-dark">@Model.debtRepayment</span></li>
+                    <li class="mb-2">Tariff<span class="float-right text-2 font-weight-500 text-dark">@Model.tariff</span></li>
+
+                     
+                    <li class="mb-2">
+
+                        @*<span class="float-right text-4 font-weight-500 text-dark"> @Model.totalAmount</span><br>*@
+                         
+                </ul>
+                @*<div class="text-dark bg-light-4 text-4 font-weight-600 p-3"> Total Amount <span class="float-right text-6">@Model.totalAmount </span> </div>*@
+                @*<h3 class="text-4 mb-3 mt-4">Promo Code</h3>*@
+            <div class="input-group form-group">
+                @*<input class="form-control" placeholder="Promo Code" aria-label="Promo Code" type="text">
+        <span class="input-group-append">
+            <button class="btn btn-secondary" type="submit">APPLY</button>
+        </span>*@
+                <form asp-action="BPowerPayment" asp-controller="HomeStore" method="post">
+                    <input asp-for="meterNo" value="@Model.meterNo" hidden="hidden" />
+                    <input asp-for="orderId" type="text" value="@Model.orderId" hidden="hidden" />
+                    <input asp-for="discoCode" type="text" value="@Model.discoCode" hidden="hidden" />
+                    <input asp-for="vendType" value="@Model.vendType" hidden="hidden" />
+                    <input asp-for="name" value="@Model.name" hidden="hidden" />
+                    @*<a class="btn btn-primary btn-block">Proceed To Payment</a>*@
+                    <input type="submit" value="Proceed To Payment" class="btn btn-primary btn-block"/>
+                    @*<button class="btn btn-warning d-inline-block ml-auto" name="wallet" value="Pay with Wallet" type="submit"
+                            onclick="location.href='/Identity/Account/Login?loginType=1';">
+                        Pay With Wallet
+                    </button>*@
+
+                </form>
+            </div>
+            </div>
+        </aside>
+        <!-- Side Panel end -->
+
+        <div class="col-lg-7">
+            <div class="bg-white shadow-md rounded p-3 p-sm-4 confirm-details">
+                <h2 class="text-6 mb-3 mb-sm-4">Select a Payment Mode</h2>
+                <hr class="mx-n3 mx-sm-n4 mb-4">
+                <div class="alert alert-info mt-4"> <span class="badge badge-info">NOTE:</span> This is a special fare given by the railway. Railway cancellation charges do apply. </div>
+                <h2 class="text-6 mb-3 mt-5 text-center">Payment Details</h2>
+                <span class="text-3 text-center">Already have an account: <a data-toggle="modal" data-target="#login-signup" href="#" title="Login / Sign up">Login</a> | New Member: <a data-toggle="modal" data-target="#login-signup" href="#" title="Login / Sign up">Create Account</a></span>
+
+                <div class="form-row">
+                    <form asp-action="ConfirmDetails" asp-controller="HomeStore" method="post">
+                        @*<input asp-for="ProductID" type="hidden" class="form-control" id="ProductID" value="@Model.ProductID" />
+                            <input asp-for="ProductItemID" type="hidden" class="form-control" id="ProductItemID" value="@Model.ProductItemID" />
+                            <input asp-for="InvoiceID" type="hidden" class="form-control" id="InvoiceID" value="@Model.InvoiceID" />
+                            <input asp-for="AmountRate" type="hidden" class="form-control" id="AmountRate" value="@Model.AmountRate" />
+                            <input asp-for="ReferenceNo" type="hidden" class="form-control" id="ReferenceNo" value="@Model.ReferenceNo" />
+                            <input asp-for="RegNumber" type="hidden" class="form-control" id="RegNumber" value="@Model.RegNumber" />
+                            <input asp-for="PhoneEmail" type="hidden" class="form-control" id="PhoneEmail" value="@Model.PhoneEmail" />*@
+                        <div class="col-sm-6">
+                            @*<input class="form-control" placeholder="Enter Wallet Account Number" aria-label="Enter Wallet Account Number" type="text">*@
+                            @*<input class="form-control"  placeholder="Enter Wallet Account Number" aria-label="Enter Wallet Account Number" type="text">*@
+
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <button class="btn btn-warning d-inline-block ml-auto" onclick="location.href='#';" type="submit"> Payment With Card </button>
+                        </div>
+                    </form>
+                </div>
+                <p class="text-info">Your payment details will be sent to this email address and mobile number.</p>
+
+
+                @*<button class="btn btn-primary btn-block" onclick="location.href='payment.html';" type="submit">Proceed To Payment</button>*@
+
+                @*<a class="btn btn-primary btn-block" asp-controller="Homestore" asp-action="PayWithWallet">Proceed with Wallet Payment</a>*@
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+

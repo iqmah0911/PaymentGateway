@@ -1,0 +1,990 @@
+﻿@using PaymentGateway21052021.Areas.Identity.MenuConfiguration;
+@inject Microsoft.Extensions.Options.IOptions<Config> Menu;
+@inject Microsoft.Extensions.Options.IOptions<ConfigAdministrator> MenuAdmin;
+@using Microsoft.AspNetCore.Identity
+@using System.Net.Http;
+@using PaymentGateway21052021.Helpers;
+@using Newtonsoft.Json;
+@using System.Globalization;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var user2 = await _unitOfWork.User.GetSysUsers("18");  //user.UserID.ToString());
+    var roleid = user2.Role.RoleID;
+    var roleName_ = user2.Role.RoleName;
+    if (roleid.ToString() == "4")
+    {
+        string accountNumber = "1000047793";
+    }
+    else if (roleid.ToString() != "12" || roleid.ToString() != "11")
+    {
+
+    }
+    else
+    {
+        if (user2.BankAccountCode == null)
+        {
+            var walletDetails = await _unitOfWork.Wallet.GetWalletByUserID(user2.UserID);
+            string accountNumber = walletDetails.WalletAccountNumber;
+        }
+        else
+        {
+            var getwalletdetails = await _unitOfWork.Wallet.GetWalletByAccountNumber(user2.BankAccountCode);
+            string accountNumber = user2.BankAccountCode;
+        }
+    }
+    //var walletDetails = await _unitOfWork.Wallet.GetWalletByUserID(user.UserID);
+    //string accountNumber = walletDetails.WalletAccountNumber;// "1000047793";
+    var vfdResponse = new VFDAccountEnquiry();
+    var token = "bcb81916-4f8d-3407-882c-d88d5a342382";
+    var walletcred = "Q3dhVDRjSkkwdjl0ZkhMMXFpXzN5Q1dhXzNZYTp1d0Fhb0Q3X1BzZGNWWVVWa3hGUHFMWnVGMFlh";
+    double walletBal = 0.00;
+    var vfdwalletBal = "0.0";
+
+    if (roleid.ToString() == "1" || roleid.ToString() == "5" || roleid.ToString() == "9" || roleid.ToString() == "3")
+    {
+
+        var walletBalance = await _unitOfWork.Wallet.GetWalletBalanceById(user2.Wallet.WalletID);//Invoice.GetWalletBalance(user2.Wallet.WalletID);
+        var balanceAmount = walletBalance.WalletBalance;//.Sum(u => u.Amount);
+
+        if (user2.BankAccountCode == null)
+        {
+            //var walletBalance = await _unitOfWork.Wallet.GetWalletBalanceById(user2.Wallet.WalletID);//Invoice.GetWalletBalance(user2.Wallet.WalletID);
+            //var balanceAmount = walletBalance.WalletBalance;//.Sum(u => u.Amount);
+            if (balanceAmount != 0)
+            {
+                walletBal = balanceAmount;
+            }
+        }
+        else
+        {
+            var getwalletdetails = await _unitOfWork.Wallet.GetWalletByAccountNumber(user2.BankAccountCode);
+            //var walletBalance = await _unitOfWork.Invoice.GetWalletBalance(getwalletdetails.WalletID);
+            //var balanceAmount = walletBalance.Sum(u => u.Amount);
+
+            if (balanceAmount != 0)
+            {
+                walletBal = balanceAmount;
+            }
+        }
+
+    @*if (balanceAmount != 0)
+        {
+            walletBal = balanceAmount;
+        }*@
+    }
+
+}
+
+@{
+    var menuList = new List<Menu>();
+
+    if (User.Identity.IsAuthenticated)
+    {
+        foreach (var menu in Menu.Value.Menu)
+        {
+            var menuItem = new Menu();
+
+            var linkItem = new Link();
+
+            menuItem.Name = menu.Name;
+
+            menuItem.Icon = menu.Icon;
+
+            foreach (var link in menu.Links)
+            {
+                foreach (var roleName in link.RoleNames)
+                {
+                    if (User.IsInRole(roleName))
+                    {
+
+                        var existingLink = menuItem.Links.Where(m => m.Action == link.Action && m.Area == link.Area && m.Controller == link.Controller).FirstOrDefault();
+
+                        if (existingLink == null)
+                        {
+                            menuItem.Links.Add(link);
+                        }
+                    }
+                }
+            }
+
+            var existingMenu = menuList.Where(m => m.Name == menu.Name).FirstOrDefault();
+
+            if (existingMenu == null)
+            {
+                menuList.Add(menuItem);
+            }
+        }
+    }
+}
+
+@{
+    var menuListAdm = new List<MenuAdm>();
+
+    if (User.Identity.IsAuthenticated)
+    {
+        foreach (var menuAdm in MenuAdmin.Value.MenuAdm)
+        {
+            var menuItemAdm = new MenuAdm();
+
+            var linkItemAdm = new LinkAdm();
+
+            menuItemAdm.Name = menuAdm.Name;
+
+            menuItemAdm.Icon = menuAdm.Icon;
+
+            foreach (var link in menuAdm.LinksAdm)
+            {
+                foreach (var roleName in link.RoleNames)
+                {
+                    if (User.IsInRole(roleName))
+                    {
+                        var existingLink = menuItemAdm.LinksAdm.Where(m => m.Action == link.Action && m.Area == link.Area && m.Controller == link.Controller).FirstOrDefault();
+                        //TempData["RoleName"] = roleName;
+                        if (existingLink == null)
+                        {
+                            menuItemAdm.LinksAdm.Add(link);
+                        }
+                    }
+                }
+            }
+
+            var existingMenu = menuListAdm.Where(m => m.Name == menuAdm.Name).FirstOrDefault();
+
+            if (existingMenu == null)
+            {
+                menuListAdm.Add(menuItemAdm);
+            }
+        }
+    }
+}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title> @ViewData["Title"] - Recharge & Easily Online, Make Bill Payment, Booking </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="~/ui/images/favicon.png">
+    <link rel="stylesheet" href="~/uii/font/iconsmind-s/css/iconsminds.css" />
+    <link rel="stylesheet" href="~/uii/font/simple-line-icons/css/simple-line-icons.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/bootstrap.rtl.only.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/fullcalendar.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/datatables.responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/select2.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/glide.core.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/bootstrap-stars.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/nouislider.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" href="~/uii/css/vendor/component-custom-switch.min.css" />
+    <link rel="stylesheet" href="~/uii/css/main.css" />
+    <link rel="stylesheet" href="~/uii/css/dore.light.orangecarrot.css" />
+    <link rel="stylesheet" href="~/uii/css/dore.light.orangecarrot.min.css" />
+    <link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/uii/css/vendor/component-custom-switch.min.css" />
+
+    <style>
+        .bg-secondary {
+            background-color: #DDDDDD !important;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin: 60px 0 30px 0;
+            padding: 10px 0 5px 0;
+        }
+
+            .page-header h1 {
+                font-weight: normal;
+                font-size: 25px;
+                margin: 0;
+                padding: 5px 0;
+            }
+
+            .page-header .breadcrumb {
+                background: none;
+                margin: 0 0 8px 2px;
+                padding: 0;
+                position: relative;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+            }
+
+                .page-header .breadcrumb > li {
+                    display: inline-block;
+                    font-size: 0.85em;
+                    text-shadow: none;
+                    -webkit-transition: all 0.2s ease;
+                    transition: all 0.2s ease;
+                }
+
+                    .page-header .breadcrumb > li + li:before {
+                        color: inherit;
+                        opacity: 0.7;
+                        font-family: 'Font Awesome 5 Free';
+                        content: "\f105";
+                        padding: 0 7px 0 5px;
+                        font-weight: 900;
+                    }
+
+                    .page-header .breadcrumb > li a {
+                        -webkit-transition: all 0.2s ease;
+                        transition: all 0.2s ease;
+                    }
+
+                        .page-header .breadcrumb > li a:hover {
+                            -webkit-transition: all 0.2s ease;
+                            transition: all 0.2s ease;
+                        }
+
+            .page-header.page-header-text-light {
+                color: #fff;
+            }
+
+                .page-header.page-header-text-light h1 {
+                    color: #fff;
+                }
+
+                .page-header.page-header-text-light .breadcrumb > li {
+                    color: rgba(250, 250, 250, 0.8);
+                }
+
+                    .page-header.page-header-text-light .breadcrumb > li a {
+                        color: rgba(250, 250, 250, 0.8);
+                    }
+
+                        .page-header.page-header-text-light .breadcrumb > li a:hover {
+                            color: #fff;
+                        }
+
+            .page-header.page-header-text-dark h1 {
+                color: #0c2f54;
+            }
+
+            .page-header.page-header-text-dark .breadcrumb > li {
+                color: #707070;
+            }
+
+                .page-header.page-header-text-dark .breadcrumb > li a {
+                    color: #707070;
+                }
+
+                    .page-header.page-header-text-dark .breadcrumb > li a:hover {
+                        color: #0071cc;
+                    }
+    </style>
+
+    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" data-auto-replace-svg="nest"></script>
+
+    @*<script>function initFreshChat() { window.fcWidget.init({ token: "60051433-32f0-4ec7-804f-ae92c936fd68", host: "https://courtevillegroup-org.freshchat.com" }); } function initialize(i, t) { var e; i.getElementById(t) ? initFreshChat() : ((e = i.createElement("script")).id = t, e.async = !0, e.src = "https://courtevillegroup-org.freshchat.com/js/widget.js", e.onload = initFreshChat, i.head.appendChild(e)) } function initiateCall() { initialize(document, "Freshchat-js-sdk") } window.addEventListener ? window.addEventListener("load", initiateCall, !1) : window.attachEvent("load", initiateCall, !1);</script>*@
+
+
+</head>
+
+<body id="app-container" class="menu-default  ltr rounded menu-sub-hidden">
+
+    <nav class="navbar fixed-top">
+        <div class="d-flex align-items-center navbar-left" style="border-right: 1px solid #cccccc;">
+            <a href="#" class="menu-button d-none d-md-block">
+                <svg class="main" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 17">
+                    <rect x="0.48" y="0.5" width="7" height="1" />
+                    <rect x="0.48" y="7.5" width="7" height="1" />
+                    <rect x="0.48" y="15.5" width="7" height="1" />
+                </svg>
+                <svg class="sub" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17">
+                    <rect x="1.56" y="0.5" width="16" height="1" />
+                    <rect x="1.56" y="7.5" width="16" height="1" />
+                    <rect x="1.56" y="15.5" width="16" height="1" />
+                </svg>
+            </a>
+
+            <a href="#" class="menu-button-mobile d-xs-block d-sm-block d-md-none">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 17">
+                    <rect x="0.5" y="0.5" width="25" height="1" />
+                    <rect x="0.5" y="7.5" width="25" height="1" />
+                    <rect x="0.5" y="15.5" width="25" height="1" />
+                </svg>
+            </a>
+
+            <a href="/" title="EgolePay"><img src="~/ui/images/EgolePay.png" alt="EgolePay" width="200" height="40" /></a>
+        </div>
+        &nbsp; &nbsp;
+
+        <div class="search" data-search-path="#?q=">
+            <input placeholder="Search...">
+            <span class="search-icon">
+                <i class="simple-icon-magnifier"></i>
+            </span>
+        </div>
+
+        <div class="navbar-right">
+            <div class="header-icons d-inline-block align-middle">
+
+
+                <div class="position-relative d-none d-sm-inline-block">
+                    <button class="header-icon btn btn-empty" type="button" id="iconMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <i class="simple-icon-grid"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right mt-3  position-absolute" id="iconMenuDropdown">
+                        <a href="#" class="icon-menu-item">
+                            <i class="iconsminds-equalizer d-block"></i>
+                            <span>Settings</span>
+                        </a>
+
+                        <a href="#" class="icon-menu-item">
+                            <i class="iconsminds-male-female d-block"></i>
+                            <span>Customers</span>
+                        </a>
+
+                        <a href="#" class="icon-menu-item">
+                            <i class="iconsminds-puzzle d-block"></i>
+                            <span>Categories</span>
+                        </a>
+
+                        <a href="#" class="icon-menu-item">
+                            <i class="iconsminds-bar-chart-4 d-block"></i>
+                            <span>Profits</span>
+                        </a>
+
+                        <a href="#" class="icon-menu-item">
+                            <i class="iconsminds-file d-block"></i>
+                            <span>Agents</span>
+                        </a>
+
+                        <a href="#" class="icon-menu-item">
+                            <i class="iconsminds-suitcase d-block"></i>
+                            <span>Activities</span>
+                        </a>
+
+                    </div>
+                </div>
+
+                @if (roleid.ToString() == "1" || roleid.ToString() == "3" || roleid.ToString() == "4" || roleid.ToString() == "5" || roleid.ToString() == "9")
+                {
+                <div class="position-relative d-inline-block">
+                    <button class="header-icon btn btn-empty" type="button" id="notificationButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="simple-icon-dislike"></i>
+                        <span class="count">Disputes</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right mt-3 position-absolute" id="notificationDropdown">
+                        <div class="scroll">
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a asp-area="SysSetup" asp-controller=" " asp-action=" ">
+                                    <img src="~/uii/img/profiles/handshake.jpg" alt="Dispute Image"
+                                         class="img-thumbnail list-thumbnail xsmall border-0 rounded-circle" />
+                                </a>
+                                <div class="pl-3">
+                                    <a asp-area="SysSetup" asp-controller=" " asp-action=" ">
+                                        <p class="font-weight-medium mb-1"><b>Dispute Resolution </b></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                @if (roleid.ToString() == "2")
+                {
+                <div class="position-relative d-inline-block">
+                    <button class="header-icon btn btn-empty" type="button" id="notificationButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="simple-icon-bell"></i>
+                        <span class="count">@ViewBag.RequestsCount</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right mt-3 position-absolute" id="notificationDropdown">
+                        <div class="scroll">
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a asp-area="SysSetup" asp-controller="UpgradeRequest" asp-action="AllRequestList">
+                                    <img src="~/uii/img/profiles/message.jpg" alt="Notification Image"
+                                         class="img-thumbnail list-thumbnail xsmall border-0 rounded-circle" />
+                                </a>
+                                <div class="pl-3">
+                                    <a asp-area="SysSetup" asp-controller="UpgradeRequest" asp-action="AllRequestList">
+                                        <p class="font-weight-medium mb-1"><b>@ViewBag.RequestsCount Pending Upgrade Request(s) </b></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+
+            </div>
+
+            <div class="user d-inline-block">
+                <button class="btn btn-empty p-0" type="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                    <span class="name"> @user2.FirstName  @user2.LastName </span>
+                    <span>
+
+                        @if (ViewBag.pic != null)
+                        {
+                        <img src="~/UploadedPics/ProfilePics/@ViewBag.pic" class="img-responsive img-thumbnail" style="border-radius: 50px;" />
+                        }
+                        else
+                        {
+                        <img class="img-responsive img-thumbnail" src="~/uii/img/profiles/avatar1.jpg" style="border-radius: 50px;">
+                        }
+
+                        @*<img alt="Profile Picture" src="~/uii/img/profiles/l-2.jpg" />*@
+                    </span>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right mt-3">
+                    <a class="dropdown-item" asp-area="Dashboard" asp-controller="Profile" asp-action="MyProfile"> My Profile </a>
+                    <a class="dropdown-item" asp-area="Dashboard" asp-controller="Home" asp-action="Purchase">My Purchases</a>
+                    <a class="dropdown-item" href="#">Transaction History</a>
+                    <a class="dropdown-item" href="#">Support Center</a>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="dropdown-item">Logout</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="padding-right: 0px; position: fixed; top: 0; padding-left: 0; z-index: 1;">
+        <section class="page-header page-header-text-light bg-secondary">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <ul class="justify-content-start justify-content-md-end mb-0 ml-5">
+                            <span style="font-size: 15px; color: #000000;"> Currently Logged in: </span>
+                            <h1 style="font-size: 18px;" class="badge badge-success m-2">&nbsp; &nbsp; @user2.Role.RoleName &nbsp;</h1>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-4">
+                        @if (roleid.ToString() == "3")
+                        {
+                            var aggcode = await _unitOfWork.Aggregator.GetAggregatorByUserId(user.UserID);
+                            ViewBag.aggcode = aggcode.AggregatorCode;
+
+                        <ul class="justify-content-start justify-content-md-end mb-0 ml-5">
+                            <span style="font-size: 15px; color: #000000;"> AggregatorCode: </span>
+                            <h1 style="font-size: 18px;" class="badge badge-success m-2">&nbsp; &nbsp; @ViewBag.aggcode &nbsp;</h1>
+                        </ul>
+                        }
+                    </div>
+
+                    @if (roleid.ToString() == "1" || roleid.ToString() == "5" || roleid.ToString() == "9" || roleid.ToString() == "3")
+                    {
+                    <div class="col-md-4">
+                        <ul class="breadcrumb justify-content-start justify-content-md-end mb-0">
+                            <span style="font-size: 15px;" class="badge badge-primary m-2">&nbsp; Wallet Balance &nbsp; @walletBal.ToString("N", CultureInfo.InvariantCulture)</span>
+                        </ul>
+                    </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="menu">
+        <div class="main-menu">
+            <div class="scroll">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#homedash">
+                            <i class="lni lni-world"></i> Home
+                        </a>
+                    </li>
+                    @if (roleid.ToString() == "2" || roleid.ToString() == "6")  //roleid.ToString() == "4"
+                    {
+                    <li>
+                        <a href="#administration">
+                            <i class="lni lni-consulting"></i> Settings
+                        </a>
+                    </li>
+                    }
+
+                    <li>
+                        <a href="#layouts">
+                            <i class="lni lni-comments-reply"></i> Reports
+                        </a>
+                    </li>
+
+                    @if (roleid.ToString() == "1" || roleid.ToString() == "2" || roleid.ToString() == "5" || roleid.ToString() == "3" || roleid.ToString() == "9")
+                    {
+                    <li>
+                        <a asp-area="Dashboard" asp-controller="Home" asp-action="Purchase">
+                            <i class="iconsminds-pantone"></i> Pay Bills
+                        </a>
+                    </li>
+                    }
+
+                    @if (roleid.ToString() == "1" || roleid.ToString() == "2" || roleid.ToString() == "6" || roleid.ToString() == "5" || roleid.ToString() == "3" || roleid.ToString() == "13")
+                    {
+                    <li>
+                        <a href="#menu">
+                            <i class="lni lni-credit-cards"></i> Wallets
+                        </a>
+                    </li>
+                    }
+                    @if (roleid.ToString() == "5" || roleid.ToString() == "3" || roleid.ToString() == "2")
+                    {
+                    <li>
+                        <a asp-controller="HomeStore" asp-action="Reprint">
+                            <i class="lni lni-comments-reply"></i> Reprint
+                        </a>
+                    </li>
+                    }
+
+                    @if (roleid.ToString() == "2")
+                    {
+                    <li>
+                        <a href="#pagesettings">
+                            <i class="lni lni-seo"></i>Web Settings
+                        </a>
+                    </li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-menu">
+            <div class="scroll">
+                <ul class="list-unstyled" data-link="homedash">
+                    <li class="active">
+                        <a asp-area="Dashboard" asp-controller="Home" asp-action="Welcome">
+                            <i class="simple-icon-rocket"></i> <span class="d-inline-block"> Dashboard </span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a asp-area="Dashboard" asp-controller="Profile" asp-action="MyProfile">
+                            <i class="simple-icon-rocket"></i> <span class="d-inline-block"> My Profile </span>
+                        </a>
+                    </li>
+                    @if (roleid.ToString() == "4")
+                    {
+                    
+                    }
+                    else
+                    {
+                    <li>
+                        <a asp-area="SysSetup" asp-controller="ChangePassword" asp-action="ChangePassword">
+                            <i class="simple-icon-pie-chart"></i> <span class="d-inline-block"> Change Password</span>
+                        </a>
+                    </li>
+                    }
+
+                    @if (roleid.ToString() == "5")
+                    {
+                    <li>
+                        <a asp-area="EgsOperations" asp-controller="EgsAggregatorRequest" asp-action="AggregatorRequest">
+                            <i class="simple-icon-badge"></i> <span class="d-inline-block"> Request Aggregator</span>
+                        </a>
+                    </li>
+                    }
+                    @if (roleid.ToString() == "3")
+                    {
+                    <li>
+                        <a asp-area="SysSetup" asp-controller="EgsAggregator" asp-action="AgentRequestList">
+                            <i class="simple-icon-user-following"></i> <span class="d-inline-block"> Agent Requests</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="SysSetup" asp-controller="EgsAggregator" asp-action="ProcessedAgentsList">
+                            <i class="simple-icon-people"></i> <span class="d-inline-block">Approved Agents</span>
+                        </a>
+                    </li>
+
+                    }
+
+                    @if (roleid.ToString() == "1")
+                    {
+                    <li>
+                        <a asp-area="Dashboard" asp-controller="Profile" asp-action="UpgradeAccount">
+                            <i class="simple-icon-arrow-up-circle"></i> <span class="d-inline-block">Upgrade Account</span>
+                        </a>
+                    </li>
+                    }
+
+                    @if (roleid.ToString() == "2")
+                    {
+                    <li>
+                        <a asp-area="SysSetup" asp-controller="UpgradeRequest" asp-action="AllRequestList">
+                            <i class="simple-icon-basket-loaded"></i> <span class="d-inline-block">Upgrade Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="SysSetup" asp-controller="SysCustomer" asp-action="CustomerDetailsView">
+                            <i class="simple-icon-user-following"></i> <span class="d-inline-block">Customers Data</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="SysSetup" asp-controller="EgsAggregator" asp-action="AcknowledgedAgentRequestList">
+                            <i class="simple-icon-shuffle"></i> <span class="d-inline-block">Pending Aggregator Requests</span>
+                        </a>
+                    </li>
+
+                    }
+
+                    @if (roleid.ToString() == "12")
+                        {
+                    <li>
+                        <a asp-area="SysSetup" asp-controller="EgsAggregator" asp-action="AcknowledgedAgentRequestList">
+                            <i class="simple-icon-shuffle"></i> <span class="d-inline-block">Pending Aggregator Requests</span>
+                        </a>
+                    </li>
+                        }
+                </ul>
+
+            <ul class="list-unstyled" data-link="administration">
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    var sClassCss = "";
+                    var liClass = "";
+                    sClassCss = "d-none";
+                    foreach (var menu in menuListAdm)
+                    {
+                        if (menu.LinksAdm.Count > 0)
+                        {
+                            @foreach (var link in menu.LinksAdm)
+                            {
+                                <li>
+                                    @if (roleid.ToString() == "4")
+                                    {
+                                        @*@if (@link.Action.ActionName == "ProductList" || @link.Action.ActionName == "ProductItemList" || @link.Action.ActionName == "ProductItemRates")
+                                {
+                                    sClassCss = "d-inline-block";
+                                    liClass = @link.Action.IconName;
+                                }
+                                else
+                                {
+                                    sClassCss = "d-none";
+                                    liClass = "d-none";
+                                }*@
+                                    }
+                                    else
+                                    {
+                                        sClassCss = "d-inline-block";
+                                        liClass = link.Action.IconName;
+                                    }
+                                    <a asp-action="@link.Action.ActionName" asp-controller="@link.Controller" asp-area="@link.Area">
+                                        <i class="@liClass"></i> <span class="@sClassCss"> @link.Action.DisplayName </span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                    }
+                }
+
+            </ul>
+
+                <ul class="list-unstyled" data-link="layouts" id="layouts">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        var sClassCss = "";
+                        var liClass = "";
+                        sClassCss = "d-none";
+                        foreach (var menu in menuList)
+                        {
+                            if (menu.Links.Count > 0)
+                            {
+                                @foreach (var link in menu.Links)
+                                {
+                                    <li>
+
+                                        @if (roleid.ToString() == "4")
+                                        {
+                                            @if (@link.Action.ActionName == "SummaryReport" || @link.Action.ActionName == "AgentReport")
+                                            {
+                                                sClassCss = "d-inline-block";
+                                                liClass = @link.Action.IconName;
+                                            }
+                                            else
+                                            {
+                                                sClassCss = "d-none";
+                                                liClass = "d-none";
+                                            }
+                                        }
+                                        else if (roleid.ToString() == "2")
+                                        {
+                                            @if (@link.Action.ActionName == "SettlementDetails" || @link.Action.ActionName == "SettlementSummary" || @link.Action.ActionName == "SummaryReport" || @link.Action.ActionName == "AgentReport" || @link.Action.ActionName == "WalletHistory" || @link.Action.ActionName == "SalesReport" || @link.Action.ActionName == "AggregatorReport" || @link.Action.ActionName == "WalletBalance" || @link.Action.ActionName == "AuditReport")
+                                            {
+                                                sClassCss = "d-inline-block";
+                                                liClass = @link.Action.IconName;
+                                            }
+                                            else
+                                            {
+                                                sClassCss = "d-none";
+                                                liClass = "d-none";
+                                            }
+                                        }
+                                        else if (roleid.ToString() == "5" || roleid.ToString() == "1" || roleid.ToString() == "9")
+                                        {
+                                            @if (@link.Action.ActionName == "AgentReport" || @link.Action.ActionName == "WalletHistory" || @link.Action.ActionName == "SummaryReport")
+                                            {
+                                                sClassCss = "d-inline-block";
+                                                liClass = @link.Action.IconName;
+                                            }
+                                            else
+                                            {
+                                                sClassCss = "d-none";
+                                                liClass = "d-none";
+                                            }
+                                        }
+                                        else if (roleid.ToString() == "3")
+                                        {
+                                            @if (@link.Action.ActionName == "AgentReport" || @link.Action.ActionName == "AggregatorReport" || @link.Action.ActionName == "AgentswalletBalance" || @link.Action.ActionName == "WalletHistory")
+                                            {
+                                                sClassCss = "d-inline-block";
+                                                liClass = @link.Action.IconName;
+                                            }
+                                            else
+                                            {
+                                                sClassCss = "d-none";
+                                                liClass = "d-none";
+                                            }
+                                        }
+                                        else if (roleid.ToString() == "8")
+                                        {
+                                            @if (@link.Action.ActionName == "SummaryReport")
+                                            {
+                                                sClassCss = "d-inline-block";
+                                                liClass = @link.Action.IconName;
+                                            }
+                                            else
+                                            {
+                                                sClassCss = "d-none";
+                                                liClass = "d-none";
+                                            }
+                                        }
+                                        else if (roleid.ToString() == "11")
+                                        {
+                                            @if (@link.Action.ActionName == "WalletHistory")
+                                            {
+                                                sClassCss = "d-inline-block";
+                                                liClass = @link.Action.IconName;
+                                            }
+                                            else
+                                            {
+                                                sClassCss = "d-none";
+                                                liClass = "d-none";
+                                            }
+                                        }
+                                        else if (roleid.ToString() == "12")
+                                        {
+                                            @if (@link.Action.ActionName == "WalletHistory" || @link.Action.ActionName == "SummaryReport" || @link.Action.ActionName == "AgentReport" || @link.Action.ActionName == "AggregatorReport" || @link.Action.ActionName == "WalletBalance")
+                                            {
+                                                sClassCss = "d-inline-block";
+                                                liClass = @link.Action.IconName;
+                                            }
+                                            else
+                                            {
+                                                sClassCss = "d-none";
+                                                liClass = "d-none";
+                                            }
+                                        }
+                                        else if (roleid.ToString() == "13")
+                                        {
+                                            @if (@link.Action.ActionName == "WalletHistory" || @link.Action.ActionName == "SummaryReport" || @link.Action.ActionName == "AgentReport" || @link.Action.ActionName == "AggregatorReport" || @link.Action.ActionName == "WalletBalance")
+                                            {
+                                                sClassCss = "d-inline-block";
+                                                liClass = @link.Action.IconName;
+                                            }
+                                            else
+                                            {
+                                                sClassCss = "d-none";
+                                                liClass = "d-none";
+                                            }
+                                        }
+
+
+                                        <a asp-action="@link.Action.ActionName" asp-controller="@link.Controller" asp-area="@link.Area">
+                                            <i class="@liClass"></i> <span class="@sClassCss">@link.Action.DisplayName</span>
+                                        </a>
+                                    </li>
+
+
+
+                                }
+                            }
+                        }
+                    }
+                </ul>
+
+
+                <ul class="list-unstyled" data-link="menu" id="menuTypes">
+                    @if (roleid.ToString() == "2" || roleid.ToString() == "6" || roleid.ToString() == "13")
+                    {
+                    <li>
+                        <a asp-area="EgsOperations" asp-controller="EgsWallet" asp-action="FundWalletAdmin">
+                            <i class="simple-icon-check"></i> <span class="d-inline-block">Fund Wallet </span>
+                        </a>
+                    </li>
+                    }
+
+                    @if (roleid.ToString() == "3")
+                    {
+                    <li>
+                        <a asp-area="Wallets" asp-controller="Transfer" asp-action="Pincreation">
+                            <i class="simple-icon-check"></i> <span class="d-inline-block">Create Pin </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Wallets" asp-controller="Transfer" asp-action="Transfer">
+                            <i class="simple-icon-check"></i> <span class="d-inline-block">Transfer</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Wallets" asp-controller="Transfer" asp-action="WalletToWallet">
+                            <i class="simple-icon-check"></i> <span class="d-inline-block">Wallet To Wallet</span>
+                        </a>
+                    </li>
+                    }
+
+                </ul>
+                <ul class="list-unstyled" data-link="pagesettings">
+                    <li>
+                        <a href="#">
+                            <i class="simple-icon-picture"></i> <span class="d-inline-block"> Manage About Us </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="simple-icon-check"></i> <span class="d-inline-block">Manage Pricing </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="simple-icon-check"></i> <span class="d-inline-block">Manage Contact </span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container-fluid">
+            <div>
+                <partial name="_CookieConsentPartial" />
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer" style="opacity: 1;background: #DDDDDD; padding-top: 15px; padding-bottom: 10px;height: 50px;font-weight: bold;font-size: 18px;">
+        <div class="footer-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <p class="copyright-text">Copyright © 2021 <a asp-area="" asp-controller="Home" asp-action="HomeStore">  EgolePay </a>. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-sm-6 d-none d-sm-block">
+                        <ul class="breadcrumb pt-0 pr-0 float-right">
+                            @*<li class="breadcrumb-item mb-0">
+                                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="copyright-text">Privacy Policy</a>
+                                </li>*@
+                            <li class="breadcrumb-item mb-0">
+                                <a href="#" class="copyright-text"> Powered By VFD Group</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="~/uii/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="~/uii/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/uii/js/vendor/Chart.bundle.min.js"></script>
+    <script src="~/uii/js/vendor/chartjs-plugin-datalabels.js"></script>
+    <script src="~/uii/js/vendor/moment.min.js"></script>
+    <script src="~/uii/js/vendor/fullcalendar.min.js"></script>
+    <script src="~/uii/js/vendor/datatables.min.js"></script>
+    <script src="~/uii/js/vendor/perfect-scrollbar.min.js"></script>
+    <script src="~/uii/js/vendor/progressbar.min.js"></script>
+    <script src="~/uii/js/vendor/jquery.barrating.min.js"></script>
+    <script src="~/uii/js/vendor/select2.full.js"></script>
+    <script src="~/uii/js/vendor/nouislider.min.js"></script>
+    <script src="~/uii/js/vendor/bootstrap-datepicker.js"></script>
+    <script src="~/uii/js/vendor/Sortable.js"></script>
+    <script src="~/uii/js/vendor/mousetrap.min.js"></script>
+    <script src="~/uii/js/vendor/glide.min.js"></script>
+    <script src="~/uii/js/dore.script.js"></script>
+    <script src="~/uii/js/scripts.single.theme.js"></script>
+    <script src="~/uii/js/dore.scripts.landingpage.js"></script>
+    <script src="~/uii/js/scripts.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //alert("hello ready for this");
+
+            //$(".Onsuccesssfulverification").hide();
+            //$(".Onerrorverification").hide();
+        });
+
+        $('#btnpushpayment').click(function () {
+            //alert('clicked')
+            $.ajax({
+                type: "post",
+                cache: false,
+                url: "/Dashboard/Home/PushCommissionToWallet",
+                data: "",
+                dataType: "json",
+                contentType: "application/json",
+                success: function (result) {
+                    //alert("success");
+                    var res = JSON.stringify(result);
+
+                    if (res.indexOf("Commission successfully moved to wallet balance.") >= 1) {
+                        //setInterval('location.reload()', 2000);
+                        //$(".Onerrorverification").hide();
+                        //$(".Onsuccesssfulverification").show();
+                        $("#submittsucc").text(res);
+                        setInterval('location.reload()', 1000);
+                        //alert("reloaded if");
+                    }
+                    else {
+                        $("#submittsucc").text(res);
+                        //$("#submitterr").text(res);
+                        //$(".Onsuccesssfulverification").hide();
+                        //$(".Onerrorverification").show();
+                        //alert(res);
+                        //$("#ulPaidComm").load(location.href + " #ulPaidComm");
+                        //setInterval('location.reload()', 2000);
+                        //alert("reloaded else");
+                    }
+                },
+                error: function (result) {
+                    alert("No Connection to server");
+                },
+            });
+
+        });
+
+
+    </script>
+
+
+
+</body>
+
+</html>

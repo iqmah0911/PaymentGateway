@@ -1,0 +1,127 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.HoldDisplayProductItemRates
+@{
+    ViewData["Title"] = "Prouct Item Rates";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="card-body col-12">
+
+    <h2 class="mb-2">
+        Product Item Rate(s)
+    </h2>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="col-12 mb-12">
+
+                <form asp-action="ProductItemRates" asp-controller="EgsProductItemRate" asp-area="SysSetup" method="get">
+                    <div class="float-left mr-3">
+                        <input name="searchText" placeholder="Enter Amount Rate" class="form-control" />
+                    </div>
+                    <div class="float-left">
+                        <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                        <a asp-action="ProductItemRate" class="btn btn-warning float-left ml-3">Create New Product Item Rate</a>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            @if (Model != null && Model.HoldAllProductItemRates.Count() > 0)
+            {
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            @*<th>S/N</th>*@
+                            <th>
+                                Product
+                            </th>
+                            <th>
+                                Product Item
+                            </th>
+                            <th>
+                                Amount Rate
+                            </th>
+                            <th>
+                                Date Created
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HoldAllProductItemRates)
+                        {
+                            //indx++;
+                            <tr>
+                                @*<td>@indx</td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Product)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductItem)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AmountRate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
+                                </td>
+                                <td>
+                                    <a asp-action="UpdateProductItemRate" asp-route-id="@item.ProductItemRateID" class="btn btn-success float-left ml-3">
+                                        <span class="fe fe-edit">Edit</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- pager -->
+                @if (Model.Pager.EndPage > 1)
+                {
+
+                    <ul class="pagination">
+                        @if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a href="~/SysSetup/EgsProductItemRate/ProductItemRates" class="page-link">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/SysSetup/EgsProductItemRate/ProductItemRates?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                            </li>
+                        }
+
+                        @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                        {
+                            var myPage = pageIndex;
+                            <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                <a href="~/SysSetup/EgsProductItemRate/ProductItemRates?pageIndex=@myPage" class="page-link"> @myPage </a>
+                            </li>
+                        }
+
+                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a href="~/SysSetup/EgsProductItemRate/ProductItemRates?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/SysSetup/EgsProductItemRate/ProductItemRates?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <h2>No Available Product Item Rate(s)</h2>
+            }
+        </div>
+    </div>
+</div>

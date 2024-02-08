@@ -1,0 +1,54 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.EgsProductItemRateViewModel
+@{
+    ViewData["Title"] = "Update Product Item Rate";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card-body">
+
+    <h2 class="mb-2">Product Item Rate</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="ProductItemRates" class="btn btn-warning float-left">List of Product Item Rate(s)</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-6 mb-6">
+
+                <form asp-action="UpdateProductItemRate" asp-controller="EgsProductItemRate" method="post">
+                    @Html.AntiForgeryToken()
+                    <label>Select Product</label>
+                    <select id="productid" asp-for="ProductID" asp-items="@(new SelectList(ViewBag.ProductList, "ProductID", "ProductName"))"
+                            class="form-control" placeholder="Service Type"></select>
+                    <label>Select Product Item</label>
+                    <select id="productid" asp-for="ProductItemID" asp-items="@(new SelectList(ViewBag.ProductItemList, "ProductItemID", "ProductItemName"))"
+                            class="form-control" placeholder="Service Type"></select>
+                    <span asp-validation-for="ProductItemID" class="text-danger"></span>
+                    <br />
+                    <label>Item Rate</label>
+                    <input asp-for="AmountRate" placeholder="Enter Item Rate" class="form-control" />
+                    <span asp-validation-for="AmountRate" class="text-danger"></span>
+                    <br />
+                    <input type="hidden" asp-for="ProductItemRateID" />
+                    <input type="submit" value="Update Amount Rate" class="btn btn-info" />
+
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+   
+</div>

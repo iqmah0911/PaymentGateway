@@ -1,0 +1,88 @@
+﻿@model PaymentGateway21052021.Areas.Invoices.Models.EData
+
+
+@{
+    ViewData["Title"] = "Pay Product With Wallet";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="row my-5">
+
+        <div class="col-10 mb-6"> 
+            <div class="float-left">
+                @if (ViewBag.SuccessMessage != null)
+                {
+                <span class="alert-success">@ViewBag.SuccessMessage</span> 
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                <span class="alert-success">@ViewBag.ErrorMessage</span> 
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Order Details</h2>
+            <p class="lead">Product Recharge Details</p>
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+                <div>
+                    @if (Model.responseCode == "00")
+                    {
+                    <form asp-action="PayELectricity" asp-controller="HomeStore" method="post">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><b>Order ID  </b><span class="float-right text-2 font-weight-500 text-dark"><b>@Model.customerId</b></span></li>
+                            <li class="mb-2"><b>Meter No </b> <span class="float-right text-2 font-weight-500 text-dark"><b>@Model.meterNumber </b> </span></li>
+                            <li class="mb-2"><b>Customer Name </b> <span class="float-right text-2 font-weight-500 text-dark"><b>@Model.name </b> </span></li>
+                            <li class="mb-2"><b>Address </b> <span class="float-right text-2 font-weight-500 text-dark"><b>@Model.address</b></span></li>
+                            <li class="mb-2"><b>Phone </b><span class="float-right text-2 font-weight-500 text-dark"><b>@Model.phone </b></span></li>
+                            <li class="mb-2"><b>AccountNumber </b> <span class="float-right text-2 font-weight-500 text-dark"><b>@Model.accountNumber</b></span></li>
+                            <li class="mb-2"><b>BusinessUnit </b><span class="float-right text-2 font-weight-500 text-dark"><b>@Model.businessUnit</b></span></li>
+                            <li class="mb-2"><b>MinVendAmount </b><span class="float-right text-2 font-weight-500 text-dark"><b>@Model.minimumPurchase</b></span></li>
+                            <li class="mb-2"><b>CustomerArrears </b><span class="float-right text-2 font-weight-500 text-dark"><b>@Model.customerArrears</b></span></li>
+                            <li class="mb-2"><b>TariffCode </b><span class="float-right text-2 font-weight-500 text-dark"><b>@Model.tariffCode</b></span></li>
+                            <li class="mb-2"><b>Tariff </b><span class="float-right text-2 font-weight-500 text-dark"><b>@Model.tariff </b></span></li>
+                        </ul>
+                        @*<label><b>Amount</b></label>
+        <input asp-for="amount" type="number" placeholder="Enter Amount " class="form-control" />
+        <span asp-validation-for="amount" class="text-danger"></span>*@
+
+                        <input asp-for="productCode" value="@Model.productCode" hidden="hidden" />
+                        <input asp-for="phone" type="text" value="@Model.phone" hidden="hidden" />
+                        <input asp-for="customerType" type="text" value="@Model.customerType" hidden="hidden" />
+                        <input asp-for="service" value="@Model.service" hidden="hidden" />
+                        <input asp-for="Amount" value="@Model.Amount" hidden="hidden" />
+                        <input asp-for="customerId" value="@Model.customerId" hidden="hidden" />
+                        <input asp-for="ProductID" value="@Model.ProductID" hidden="hidden" />
+                        <br />
+                        <div class="d-flex">
+                            <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed To Payment </button>
+                        </div>
+                    </form>
+                    }
+                    else
+                    {
+
+                        <form asp-action=" " asp-controller="HomeStore" method="post">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><b>Response  </b><span class="float-right text-2 font-weight-500 text-dark"><b>@ViewBag.ErrorMessage</b></span></li>
+                            </ul>
+                          
+                            <div class="d-flex">
+                                <a class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" asp-controller="" asp-action=""> Retry </a>
+                            </div>
+                        </form>
+
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

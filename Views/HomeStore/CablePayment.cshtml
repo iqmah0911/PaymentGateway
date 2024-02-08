@@ -1,0 +1,71 @@
+﻿@model PaymentGateway21052021.Areas.Invoices.Models.UCabletRootReceipt
+
+@{
+    ViewData["Title"] = "Failed Cable Payment";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+ 
+<br />
+<div class="container">
+    <div class="row my-5">
+
+        <div class="col-10 mb-6">
+             
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+               
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Cable Details</h2>
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4"> 
+
+                <div class="row d-flex">
+                    <div class="form-group mx-auto"><b>Status: <span style="color:red;">  @Model.message</span> </b> </div>
+                </div>
+               
+                <div class="form-row">
+                    <div class="col-md-5"> 
+                        <div class="form-group"><b>subscriberId :  @Model.subscriberId </b></div>
+                        <div class="form-group"><b>account Name: @Model.accountName</b> </div>
+                        <div class="form-group"><b>amount: @Model.amount  </b></div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group"><b>Response:<span style="color:red;"> @Model.message </span>  </b></div>
+                        <div class="form-group"><b>providerCode: @Model.providerCode </b> </div>
+                        <div class="form-group"><b>narration: @Model.narration  </b></div> 
+
+                    </div>
+
+
+                    <div class="form-row"> 
+                                    <div class="col-sm-6 form-group">
+                                        <button class="btn btn-warning d-inline-block ml-auto" >
+                                            Kindly Retry
+                                        </button>
+                                    </div>
+ 
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

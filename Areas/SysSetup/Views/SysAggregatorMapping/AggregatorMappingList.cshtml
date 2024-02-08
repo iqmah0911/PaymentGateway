@@ -1,0 +1,108 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.HoldDisplayAggregatorMappingViewModel
+
+@{
+    ViewData["Title"] = "AggregatorMappingList";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body col-12">
+
+    <h2 class="mb-2">
+        List Of Agent(s) Mapping
+    </h2>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="col-10 mb-6">
+                <form asp-action="AggregatorMappingList" asp-controller="SysAggregatorMapping" asp-area="SysSetup" method="get">
+                    <div class="float-left mr-3">
+                        <input name="searchText" placeholder="Enter Aggregator / Agent " class="form-control" />
+                    </div>
+                    <div class="float-left">
+                        <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                        <a asp-action="AggregatorMapping" asp-controller="SysAggregatorMapping" asp-area="SysSetup" class="btn btn-warning float-left ml-3">Map New Agent(s)</a>
+                    </div>
+
+                </form>
+
+            </div>
+            <br />
+
+            @if (Model != null && Model.HoldAllAggregatorMapping.Count() > 0)
+            {
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            @*<th>S/N</th>*@
+                            <th>
+                                Aggregator Name
+                            </th>
+                            <th>
+                                Agent Name
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HoldAllAggregatorMapping)
+                        {
+                            //indx++;
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AggregatorName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AgentName)
+                                </td>
+                                <td>
+                                    <a asp-action="Update" asp-route-id="@item.AggregatorMappingID" class="btn btn-success float-left ml-3">
+                                        <span class="fe fe-edit">Edit</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- pager -->
+                @if (Model.Pager.EndPage > 1)
+                {
+
+                    <ul class="pagination">
+                        @if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a href="~/SysSetup/SysAggregatorMapping/AggregatorMappingList" class="page-link">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/SysSetup/SysAggregatorMapping/AggregatorMappingList?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                            </li>
+                        }
+
+                        @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                        {
+                            var myPage = pageIndex;
+                            <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                <a href="~/SysSetup/SysAggregatorMapping/AggregatorMappingList?pageIndex=@myPage" class="page-link"> @myPage </a>
+                            </li>
+                        }
+
+                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a href="~/SysSetup/SysAggregatorMapping/AggregatorMappingList?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/SysSetup/SysAggregatorMapping/AggregatorMappingList?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <h2>No Available Agent(s) Mapped.</h2>
+            }
+        </div>
+    </div>

@@ -1,0 +1,159 @@
+﻿@model PaymentGateway21052021.Models.HomeStoreModel
+
+@{
+    ViewData["Title"] = "Confirm Details";
+}
+
+
+<section class="page-header page-header-text-light bg-secondary">
+    <div class="container">
+        <div class="row align-items-center">
+
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="bg-white shadow-md rounded p-4">
+        <h3 class="text-6 mb-4">Select a Payment Mode</h3>
+        <hr class="mx-n4">
+        <div class="row">
+            <div class="col-md-7 col-lg-8 order-1 order-md-0">
+                <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active" id="first-tab" data-toggle="tab" href="#firstTab" role="tab" aria-controls="firstTab" aria-selected="true">Credit/Debit Cards</a> </li>
+                    <li class="nav-item"> <a class="nav-link" id="second-tab" data-toggle="tab" href="#secondTab" role="tab" aria-controls="secondTab" aria-selected="false">Walet</a> </li>
+                </ul>
+                <div class="tab-content my-3" id="myTabContent">
+                    <!-- Cards Details
+                    ============================================= -->
+                    <div class="tab-pane fade active show" id="firstTab" role="tabpanel" aria-labelledby="first-tab">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <h3 class="text-4 mb-4">Enter Card Details</h3>
+                                <form id="payment" method="post">
+                                    <div class="form-group">
+                                        <label for="cardNumber">Enter Debit / Credit Card Number</label>
+                                        <input type="text" class="form-control" data-bv-field="cardnumber" id="cardNumber" required="" placeholder="Card Number">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="expiryMonth">Expiry Month</label>
+                                                <select id="expiryMonth" class="custom-select" required="">
+                                                    <option value="">Expiry Month</option>
+                                                    <option>January</option>
+                                                    <option>February</option>
+                                                    <option>March</option>
+                                                    <option>April</option>
+                                                    <option>May</option>
+                                                    <option>June</option>
+                                                    <option>July</option>
+                                                    <option>August</option>
+                                                    <option>September</option>
+                                                    <option>October</option>
+                                                    <option>November</option>
+                                                    <option>December</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="expiryYear">Expiry Year</label>
+                                                <select id="expiryYear" class="custom-select" required="">
+                                                    <option value="">Expiry Year</option>
+                                                    <option>2018</option>
+                                                    <option>2019</option>
+                                                    <option>2020</option>
+                                                    <option>2021</option>
+                                                    <option>2022</option>
+                                                    <option>2023</option>
+                                                    <option>2024</option>
+                                                    <option>2025</option>
+                                                    <option>2026</option>
+                                                    <option>2027</option>
+                                                    <option>2028</option>
+                                                    <option>2029</option>
+                                                    <option>2030</option>
+                                                    <option>2031</option>
+                                                    <option>2032</option>
+                                                    <option>2033</option>
+                                                    <option>2034</option>
+                                                    <option>2035</option>
+                                                    <option>2036</option>
+                                                    <option>2037</option>
+                                                    <option>2038</option>
+                                                    <option>2039</option>
+                                                    <option>2040</option>
+                                                    <option>2041</option>
+                                                    <option>2042</option>
+                                                    <option>2043</option>
+                                                    <option>2044</option>
+                                                    <option>2045</option>
+                                                    <option>2046</option>
+                                                    <option>2047</option>
+                                                    <option>2048</option>
+                                                    <option>2049</option>
+                                                    <option>2050</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="cvvNumber">CVV</label>
+                                                <input type="text" class="form-control" data-bv-field="cvvnumber" id="cvvNumber" required="" placeholder="CVV Number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cardHolderName">Card Holder Name</label>
+                                        <input type="text" class="form-control" data-bv-field="cardholdername" id="cardHolderName" required="" placeholder="Card Holder Name">
+                                    </div>
+                                    <div class="form-group custom-control custom-checkbox">
+                                        <input id="save-card" name="savecard" class="custom-control-input" type="checkbox">
+                                        <label class="custom-control-label" for="save-card">Save my card Details.</label>
+                                    </div>
+                                    <button class="btn btn-primary btn-block" type="submit">Proceed to Pay $135</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cards Details end -->
+                    <!-- Pay via egole wallet
+                    ============================================= -->
+                    <div class="tab-pane fade" id="secondTab" role="tabpanel" aria-labelledby="second-tab">
+                        <img class="img-fluid" src="images/paypal-logo.png" alt="Paypal Logo" title="Pay easily, fast and secure with PayPal.">
+                        <p class="lead">Pay easily, fast and secure with Egolee wallet.</p>
+                        <p class="text-info mb-4"><i class="fas fa-info-circle"></i> You will be redirected to PayPal to complete your payment securely.</p>
+                        <button class="btn btn-primary d-flex align-items-center" type="submit"><i class="fab fa-paypal fa-2x mr-2"></i> Pay via PayPal</button>
+                    </div>
+                    <!-- Pay via Paypal end -->
+                </div>
+            </div>
+            <div class="col-md-5 col-lg-4 order-0 order-md-1">
+
+                <!-- Payable Amount
+                ============================================= -->
+                <div class="bg-light-2 rounded p-4 mb-4">
+                    <h3 class="text-4 mb-4">Payable Amount</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Amount <span class="float-right text-4 font-weight-500 text-dark">$150</span></li>
+                        <li class="mb-2">Discount <span class="text-success">(10% Off!)</span> <span class="float-right text-4 font-weight-500 text-dark">-$15</span></li>
+                    </ul>
+                    <hr class="mx-n4">
+                    <div class="text-dark text-4 font-weight-500 py-1"> Total Amount<span class="float-right text-7">$135</span></div>
+                </div>
+                <!-- Payable Amount end -->
+                <!-- Privacy Information
+                ============================================= -->
+                <div class="bg-light-2 rounded p-4 d-none d-md-block">
+                    <h3 class="text-4 mb-3">We value your Privacy.</h3>
+                    <p class="mb-0">We will not sell or distribute your contact information. Read our <a href="#">Privacy Policy</a>.</p>
+                    <hr class="mx-n4">
+                    <h3 class="text-4 mb-3">Billing Enquiries</h3>
+                    <p class="mb-0">Do not hesitate to reach our <a href="#">support team</a> if you have any queries.</p>
+                </div>
+                <!-- Privacy Information end -->
+            </div>
+        </div>
+    </div>
+</div>

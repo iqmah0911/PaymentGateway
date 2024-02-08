@@ -1,0 +1,175 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.AgentRequestViewModel
+
+@{
+    ViewData["Title"] = "Approve Agent Request";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <span class="alert-danger font-weight-bold">@ViewBag.ErrorMessage</span>
+                }
+            </div>
+        </div>
+
+        <div class="container-fluid disable-text-selection">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-2">
+                        <h1>Approve Agent To Aggregator Request </h1>
+
+                        <nav class="breadcrumb-container simple-icon-arrow-right d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                            <ol class="breadcrumb pt-0">
+                                <li class="breadcrumb-item">
+                                    <a href="#">Approval</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#">Aggregator To Agent</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Request</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="separator mb-5"></div>
+                </div>
+            </div>
+
+
+            @*<div class="row">*@
+
+
+
+            <div class="card-body">
+
+                <form asp-action="ApproveAgentRequest" asp-controller="EgsAggregator" method="post">
+
+                    <div class="row">
+                        <div class="col-md-4 d-md-none">
+                            <label> RequestID</label>
+                            <input asp-for="RequestID" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Agent</label>
+                            <input asp-for="UserName" class="form-control" readonly="readonly" />
+                            <input asp-for="UserID" hidden="hidden" />
+                            @*<input asp-for="Email" hidden="hidden" />*@
+                        </div>
+                        <div class="col-md-4">
+                            <label>Agent Outlet</label>
+                            <input asp-for="AgentCompany" class="form-control" readonly="readonly" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Approved By</label>
+                            <input asp-for="AggregatorName" class="form-control" readonly="readonly" />
+                            <input asp-for="AggregatorId" hidden="hidden" />
+                            <input asp-for="ApprovedBy" hidden="hidden" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Approved By Outlet</label>
+                            <input asp-for="AggregatorCompany" class="form-control" readonly="readonly" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Request Date</label>
+                            <input asp-for="DateCreated" class="form-control" readonly="readonly" />
+                            <input asp-for="DateCreated" hidden="hidden" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Acknowledge Date</label>
+                            <input asp-for="DateApproved" class="form-control" readonly="readonly" />
+                            <input asp-for="DateApproved" hidden="hidden" />
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Approve/Decline</label>
+                            
+                            @{
+                                List<SelectListItem> listItems = new List<SelectListItem>();
+
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Approved",
+                                    Value = "true",
+
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Declined",
+                                    Value = "false",
+                                });
+                                
+                            }
+
+                            <select id="ProcessedID" asp-for="IsProcessed" asp-items="@(new SelectList(listItems, "Value", "Text"))"
+                                    class="form-control" onchange="getComment()"></select>
+                        </div>
+
+                        <div class="col-md-4" id="comentdiv">
+                            <label>Comment</label>
+                            <input asp-for="Comment" class="form-control" />
+                        </div>
+
+                    </div>
+                    <br />
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">PROCESS</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <p>
+                    @Html.ActionLink("<< Back To Acknowledged Agent Request List", "AcknowledgedAgentRequestList")
+                </p>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#comentdiv").hide();
+    })
+
+    function getComment() {
+        var select = document.getElementById("ProcessedID");
+        var option = select.options[select.selectedIndex];
+        var selectedValue = $('#ProcessedID').val();
+
+        if (selectedValue == "true") {
+            $("#comentdiv").hide();
+        }
+        else if (selectedValue == "false") {
+            //alert('show coment div')
+            $("#comentdiv").show();
+        }
+    }
+
+</script>
+
+
+
+
+

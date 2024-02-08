@@ -1,0 +1,182 @@
+﻿@model PaymentGateway21052021.Areas.Reports.Models.HoldTransactionsViewModel
+@using System.ComponentModel.DataAnnotations;
+@{
+    ViewData["Title"] = $"Settlement Details report for the period {ViewBag.OfferingMonthStart} {ViewBag.OfferingDayStart} {ViewBag.OfferingYearStart} - {ViewBag.OfferingMonthEnd} {ViewBag.OfferingDayEnd} {ViewBag.OfferingYearEnd}";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/DataTables-1.10.18/css/jquery.dataTables.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+<style>
+    /*===============================Datatables Overrides=====================================================*/
+    table.dataTable {
+        width: 100% !important;
+    }
+
+    .sorting.no-sort-sign, .sorting_asc.no-sort-sign, .sorting_desc.no-sort-sign {
+        /*display:none;*/
+        background-image: none !important;
+        cursor: initial !important;
+    }
+    /*=====================================================================================================*/
+</style>
+
+
+
+
+
+<div class="row col-12">
+    <div class="card" style="overflow: scroll">
+        <div class="card-body">
+
+            <h4 class="mb-2">
+                Transaction List Report
+            </h4>
+            <div class="col-10 mb-12">
+
+                @*<form asp-action="TransReportList" asp-controller="Agents" asp-area="Reports" method="get">
+                        <div class="float-left mr-3">
+                            <input name="searchText" placeholder="Enter Reference Num. Or Payment Reference" class="form-control" />
+                        </div>
+                        <div class="float-left">
+                            <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                        </div>
+                    </form>*@
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+
+            </div>
+
+
+            @if (Model != null && Model.HoldAllTransactionsDetails.Count() > 0)
+            {
+
+        <table id="offrptTable" class="table table-responsive table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>PaymentDate</th>
+                    <th>Vendor Refs.</th>
+                    <th>Egole Refs.</th>
+                    <th>ProductItem</th>
+                    <th>Created By</th>
+                    <th>Previous</th>
+                    <th>Amount</th>
+                    <th>Current</th>
+                    <th>SurCharge</th>
+                    <th>Region</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int ind = 0;
+                }
+                @foreach (var item in Model.HoldAllTransactionsDetails)
+                {
+                    ind++;
+                <tr>
+                    <td>@ind</td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentDate)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionReferenceNo)
+                    </td>
+
+                    <td> @Html.DisplayFor(modelItem => item.WalletReferenceNumber)</td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductItem)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedByName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Previous)
+                    </td>
+                    @if (@item.Amount < 0)
+                    {
+                        <td>
+                            <span class="text-danger font-weight-bold"><span>&#8358;</span>@Html.DisplayFor(modelItem => item.Amount)</span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <span class="text-success font-weight-bold"><span>&#8358;</span>@Html.DisplayFor(modelItem => item.Amount)</span>
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SurCharge)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Current)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Region)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.TransactionDescription)
+        </td>*@
+
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    @*<th></th>*@
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th> </th>
+                    <th> </th>
+                    <th> </th>
+                    <th id="amt-summed" style="padding:0">Total:<span>&#8358;</span>@ViewBag.baseamount</th>
+                    <th> </th>
+
+                </tr>
+            </tfoot>
+        </table>
+
+                <!-- pager -->
+
+            }
+            else
+            {
+                <div class="text-center">
+                    <p>No data returned for your selection</p>
+                    <a asp-action="AgentReport" asp-controller="Agents" class="btn btn-primary">Back to selection</a>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+
+<script src="~/js/Agentreport.js"></script>

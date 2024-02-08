@@ -1,0 +1,45 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.EgsAccountTypeViewModel
+@{
+    ViewData["Title"] = "UpdateAccountType";
+}
+
+<div class="col-12">
+    <h1>  Account Type(s) </h1>
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb pt-0">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="separator mb-5"></div>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-mb-12">
+            <div class="float-left mr-3">
+                <a asp-action="AccountTypeList" class="btn btn-warning float-left">All Account Types</a>
+            </div>
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-mb-12">
+    <form asp-action="AccountType" asp-controller="EgsAccountType" method="post">
+        @Html.AntiForgeryToken()
+        <label>Account Type</label>
+        <input asp-for="AccountTypeName" placeholder="Enter Account Type" class="form-control" />
+        <span asp-validation-for="AccountTypeName" class="text-danger"></span>
+        <br />
+        <input type="submit" value="Save" class="btn btn-info" />
+    </form>
+
+</div>

@@ -1,0 +1,175 @@
+﻿@model PaymentGateway21052021.Models.OrdersModel
+
+@{
+    ViewData["Title"] = "Confirm Order Details";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<br />
+<div class="container">
+    <div class="row my-5">
+
+        <div class="col-10 mb-6">
+
+            @*<form asp-action="ProductWallet" asp-controller="HomeStore" method="get">
+                </form>*@
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="mt-4 mt-lg-0">
+                        <span class="alert-danger">@ViewBag.ErrorMessage</span>
+                    </div>
+                }
+                @if (ViewBag.PaymentNotification != null)
+                {
+                    <div class="mt-4 mt-lg-0">
+                        <span class="alert-danger">@ViewBag.PaymentNotification</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Order Details</h2>
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+
+
+                <div class="row d-flex">
+                    <div class="form-group mx-auto"><b>CustomerName: @Model.FirstName </b> </div>
+                </div>
+                <div class="row d-flex">
+                    <div class="form-group  mx-auto"><b>CustomerEmail: @Model.Email </b> </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        @*<div class="form-group"><b>ID:</b> @ViewBag.id  </div>*@
+
+                        @*<div class="form-group"><b>CustomerPhone: @Model.Phone  </b></div>*@
+                        <div class="form-group"><b>Registration No:  @Model.RegistrationNo </b></div>
+                        <div class="form-group"><b>Reference No: @Model.CustReference</b> </div>
+                        <div class="form-group"><b>ProductName: @Model.ProductName  </b></div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group"><b>Amount: @Model.Amount  </b></div>
+                        <div class="form-group"><b>Service Charge: @Model.AmountRate </b> </div>
+                        <div class="form-group"><b>TotalAmount: @Model.TotalAmount  </b></div>
+                        @if (@Model.ProductName != null || Model.ProductItemCode != "")
+                        {
+                            <div class="form-group"><b>Payment Item: @ViewBag.ProductItemCode  </b></div>
+                        }
+                        @*<div class="form-group"><b>responseCode: </b>@ViewBag.responseCode  </div>*@
+
+                    </div>
+
+
+                    <div class="form-row">
+                        @if (ViewBag.Recharge != null)
+                        {
+                            <span style="color:green;">@ViewBag.Recharge</span>
+                        }
+                        @if (ViewBag.SuccessMessage != null)
+                        {
+                            <span style="color:green;">@ViewBag.SuccessMessage</span>
+                        }
+                        @if (ViewBag.paid == null)
+                        {
+                      <form asp-action="PayWithWallet" asp-controller="HomeStore" method="post">
+                        @*onsubmit="btnFsubmit.disabled = true; return true;"*@
+
+                        <input type="hidden" asp-for="Amount" value="@Model.Amount" />
+                        <input type="hidden" asp-for="AmountRate" value="@Model.AmountRate" />
+                        <input type="hidden" asp-for="TotalAmount" value="@Model.TotalAmount" />
+                        <input type="hidden" asp-for="RegNumber" value="@Model.RegistrationNo" />
+                        <input type="hidden" asp-for="ReferenceNo" value="@Model.CustReference" />
+                        <input type="hidden" asp-for="Phone" value="@Model.Phone" />
+                        <input type="hidden" asp-for="ProductModeID" value="@Model.ProductModeID" />
+                        <input type="hidden" asp-for="Email" value="@Model.Email" />
+                        <input type="hidden" asp-for="ProductName" />
+                        <input type="hidden" asp-for="ProductID" value="@ViewBag.ProductID" />
+                        <input type="hidden" asp-for="ProductItemID" value="@ViewBag.ProductItemID" />
+                        <input type="hidden" asp-for="ProductItemCode" value="@ViewBag.ProductItemCode" />
+                        <input type="hidden" asp-for="GeneratedBy" value="@ViewBag.GeneratedBy" />
+                        @if (ViewBag.ErrorMessage == null)
+                        {
+                            <div class="col-sm-6 form-group">
+                                <button class="btn btn-warning d-inline-block ml-auto" type="submit" id="btnPaysubmit"
+                                        ondblclick="alert('Transaction in Progress,kindly wait')">
+                                    Pay
+                                </button>
+                            </div>
+
+                        }
+                    </form>
+                        }
+                        else
+                        {
+                            <form asp-action="AutoRegReceipt" asp-controller="HomeStore" method="post">
+
+                                <div class="col-sm-6">
+                                    Thank you for purchasing our product.
+                                </div>
+                                <input type="hidden" asp-for="Amount" value="@Model.Amount" />
+                                <input type="hidden" asp-for="AmountRate" value="@Model.AmountRate" />
+                                <input type="hidden" asp-for="TotalAmount" value="@Model.TotalAmount" />
+                                <input type="hidden" asp-for="RegNumber" value="@Model.RegistrationNo" />
+                                <input type="hidden" asp-for="CustReference" value="@Model.CustReference" />
+                                @*<input type="hidden" asp-for="ReferenceNo" value="@Model.CustReference" />*@
+                                <input type="hidden" asp-for="Phone" value="@Model.Phone" />
+                                <input type="hidden" asp-for="ProductModeID" value="@Model.ProductModeID" />
+                                <input type="hidden" asp-for="Email" value="@Model.Email" />
+                                <input type="hidden" asp-for="ProductName" value="@Model.ProductName" />
+                                <input type="hidden" asp-for="ProductID" value="@ViewBag.ProductID" />
+                                <input type="hidden" asp-for="FirstName" value="@Model.FirstName" />
+                                <input type="hidden" asp-for="GeneratedBy" value="@Model.GeneratedBy" />
+                                <input type="hidden" asp-for="BranchName" value="@Model.BranchName" />
+                                <div class="d-flex">
+                                    <button class="btn btn-warning d-inline-block ml-auto" value="Print" type="submit"><span class="fa fa-print"></span> Print </button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                     
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

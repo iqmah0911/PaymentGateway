@@ -1,0 +1,45 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.CreateRoleViewModel
+@{
+    ViewData["Title"] = "Role";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h2 class="mb-2">Role</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="Roles" class="btn btn-warning float-left">List of Roles</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-6 mb-6">
+
+        <form asp-action="Role" asp-controller="SysRole" method="post">
+            @Html.AntiForgeryToken()
+
+            <label>Role Name</label>
+            <input asp-for="RoleName" placeholder="Enter Role Name" class="form-control" />
+            <span asp-validation-for="RoleName" class="text-danger"></span>
+            <br />
+
+            <label>Is Active?</label>
+            <input type="checkbox" asp-for="IsActive" value="true" name="IsActive" />
+            <br />
+            <br />
+            <input type="submit" value="Add Role" class="btn btn-info" />
+        </form>
+    </div>
+</div>

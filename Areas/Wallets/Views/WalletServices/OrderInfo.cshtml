@@ -1,0 +1,322 @@
+﻿@model PaymentGateway21052021.Models.OrdersModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@{
+    ViewData["Title"] = "Pay Product With Wallet";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+<!-- Select2 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row my-5">
+
+        <div class="col-10 mb-6">
+
+            @*<form asp-action="ProductWallet" asp-controller="HomeStore" method="get">
+                </form>*@
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Order Details</h2>
+            <p class="lead">Product Recharge Details</p>
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+                <div>
+                    <form asp-action="OrderInfo" asp-controller="WalletServices" method="post">
+
+                        <input asp-for="LoginUser" type="hidden" value=@ViewBag.LoginUser />
+                        @if (@Model.ProductModeID.ToString() == "1")
+                        {
+                            @Html.AntiForgeryToken()
+                            @*<br />
+            <label>Email Address</label>
+            <input asp-for="Email" type="email" value="@Model.Email" class="form-control" autocomplete="off" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <input asp-for="Email" value="@Model.Email" hidden="hidden" class="form-control" />*@
+                            @*<br />*@
+                            <label>Phone Number</label>
+                            <input asp-for="PhoneNumber" placeholder="PhoneNumber" class="form-control" maxlength="11" autocomplete="off" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            <input asp-for="PhoneNumber" value="@Model.PhoneNumber" hidden="hidden" class="form-control" />
+                            <br />
+
+                            @*<label>Select Product Item</label>
+            <select id="prodItemID" asp-for="ProductItemID" asp-items="@(new SelectList(ViewBag.ProductItemList, "ProductItemID", "ProductItemName"))"
+                    class="form-control" placeholder="Service Type" onchange="DoPostBack();"></select>*@
+
+                            <label>Amount</label>
+                            <input asp-for="AmountRate" class="form-control" id="Rate" autocomplete="off" />
+                            <input asp-for="ProductModeID" type="hidden" class="form-control" />
+                            <input asp-for="ProductID" type="hidden" class="form-control" id="ProductID" />
+                            <input asp-for="ProductItemID" type="hidden" class="form-control" id="ProductItemID" />
+                            <input asp-for="ProductName" type="hidden" class="form-control" id="ProductName" />
+                            <input asp-for="ProductItemName" type="hidden" class="form-control" id="ProductItemName" />
+                            <input asp-for="ProductItemCode" type="hidden" class="form-control" id="ProductItemCode" />
+                            <br />
+                            <div class="d-flex">
+                                <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                            </div>
+                        }
+
+                        else if (@Model.ProductModeID.ToString() == "2")
+                        {
+                            <br />
+
+                            <label>Service</label>
+                            <select asp-for="ServiceType" class="form-control">
+                                <option value="">Please select one</option>
+                                <option value="dstv">DSTV</option>
+                                <option value="gotv">GOTV</option>
+                            </select>
+                            <br />
+                            <label>AccountNo</label>
+                            <input asp-for="AccountNo" placeholder="Enter AccountNo" class="form-control" id="accNo" />
+                            @*<label>Email</label>
+            <input asp-for="Email" placeholder="Enter Email" class="form-control" id="email" />
+            <label>Phone</label>
+            <input asp-for="Phone" placeholder="Enter Phone" class="form-control" id="Phone" />*@
+
+
+                            <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" value="@Model.ProductModeID" />
+                            <input asp-for="ProductID" type="hidden" value="@Model.ProductID" class="form-control" id="ProductID" />
+
+                            <br />
+                            <div class="d-flex">
+                                <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                            </div>
+                        }
+                        else if (@Model.ProductModeID.ToString() == "3")
+                        {
+                            @*<label>Email Address</label>
+            <input asp-for="Email" type="email" value="@Model.Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <input asp-for="Email" value="@Model.Email" hidden="hidden" class="form-control" />
+            <br />
+            <label>RegNumber</label> UserState
+            <input asp-for="PhoneNumber" value="@Model.PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            <input asp-for="PhoneNumber" value="@Model.PhoneNumber" hidden="hidden" class="form-control" />
+            <br />*@
+                            <label>ReferenceNo</label>
+                            <input asp-for="ReferenceNo" value="@Model.ReferenceNo" placeholder="Enter Reference Number"
+                                   class="form-control" id="refNo" autocomplete="off" required />
+                            <span asp-validation-for="ReferenceNo" class="text-danger"></span>
+                            <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" />
+                            <input asp-for="ProductID" type="hidden" value="@Model.ProductID" class="form-control" id="ProductID" />
+                            <br />
+                            @*<select id="ProductItemId" asp-for="ProductItemCode" asp-items="@(new SelectList(ViewBag.ProductItemList, "strItemValue", "itemName"))"
+                    class="form-control select2" placeholder="ItemCode">
+                <option value=""> -- Select -- </option>
+            </select>*@
+                            if (@Model.UserState.ToString() == "Enugu")
+                            {
+                                <select id="ProductItemId" asp-for="ProductItemCode" asp-items="@(new SelectList(ViewBag.ProductItemList, "strItemValue", "itemName"))"
+                                        class="form-control select2" placeholder="ItemCode">
+                                    <option value=""> -- Select -- </option>
+                                </select>
+                            }
+                            @*if (@Model.UserState.ToString() == "Sokoto")
+                            {
+                                <select id="ProductItemId" asp-for="ProductItemCode" asp-items="@(new SelectList(ViewBag.ProductItemList, "strItemValue", "itemName"))"
+                                        class="form-control select2" placeholder="ItemCode">
+                                    <option value=""> -- Select -- </option>
+                                </select>
+                            }*@
+                            <div class="d-flex">
+                                <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                            </div>
+
+                        }
+                        else if (@Model.ProductModeID.ToString() == "4")
+                        {
+                            <label>meter</label>
+                            <input asp-for="MeterNo" type="text" placeholder="Enter Meter Number" class="form-control" />
+                            <span asp-validation-for="MeterNo" class="text-danger"></span>
+                            <br />
+                            <label>vendType</label>
+                            @*<select asp-for="vendType" asp-items="StaticDrpDwnListItems.VendTypeList()" class="form-control">
+                    <option value="">Please select one</option>
+                </select>
+            <span asp-validation-for="vendType" class="text-danger"></span>*@
+                            <select asp-for="vendType" class="form-control">
+                                <option value="">Please select one</option>
+                                <option value="prepaid">PREPAID</option>
+                                <option value="postpaid">POSTPAID</option>
+                            </select>
+                            <br />
+                            <label>disco</label>
+
+                            <select asp-for="discoCode" class="form-control">
+                                <option value="">Please select one</option>
+                                <option value="aedc">ABUJA</option>
+                                <option value="ikedc">IKEJA</option>
+                                <option value="EKEDC">EKO</option>
+                                <option value="ibedc">IBADAN</option>
+                                <option value="kedco">KANO</option>
+                                <option value="eedc">ENUGU</option>
+                                <option value="phedc">PH</option>
+                                <option value="jedc">JOS</option>
+                            </select>
+                            <span asp-validation-for="discoCode" class="text-danger"></span>
+                            <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" />
+                            <input asp-for="ProductID" type="hidden" value="@Model.ProductID" class="form-control" id="ProductID" />
+                            <br />
+                            <label>Amount</label>
+                            <input asp-for="Amount" type="text" placeholder="Enter Amount" class="form-control" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                            <br />
+                            <div class="d-flex">
+                                <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                            </div>
+
+                        }
+                        else if (@Model.ProductModeID.ToString() == "5")
+                        {
+                            <label>Phone Number</label>
+                            <input asp-for="Phone" type="text" placeholder="Enter Phone Number" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                            <br />
+                            @*<label>Amount</label>
+            <input asp-for="Amount" type="text" placeholder="Enter Amount" class="form-control" autocomplete="off" />
+            <span asp-validation-for="Amount" class="text-danger"></span>*@
+                            <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" />
+                            <input asp-for="ProductID" type="hidden" value="@Model.ProductID" class="form-control" id="ProductID" />
+                            <br />
+
+                            <div class="d-flex">
+                                <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                            </div>
+
+                        }
+                        else if (@Model.ProductModeID.ToString() == "6")
+                        {
+                            <label>Number of Pins</label>
+                            <input asp-for="NumberofPins" placeholder="Enter Number of Pins" class="form-control" id="refNo" required />
+                            <span asp-validation-for="NumberofPins" class="text-danger"></span>
+                            <br />
+
+                            <label>Select Product Item</label>
+                            <select id="prodItemID" asp-for="ProductItemID" asp-items="@(new SelectList(ViewBag.ProductItemList, "ProductItemID", "ProductItemName"))"
+                                    class="form-control" placeholder="Service Type" onchange="DoPostBack();" required></select>
+                            <br />
+
+                            @*<label>Amount</label>
+            <input asp-for="AmountRate" class="form-control" id="AmountRate" autocomplete="off" />*@
+                            <input asp-for="ProductModeID" type="hidden" class="form-control" />
+                            <input asp-for="ProductID" type="hidden" class="form-control" id="ProductID" />
+                            <input asp-for="ProductItemID" type="hidden" class="form-control" id="ProductItemID" />
+                            <input asp-for="ProductName" type="hidden" class="form-control" id="ProductName" />
+                            <input asp-for="ProductItemName" type="hidden" class="form-control" id="ProductItemName" />
+                            <input asp-for="ProductItemCode" type="hidden" class="form-control" id="ProductItemCode" />
+                            <br />
+                            <div class="d-flex">
+                                <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Proceed </button>
+                            </div>
+
+                        }
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $("#ProductItemId").select2({
+            placeholder: "Payment Item",
+            allowClear: true
+        });
+        //$("#multiple").select2({
+        //    placeholder: "Select a programming language",
+        //    allowClear: true
+        //});
+    </script>
+    @*@section Script{
+        }*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        document.onreadystatechange = () => {
+            if (document.readyState === 'complete') {
+                //alert("complete");
+                @*$('#drpProductItem').change(function () {
+                var url = '@Url.Content("~/")' + "Home/GetLga";
+                var ddlsource = '#drpProductItem';
+                if ($(ddlsource).val() > 0) {
+                    $.getJSON(url, { stateId: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    //console.warn("data :",JSON.stringify(data));
+                    $("#drpLga").empty();
+                    $.each(data, function (i, available) {
+                        items += "<option value='" + available.id + "'>" + available.name + "</option>";
+                    });
+                    $('#drpLga').html(items);
+                    $("#drpLga option[value='" + $("#hidLga").val() + "']").attr("selected", "selected");
+                    //$("#drpLga select").val($("#hidLga").val()).trigger('change/*');
+                });
+                }
+
+            });
+
+            var _state = $('#drpProductItem').val();
+            $('#drpProductItem')
+            .val(_state).trigger('change');*@
+
+        }
+        };
+
+        function DoPostBack() {
+            //alert("changed");
+            var select = document.getElementById("prodItemID");
+            var option = select.options[select.selectedIndex];
+            var selectedValue = $('#prodItemID').val();
+            if (selectedValue != "0") {
+
+                $('#AmountRate').val('0.00');
+                //$('#AmountRateReadOnly').val('0.00');
+
+	            $.post('@Url.Action("GetRates", "HomeStore")', { selection : selectedValue }, function (data) {
+                    // handle the server response here
+                    var content = JSON.parse(data);
+                    console.log(content.value)
+                    //alert(content.value.amountRate);
+                    $('#AmountRate').val(content.value.amountRate);
+                    $("#AmountRate").attr("disabled", "disabled");
+                    $('#ProductID').val(content.value.productID);
+                    $('#ProductName').val(content.value.productName);
+                    $('#ProductItemID').val(content.value.productItemID);
+                    $('#ProductItemName').val(content.value.productItemName);
+                    $('#ProductItemCode').val(content.value.productItemCode);
+
+	            });
+
+            }
+
+        }
+
+        $('#drpProductItem').change(function () {
+            alert("changed");
+        // respond to the change event in here
+            var selectedValue = $('#drpProductItem').val();
+            alert("selectedValue = " + selectedValue);
+
+        });
+
+    </script>
+
+
+</div>

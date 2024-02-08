@@ -1,0 +1,235 @@
+﻿@model PaymentGateway21052021.Models.HoldProductsAlike
+
+@{
+    ViewData["Title"] = "Product Item Rate";
+}
+
+<div id="content">
+    <div class="hero-wrap py-2 py-md-3 py-lg-5">
+        <div class="hero-mask opacity-7 bg-dark"></div>
+        <div class="hero-bg" style="background-image: url('/ui/images/bg/image-8.jpg');"></div>
+        <div class="hero-content py-3 py-lg-5 my-3 my-md-5">
+            <div class="container">
+                <h2 class="text-9 font-weight-300 text-light text-center mb-4 mb-md-5">Online Quick Recharge. Save Time and Money!</h2>
+
+                <!-- Tabs -->
+                <ul class="nav nav-tabs border-bottom style-3" id="myTab" role="tablist">
+                    <li class="nav-item"> <a class="nav-link" id="first-tab" @*data-toggle="tab"*@ @*href="#first"*@ role="tab" aria-controls="first" aria-selected="true"><span><i class="fas fa-mobile-alt"></i></span> Mobile Recharge</a> </li>
+                    <li class="nav-item"> <a class="nav-link" id="second-tab" @*data-toggle="tab"*@ @*href="#second"*@ role="tab" aria-controls="second" aria-selected="false"><span><i class="fas fa-car"></i></span> AutoReg</a> </li>
+                    <li class="nav-item"> <a class="nav-link" id="third-tab" @*data-toggle="tab"*@ @*href="#third"*@ role="tab" aria-controls="third" aria-selected="false"><span><i class="fas fa-tv"></i></span> Pay TV </a> </li>
+                    <li class="nav-item"> <a class="nav-link" id="fourth-tab" @*data-toggle="tab"*@ @*href="#fourth"*@ role="tab" aria-controls="fourth" aria-selected="false"><span><i class="fas fa-shopping-cart"></i></span> Online Shopping </a> </li>
+                    <li class="nav-item"> <a class="nav-link" id="fifth-tab" @*data-toggle="tab"*@ @*href="#fifth"*@ role="tab" aria-controls="fifth" aria-selected="false"><span><i class="fas fa-plane-departure"></i></span> Travel & Hotel </a> </li>
+                    <li class="nav-item"> <a class="nav-link" id="sixth-tab" @*data-toggle="tab"*@ @*href="#sixth"*@ role="tab" aria-controls="sixth" aria-selected="false"><span><i class="fas fa-ticket-alt"></i></span> Event Tickets </a> </li>
+                    <li class="nav-item"> <a class="nav-link" id="seventh-tab" @*data-toggle="tab"*@ @*href="#seventh"*@ role="tab" aria-controls="seventh" aria-selected="false"><span><i class="fas fa-lightbulb"></i></span> Electricity</a> </li>
+                    <li class="nav-item"> <a class="nav-link" id="tenth-tab" @*data-toggle="tab"*@ @*href="#tenth"*@ role="tab" aria-controls="tenth" aria-selected="false"><span><i class="fas fa-plug"></i></span> Utility </a> </li>
+                </ul>
+                <div id="myTabContent" class="tab-content pt-4 pb-2">
+                    <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="first-tab">
+                        <form asp-action="GetProductItemRates" asp-controller="HomeStore" method="post">
+                            <div class="row no-gutters sear.ch-input-2">
+                                <div class="col-md-6 col-lg-4 form-group">
+                                    <select asp-for="ProductCategoryID" name="prodCategory" asp-items="@(new SelectList(ViewBag.ProductCategory, "ProductCategoryID", "ProductCategoryName"))"
+                                            class="custom-select" hidden="hidden"></select> 
+                                </div>
+                                <div class="col-md-6 col-lg-6 form-group">
+                                    <input asp-for="searchText" type="text" class="form-control" data-bv-field="number"
+                                           name="searchText" placeholder="Enter product / service" hidden="hidden">
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input type="submit" value="SEARCH >>>" class="btn btn-primary btn-block" hidden="hidden"/>
+                                </div>
+                            </div>
+
+                            @if (Model != null && Model.HoldAllProductsAlike.Count() > 0)
+                            {
+                                <div class="row">
+                                    @foreach (var item in Model.HoldAllProductsAlike)
+                                    {
+                                        <div class="col-sm-6 col-md-4 mb-4">
+                                            <div class="bg-white border rounded text-center p-3">
+                                                <h5 class="card-title text-5 font-weight-500 mb-4 mt-2">@Html.DisplayFor(modelItem => item.ProductName)</h5>
+                                                <button class="btn btn-sm btn-block btn-outline-primary shadow-none stretched-link" type="submit">Choose</button>
+                                                <input asp-for="ProductID" class="form-control" id="ProductID" type="hidden" value="@item.ProductID" />
+                                                <input asp-for="ProductName" class="form-control" id="ProductID" type="hidden" value="@item.ProductName" />
+                                                <input asp-for="InvoiceModeId" class="form-control" id="InvoiceModeId" type="hidden" value="@item.InvoiceModeId" />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h2>No Available Product(s)</h2>
+                                    </div>
+                                </div>
+                            }
+                        </form>
+                    </div>
+                    <!-- Dth -->
+                    <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
+                        <form id="dthRechargeBill" method="post">
+                            <div class="row no-gutters search-input-2">
+                                <div class="col-md-8 col-lg-8 form-group">
+                                    <input type="text" class="form-control" data-bv-field="text" id="cardNumber" required placeholder="Enter Product">
+                                    @*<a href="#" data-target="#view-plans" data-toggle="modal" class="view-plans-link">View Plans</a>*@
+                                </div>
+
+                                <div class="col-md-6 col-lg-2 form-group">
+                                    <button class="btn btn-primary btn-block" type="submit">Continue</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- Tabs End -->
+            </div>
+        </div>
+    </div>
+
+
+    <section class="section bg-light shadow-md">
+        <div class="container">
+            <h2 class="text-9 font-weight-500 text-center">Welcome to EgolePay</h2>
+            <p class="lead text-center mb-4">Get Best Offers on Bill Payments</p>
+            <div class="row banner">
+                <div class="col-md-6">
+                    <div class="item rounded">
+                        <a href="#">
+                            <div class="caption">
+                                <h2>Save 20% on Recharge & Bill</h2>
+                                <p>Use Code: Recharge20</p>
+                            </div>
+                            <div class="banner-mask"></div>
+                            <img class="img-fluid" src="~/ui/images/slider/small-banner-11-600x220.jpg" alt="banner">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="item rounded">
+                        <a href="#">
+                            <div class="caption">
+                                <h2>Direct & Easy Wallet</h2>
+                                <p>Highly Encrypted</p>
+                            </div>
+                            <div class="banner-mask"></div>
+                            <img class="img-fluid" src="~/ui/images/slider/small-banner-12-600x220.jpg" alt="banner">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="text-9 font-weight-500 text-center">How it Works</h2>
+            <p class="lead text-center mb-3">Easy and Flexible Payment System</p>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="featured-box style-4">
+                        <div class="featured-box-icon shadow-none border-bottom text-primary"> <i class="fas fa-bullhorn"></i> </div>
+                        <h3>Create Account</h3>
+                        <p class="text-3">Easy signup on EgolePay to control and enjoy access.</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="featured-box style-4">
+                        <div class="featured-box-icon shadow-none border-bottom text-primary"> <i class="fas fa-sign-in-alt"></i> </div>
+                        <h3>Select Preferred Product to use</h3>
+                        <p class="text-3">Make Payment, recharge quickly.</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="featured-box style-4">
+                        <div class="featured-box-icon shadow-none border-bottom text-primary"> <i class="fas fa-dollar-sign"></i> </div>
+                        <h3>Enjoy More Now</h3>
+                        <p class="text-3">Explore the platform for more available offers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-4"> <a href="#" class="btn btn-primary">Get Started Now</a> </div>
+        </div>
+    </section>
+
+    <section class="hero-wrap section shadow-md">
+        <div class="hero-mask opacity-8 bg-primary"></div>
+        <div class="hero-bg" style="background-image: url('~/ui/images/bg/image-1.jpg');"></div>
+        <div class="hero-content">
+            <div class="container">
+                <div class="justify-content-center text-center py-4">
+                    <h2 class="text-9 text-light font-weight-400">Download Our Mobile App Now</h2>
+                    <p class="lead text-light opacity-8 mb-4">Download our app for the fastest, most convenient way to Recharge &amp; Bill Payment, Booking and more....</p>
+                    <a href="#" class="mr-4 btn btn-light shadow-none"><i class="fab fa-apple mr-1"></i> App Store</a> <a href="#" class="btn btn-light shadow-none"><i class="fab fa-android mr-1"></i> Play Store</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="view-plans" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Search</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="plans">
+                        Content
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-signup" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-sm-3">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"> <a id="login-tab" class="nav-link active text-4" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a> </li>
+                        <li class="nav-item"> <a id="signup-tab" class="nav-link text-4" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="false">Sign Up</a> </li>
+                    </ul>
+                    <div class="tab-content pt-4">
+
+                        <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                            <form id="account" method="post">
+                                <div class="form-group">
+                                    <input class="form-control" id="loginMobile" required placeholder="Mobile or Email ID">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="loginPassword" required placeholder="Password">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-sm">
+                                        <div class="form-check custom-control custom-checkbox">
+                                            <input id="remember-me" name="remember" class="custom-control-input" type="checkbox">
+                                            <label class="custom-control-label" for="remember-me">Remember Me</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm text-right"> <a id="forgot-password" href="./ForgotPassword" class="justify-content-end">Forgot Password ?</a> </div>
+                                </div>
+                                <button class="btn btn-primary btn-block" type="submit">Login</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+                            <form>
+                                <div class="form-group">
+                                    <a href="./Register" class="btn btn-primary btn-block"> Create Individual Account </a>
+                                    &nbsp;
+                                    <a href="./Register" class="btn btn-primary btn-block"> Create Corporate Account </a>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

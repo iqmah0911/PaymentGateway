@@ -1,0 +1,72 @@
+﻿@model PaymentGateway21052021.Areas.Invoices.Models.SPinWResponse
+
+@{
+    ViewData["Title"] = " Order Details";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="container">
+    <div class="row my-5">
+
+        <div class="col-10 mb-6">
+
+
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-danger">@ViewBag.Message</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="mt-4 mt-lg-0">
+                        <span class="alert-danger">@ViewBag.ErrorMessage</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Purchase Details</h2>
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+
+
+                <div class="row d-flex">
+                    <div class="form-group mx-auto"><b>Status: @Model.status </b> </div>
+                </div>
+                <div class="row d-flex">
+                    <div class="form-group  mx-auto"><b>Message: @Model.message </b> </div>
+                </div>
+                <div class="form-row">
+                    
+                    <div class="col-md-5">
+
+                        <div class="form-group"><b>Status: @Model.status  </b></div>
+                    </div>
+
+
+                    <div class="form-row">
+                         
+                            <form asp-action="PayWaecWallet" asp-controller="HomeStore" >
+
+                               <div class="col-sm-6 form-group">
+                                    <button class="btn btn-warning d-inline-block ml-auto" type="submit">
+                                       Kindly Retry
+                                    </button>
+                                </div>
+                            </form>
+                      
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

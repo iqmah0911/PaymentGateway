@@ -1,0 +1,168 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.EgsAggregatorCommissionViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    ViewData["Title"] = "Aggregator Commission";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="card-body">
+
+    <h1 class="mb-2">Aggregator Commission</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-10 mb-5">
+                <form asp-action="Settlement" asp-controller="EgsAggregatorCommission" method="post">
+                    @*<form asp-action="SettlementMerchantMappingTest" asp-controller="EgsSettlementBasis" method="post">*@
+                    @*@Html.AntiForgeryToken()*@
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Aggregator</label>
+                            <select id="ddlAggregator" asp-for="AggregatorID" class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.Aggregator, "AggregatorID", "AggregatorName"))">
+                                <option value="">Select Aggregator</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Products</label>
+                            @*<select id="ddlProducts" class="form-control">
+                                        <option value="">Select Product</option>
+                                    </select>
+                                <input id="txtprdId" asp-for="ProductID" type="hidden" />*@
+                            <select id="ddlProducts" asp-for="ProductID" class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.Products, "ProductID", "ProductName"))">
+                                <option value="">Select Product</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label class="control-label">ProductItem</label>
+                            <select id="ddlProductitems" asp-for="ProductItemID" class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.Productitems, "ProductItemID", "ProductItemName"))">
+                                <option value="">Select ProductItem</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label class="control-label">SettlementType</label>
+                            <select asp-for="SettlementTypeID" class="form-control" asp-items="@(new SelectList(ViewBag.SettlementTypes, "SettlementTypeID", "SettlementType"))">
+                                <option value="">Select Settlement Type</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">SettlementInterval</label>
+                            <select asp-for="SettlementIntervalID" class="form-control" asp-items="@(new SelectList(ViewBag.SettlementIntervals, "SettlementIntervalID", "SettlementIntervalName"))">
+                                <option value="">Select RateType</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Spliting Rate</label>
+                            <input id="splittingRate" asp-for="SplittingRate" placeholder="Enter Splitting Rate" class="form-control" />
+                            <span asp-validation-for="SplittingRate" class="text-danger"></span>
+                        </div>
+
+
+                    </div>
+
+                    <br />
+                    <input type="submit" value="Save" class="btn btn-info" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+@*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+
+<!--<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        var items = "<option value='0'>--Select--</option>";
+        $('#ddlProducts').html(items);
+        $('#ddlProductitems').html(items);
+    });
+
+    function getProduct() {
+        //alert("this product");
+            var url = '@Url.Content("~/")' + "SysSetup/EgsAggregatorCommission/GetProducts";
+            var select = document.getElementById("ddlAggregator");
+            var option = select.options[select.selectedIndex];
+                var selectedValue = $('#ddlMerchant').val();
+
+        if (selectedValue != "selectedValue") {
+                    //alert()
+            $.getJSON(url, { MerchantId: selectedValue }, function (data) {
+                console.log(data);
+                    var items = '';
+                    $("#ddlProducts").empty();
+                        $.each(data, function (i, products) {
+                            items += "<option value='" + products.value + "'>" + products.text + "</option>";
+                        });
+                        $('#ddlProducts').html(items);
+                });
+            }
+    }
+
+        function getProductItems() {
+            var url = '@Url.Content("~/")' + "SysSetup/EgsAggregatorCommission/GetProductitems";
+            var select = document.getElementById("ddlProducts");
+            var option = select.options[select.selectedIndex];
+                    var selectedValue = $('#ddlProducts').val();
+
+                if (selectedValue != "") {
+                    $.getJSON(url, { ProductId: selectedValue }, function (data) {
+                    var items = '';
+                        $("#ddlProductitems").empty();
+                        $.each(data, function (i, productitems) {
+                            items += "<option value='" + productitems.value + "'>" + productitems.text + "</option>";
+                        });
+                        $('#ddlProductitems').html(items);
+                });
+            }
+    }-->
+
+    @* $.ajax({
+        type: "POST",
+        //url: "/EgsSettlementBasis/InsertSettlements",
+        url: '@Url.Content("~/")' + "SysSetup/EgsSettlementBasis/InsertSettlements",
+        data: JSON.stringify(settlements),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (r) {
+            alert(r + " record(s) inserted.");
+        }
+    });*@
+
+
+    @*$(function () {
+      $.get('@Url.Action("SettlementMerchantMapping", "EgsSettlementBasis")', function (result) {
+          $("#MerchantMappingContainer").html(result);
+      });
+    });*@
+
+
+
+<!--</script>-->
+

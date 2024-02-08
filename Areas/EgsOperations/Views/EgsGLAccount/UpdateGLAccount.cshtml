@@ -1,0 +1,59 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.EgsGLAccountViewModel
+@{
+    ViewData["Title"] = "Update GLAccount";
+}
+
+<div class="col-12">
+    <h1>  @ViewData["GLAccount"] </h1>
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb pt-0">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="separator mb-5"></div>
+</div>
+
+<div class="card-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="col-mb-12">
+                <div class="float-left mr-3">
+                    <a asp-action="GLAccountList" class="btn btn-warning float-left">List of GLAccount(s)</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-mb-12">
+
+        <form asp-action="UpdateGLAccount" asp-controller="EgsGLAccount" method="post">
+            @Html.AntiForgeryToken()
+            <label>Select Company</label>
+            <select id="companyid" asp-for="CompanyID" asp-items="@(new SelectList(ViewBag.CompanyList, "CompanyID", "CompanyName"))"
+                    class="form-control" placeholder="Service Type"></select>
+            <span asp-validation-for="CompanyID" class="text-danger"></span>
+            <br />
+            <label>Select Bank</label>
+            <select id="bankid" asp-for="BankID" asp-items="@(new SelectList(ViewBag.BankList, "BankID", "BankName"))"
+                    class="form-control" placeholder="Service Type"></select>
+            <span asp-validation-for="BankID" class="text-danger"></span>
+            <br />
+            <label>GLAccount Code</label>
+            <input asp-for="GLAccountCode" placeholder="Enter Account Code" class="form-control" />
+            <span asp-validation-for="GLAccountCode" class="text-danger"></span>
+            <br />
+            <br />
+            <input type="hidden" asp-for="GLAccountID" />
+            <input type="submit" value="Update GLAccount" class="btn btn-info" />
+
+        </form>
+    </div>
+</div>

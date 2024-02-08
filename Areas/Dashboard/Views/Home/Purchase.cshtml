@@ -1,0 +1,259 @@
+﻿@model PaymentGateway21052021.Models.OrdersModel
+@*@inject EgsProductCategory prodCategory*@
+
+@{
+    ViewData["Title"] = "Purchase";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<br />
+<div class="container-fluid disable-text-selection">
+    <div class="row list disable-text-selection">
+
+        @{
+            var prdCategory = ViewBag.ProductCategory;//Model.Products.Randomize();
+            @foreach (var prod in prdCategory)
+            {
+                string cartName = @prod.ProductCategoryName;
+                int cartId = @prod.ProductCategoryID;
+                var carClass = "fas fa-mobile-alt fa-5x";
+                var myRef = @Html.ActionLink(cartName, cartName);//$"/Home/SelectInsurance?id= {prod.ProductID}&chassis={Model.Chasis}&registration={Model.RegisterationNo}&purpose={Model.VehiclePurpose.VehiclePurposeId}";
+                
+                <input asp-for="ProductCategoryID" type="hidden" value="@prod.ProductCategoryID" />
+            
+                <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 nav-link active text-center">
+                                    <span>
+                                        <i class='@carClass'></i>
+                                        @Html.ActionLink(@cartName, "Menu", new { id= @prod.ProductCategoryID, menu = @cartName }, new { @class = "nav-link active text-center h4" })
+                                    </span>
+                                    @*<h2 class="p-2">@prod.ProductCategoryName</h2>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+    </div>
+</div>
+
+@*<div class="container-fluid disable-text-selection">
+
+    <div class="row list disable-text-selection">
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <span class="fe fe-edit">
+                                @Html.ActionLink("Welcome View Details", "Welcome", new { id = 1 }, new { @class = "nav-link active text-center" })
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-mobile-alt fa-5x"></i></span>
+                                <h2 class="p-2">Mobile Topup</h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-tv fa-5x"></i></span>
+                                <h2 class="p-2">Cable Payment</h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-wifi fa-5x"></i></span>
+                                <h2 class="p-2">Broadband</h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-credit-card fa-5x"></i></span>
+                                <h2 class="p-2"> DSTV Payment</h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-car fa-5x"></i></span>
+                                <h2 class="p-2"> AutoReg </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-lightbulb fa-5x"></i></span>
+                                <h2 class="p-2"> Electricity </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-bed fa-5x"></i></span>
+                                <h2 class="p-2"> Hotel Booking </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-tint fa-5x"></i></span>
+                                <h2 class="p-2"> Water </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-credit-card fa-5x"></i></span>
+                                <h2 class="p-2"> Transfer </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-home fa-5x"></i></span>
+                                <h2 class="p-2"> Tenement Rate </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-tv fa-5x"></i></span>
+                                <h2 class="p-2"> Star Times </h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="nav-link active text-center" href="#">
+                                <span><i class="fas fa-mobile-alt fa-5x"></i></span>
+                                <h2 class="p-2">Mobile</h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>*@

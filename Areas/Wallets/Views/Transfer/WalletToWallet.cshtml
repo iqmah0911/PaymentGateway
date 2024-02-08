@@ -1,0 +1,160 @@
+﻿@model PaymentGateway21052021.Areas.Wallets.Models.WalletToWalletViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Wallet To Wallet Transfer";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<br />
+<br />
+<div class="container">
+    <div class="row my-5">
+        <div class="col-10 mb-6">
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="mt-4 mt-lg-0">
+                        <span class="alert-danger">@ViewBag.ErrorMessage</span>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Transfer Details</h2>
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+
+                <form asp-action="WalletTransfer" asp-controller="Transfer" method="post">
+ 
+                    <div class="row d-flex">
+                        <div class="form-group  mx-auto">
+                            <label> <b>Account Number:</b></label>
+                            <input id="targetAcc" asp-for="WalletAccountNumber" type="number" placeholder="Enter Account Number" class="form-control" autocomplete="off" required />
+                            <span asp-validation-for="WalletAccountNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="btnverifyrec">
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                <button type="submit" class="btn btn-info" id="btnVerfy" onclick="VerifyWalletAccount()" ondblclick="alert('Verification in Progress,kindly wait')">
+                                    Verify
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex">
+                        <div class="form-group mx-auto">
+                            <label> <b>Receiver:</b></label>
+                            <input asp-for="Receiver" id="Receiver" class="form-control" style="width: 350px;" readonly="readonly" />
+                        </div>
+                    </div>
+
+
+                    <div class="Onsuccesssfulverification">
+
+
+                        <div class="row d-flex">
+                            <div class="form-group mx-auto">
+                                <label> <b>Transfer Amount:</b></label>
+                                <input asp-for="TransferAmount" type="number" placeholder="Enter Transfer Amount " class="form-control" required />
+                                <span asp-validation-for="TransferAmount" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                <label>  <b>Transfer PIN:</b></label>
+                                <input asp-for="transferpin" type="password" placeholder="Enter Transfer PIN" class="form-control" required />
+                                <span asp-validation-for="transferpin" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                <label>  <b>Narration:</b></label>
+                                <input asp-for="Narration" type="text" placeholder="Narration" class="form-control" required />
+                                <span asp-validation-for="Narration" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                @if (ViewBag.Successful == null)
+                                {
+                                    @*<input type="submit" value="Send" class="btn btn-info " id="btnFsubmit" /><br />*@
+                                    <button type="submit" class="btn btn-info" id="btnFsubmit" ondblclick="alert('Transaction in Progress,kindly wait')">
+                                        Send
+                                    </button>
+                                }
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    
+    $(".Onsuccesssfulverification").hide();
+
+
+
+    //$(document).ready(function () { ;
+    //    $('#Receiver').html(items);
+    //});
+
+    function VerifyWalletAccount() {
+        //alert("this product");
+            var url = '@Url.Content("~/")' + "Wallets/Transfer/WalletVerify";
+        //    var select = document.getElementById("BankCode");
+        //    var option = select.options[select.selectedIndex];
+        //var selectedValue = $('#BankCode').val();
+        var accnumber = $('#targetAcc').val();
+
+        if (accnumber != "0") {
+
+            $.getJSON(url, {accnumber: accnumber }, function (data) {
+                //alert(data.name);
+                console.log(data.name);
+                $("#Receiver").val(data.name);
+                if (data.name == "Invalid Wallet Account") {
+                    //alert("Invalid Bank or Account");
+                    $(".Onsuccesssfulverification").hide();
+
+                }
+                if (data.name != "Invalid Wallet Account") {
+                    $(".Onsuccesssfulverification").show();
+                    $(".btnverifyrec").hide();
+                }
+              });
+            }
+    }
+
+
+
+
+</script>
+

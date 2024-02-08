@@ -1,0 +1,78 @@
+﻿@model PaymentGateway21052021.Models.ReprintModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@{
+    ViewData["Title"] = "Payment Reprint";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row my-5">
+
+        <div class="col-10 mb-6">
+
+            @*<form asp-action="ProductWallet" asp-controller="HomeStore" method="get">
+                </form>*@
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Order Details</h2>
+            <p class="lead">Product Recharge Details</p>
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+                <div>
+                    <form asp-action="Reprint" asp-controller="HomeStore" method="post">
+                         
+                            <label>ReferenceNo</label>
+                            <input asp-for="refno" type="text" placeholder="Enter Reference Number"
+                                   class="form-control" id="refNo" autocomplete="off" required />
+                            <span asp-validation-for="refno" class="text-danger"></span> 
+                            <br />
+
+                            <div class="d-flex">
+                                <button class="btn btn-warning d-inline-block ml-auto" value="Submit" type="submit"> Proceed </button>
+                            </div>
+ 
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+     
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

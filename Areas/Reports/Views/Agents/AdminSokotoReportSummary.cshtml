@@ -1,0 +1,124 @@
+﻿@model PaymentGateway21052021.Areas.Reports.Models.HoldDisplayInvoiceTrans
+
+@{
+    ViewData["Title"] = "AdminSokotoReportSummary";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/DataTables-1.10.18/css/jquery.dataTables.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+<style>
+    /*===============================Datatables Overrides=====================================================*/
+    table.dataTable {
+        width: 100% !important;
+    }
+
+    .sorting.no-sort-sign, .sorting_asc.no-sort-sign, .sorting_desc.no-sort-sign {
+        /*display:none;*/
+        background-image: none !important;
+        cursor: initial !important;
+    }
+    /*=====================================================================================================*/
+</style>
+
+
+<div class="card-body col-12">
+
+    <h2 class="mb-2">
+        Sokoto Transaction Summary Report
+    </h2>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="col-10 mb-12">
+
+                @*<form asp-action="OyoReportSummary" asp-controller="Agents" asp-area="Reports" method="get">
+                    <div class="float-left mr-3">
+                        <input name="searchText" placeholder="Enter Product" class="form-control" />
+                    </div>
+                    <div class="float-left">
+                        <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                    </div>
+                </form>*@
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+
+            </div>
+
+
+
+            @if (Model != null && Model.HoldRPTInvoiceTrans.Count() > 0)
+            {
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>ProductItemCategory</th>
+                            <th>ProductItemCode</th>
+                            <th>ItemCount</th>
+                            <th>Amount</th>
+                            <th>CommissionAmount</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int ind = 0;
+                        }
+                        @foreach (var item in Model.HoldRPTInvoiceTrans)
+                        {
+                            ind++;
+                        <tr>
+                            <td>@ind</td>
+                            <td>@item.ProductItemCategory</td>
+                            <td>@item.ProductItemCode</td>
+                            <td>@item.ItemCount</td>
+                            <td class="font-weight-bold"><span>&#8358;</span>@item.TotalAmt</td>
+                            <td class="font-weight-bold"><span>&#8358;</span>@item.CommissionAmount</td>
+
+                            @*<td>@item.ServiceNumber</td>*@
+
+                        </tr>
+
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th id="amt-summed" style="padding:0">Total:<span>&#8358;</span>@ViewBag.baseamount</th>
+                            <th id="amt-summed" style="padding:0">Total:<span>&#8358;</span> @ViewBag.commissionamount</th> 
+                        </tr>
+                    </tfoot>
+                </table>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+
+<script src="~/js/Agentreport.js"></script>
+
+

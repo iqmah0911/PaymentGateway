@@ -1,0 +1,9 @@
+
+
+[02-Sep-2021 05:07:36]
+ Subject: 	Input string was not in a correct format.
+ Page Request: 	StringToNumber
+ Stack Trace : 	   at System.Number.StringToNumber(ReadOnlySpan`1 str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(ReadOnlySpan`1 s, NumberStyles style, NumberFormatInfo info)
+   at System.Convert.ToInt32(String value)
+   at PaymentGateway21052021.Areas.Dashboard.Controllers.ProfileController.UpgradeAccount(SysViewModel model, List`1 files) in C:\inetpub\wwwroot\PaymentGateway21052021\Areas\Dashboard\Controllers\ProfileController.cs:line 216

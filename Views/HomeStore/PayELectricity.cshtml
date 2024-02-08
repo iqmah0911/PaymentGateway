@@ -1,0 +1,203 @@
+﻿@model PaymentGateway21052021.Areas.Invoices.Models.ITextPaymentResponse
+
+@{
+    ViewData["Title"] = "Pay Product With Wallet";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/Receipt.css" rel="stylesheet" />
+
+<br />
+
+<div class="container">
+    <div class="row my-5">
+
+        <div class="col-10 mb-6">
+            <div class="float-left">
+                @if (ViewBag.SuccessMessage != null)
+                {
+                    <span class="alert-success">@ViewBag.SuccessMessage</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <span class="alert-success">@ViewBag.ErrorMessage</span>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Order Details</h2>
+            <p class="lead">Product Recharge Details</p>
+        </div>
+
+        @if (Model.responseCode == "00")
+        {
+            <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+                <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+
+                    <div id="printThis">
+                        <div class="form-group  mx-auto">
+                            <div class="body-message">
+                                <div class="card">
+                                    <div class="card-header">  <h5 class="modal-title" style="color:darkorange"><b>Electricity Purchase Reciept</b></h5></div><br />
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="col-9"> <span id="heading"><b>Status</b></span><br> <span id="details">@Model.message</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="col-6"> <span id="heading"><b>Date</b></span><br> <span id="details">@Model.transactionDate.ToString("dd MM yyyy hh:mm")</span> </div>
+                                            <div class="col-6 pull-right"> <span id="heading"><b>TransactionReference</b></span><br> <span id="details">@Model.transactionReference</span> </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="pricing">
+                                        <div class="row">
+                                            <div class="col-5"> <span id="name"> Name</span> </div>
+                                            <div class="col-7"> <span>@Model.name</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="total">
+                                        <div class="row">
+                                            <div class="col-5"> <span id="name"> Token</span> </div>
+                                            <div class="col-7"> <span>@Model.token</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="pricing">
+                                        <div class="row">
+                                            <div class="col-5"><span id="name">Address</span> </div>
+                                            <div class="col-7"> <span>&#8358;@Model.amount</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="pricing">
+                                        <div class="row">
+                                            <div class="col-5"><span id="name">Type</span> </div>
+                                            <div class="col-7"> <span>@Model.type</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="total">
+                                        <div class="row">
+                                            <div class="col-5"><span id="name">Units</span> </div>
+                                            <div class="col-7"> <span>@Model.units</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="total">
+                                        <div class="row">
+                                            <div class="col-5"><span id="name">Sequence</span> </div>
+                                            <div class="col-7"> <span>@Model.sequence</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="total">
+                                        <div class="row">
+                                            <div class="col-5"><span id="name">Reference</span> </div>
+                                            <div class="col-7"> <span>@Model.reference</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="total">
+                                        <div class="row">
+                                            <div class="col-5"><span id="name">Client Reference</span> </div>
+                                            <div class="col-7"> <span>@Model.clientReference</span> </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="footer">
+                                        <div class="row">
+                                            <div class="col-7"><img class="img-fluid" src="~/ui/images/EgolePay.png"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-7"></div>
+                                            <div class="col-5">
+                                                <button id="btnPrint" type="button" class="btn btn-warning">Print</button>
+                                            </div>
+                                        </div><br />
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        }
+        else
+        {
+
+            <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+                <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+                    <div>
+                         
+                            <form method="post">
+                                
+                               <div style="justify-content:center;">
+                                   <b>@Model.message</b>
+                               </div>
+                                <br />
+                                <div class="d-flex">
+                                    <button class="btn btn-warning d-inline-block ml-auto" type="submit"> Kindly Retry </button>
+                                </div>
+                            </form>
+                       
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    document.getElementById("btnPrint").onclick = function () {
+
+        printElement(document.getElementById("printThis"));
+    }
+
+
+    function printElement(elem) {
+        var domClone = elem.cloneNode(true);
+
+        var $printSection = document.getElementById("printSection");
+
+        if (!$printSection) {
+            var $printSection = document.createElement("div");
+            $printSection.id = "printSection";
+            document.body.appendChild($printSection);
+        }
+
+        $printSection.innerHTML = "";
+        //$printSection.appendChild(domClone);
+        window.print();
+    }
+
+
+</script>
+

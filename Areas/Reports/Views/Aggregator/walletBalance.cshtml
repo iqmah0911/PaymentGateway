@@ -1,0 +1,148 @@
+﻿
+@model PaymentGateway21052021.Areas.Reports.Models.AggregatorReportModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Aggregator Report";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="mb-2">Wallet Balance Report</h1>
+            <div class="card-body">
+                <div class="col-10 mb-5">
+                    <div class="float-left mr-3">
+                    </div>
+                    <div class="float-left">
+                        @if (ViewBag.Message != null)
+                        {
+                            <span class="alert-success">@ViewBag.Message</span>
+                        }
+                    </div>
+                </div>
+
+
+                <ul class="nav nav-tabs justify-content-center">
+
+                    @if (ViewBag.role == 2 || ViewBag.role == 13 || ViewBag.role == 12)
+                    {
+                        <li><a data-toggle="tab" href="#menu7" class="btn btn-primary">Wallet Balance</a></li>
+
+                        <li><a data-toggle="tab" href="#menu47" class="btn btn-primary">Opening/Closing Balance</a></li>
+                         
+                    }
+                </ul>
+
+                <div class="tab-content">
+                    @if (ViewBag.role == 2 || ViewBag.role == 13 || ViewBag.role == 12)
+                    {
+
+                        <div id="menu7" class="tab-pane fade">
+                            <br />
+                            <div class="col-lg-12">
+                                <br />
+                                <div class="row">
+                                    <h4>Select Start Date to End Date </h4>
+                                </div><br />
+                                <form asp-action="WalletBalanceReport" asp-controller="Aggregator" method="post">
+                                    <div class="row">
+
+                                        @*<section class="col-md-4">
+                                <label style="width: 100%;">
+                                    Start Date
+                                    <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                </label>
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </section>*@
+
+                                        <section class="col-md-4">
+                                            <label style="width: 100%;">
+                                                End Date
+                                                <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                            </label>
+                                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                                        </section>
+                                    </div>
+
+                                    <input type="submit" value="Search" class="btn btn-primary" />
+
+                                </form>
+                            </div>
+
+
+
+                        </div>
+
+                        <div id="menu47" class="tab-pane fade">
+                            <br />
+                            <div class="col-lg-12">
+                                <br />
+                                <div class="row">
+                                    <h4>Select Start Date to End Date </h4>
+                                </div><br />
+                                <form asp-action="OpeningBalanceReport" asp-controller="Aggregator" method="post">
+                                    <div class="row">
+
+                                        @*<section class="col-md-4">
+                                <label style="width: 100%;">
+                                    Start Date
+                                    <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                </label>
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </section>*@
+
+                                        <section class="col-md-4">
+                                            <label style="width: 100%;">
+                                                End Date
+                                                <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                            </label>
+                                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                                        </section>
+                                    </div>
+
+                                    <input type="submit" value="Search" class="btn btn-primary" />
+
+                                </form>
+                            </div>
+
+
+
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+        $("#StartDate").datepicker({
+            format: "dd/MM/yyyy",
+            startDate: "-10y",
+            endDate: "0d",
+            calendarWeeks: true
+        });
+
+        $("#EndDate").datepicker({
+            format: "dd/MM/yyyy",
+            startDate: "-10y",
+            endDate: "0d",
+            calendarWeeks: true
+        });
+
+</script>
+
+
+
+
+
+

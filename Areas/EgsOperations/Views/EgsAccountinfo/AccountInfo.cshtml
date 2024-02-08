@@ -1,0 +1,41 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.EgsAccountInfoViewModel
+@{
+    ViewData["Title"] = "AccountInfo";
+}
+
+<h1>Bank Account Information</h1>
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+            <div class="float-left mr-3">
+                <a asp-action="AccountInfoList" class="btn btn-warning float-left">All Bank Account(s)</a>
+            </div>
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-4">
+    <div class="card">
+        <form asp-action="AccountInfo" asp-controller="EgsAccountinfo" method="post">
+            @Html.AntiForgeryToken()
+            <label>Bank</label>
+            <select asp-for="BankID" asp-items="@(new SelectList(ViewBag.BankList, "BankID", "BankName"))"
+                    class="form-control"></select>
+            <span asp-validation-for="BankID" class="text-danger"></span>
+            <br />
+            <label>Account Number</label>
+            <input asp-for="AccountNumber" placeholder="Enter Account Number" class="form-control" />
+            <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            <br />
+            <input type="submit" value="Save" class="btn btn-info" />
+        </form>
+
+    </div>
+    </div>

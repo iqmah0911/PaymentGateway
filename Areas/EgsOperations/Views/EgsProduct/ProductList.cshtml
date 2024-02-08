@@ -1,0 +1,240 @@
+﻿
+@model PaymentGateway21052021.Areas.EgsOperations.Models.HoldDisplayProduct
+
+@{
+    ViewData["Title"] = "Product List";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-12">
+    <h1> Product(s) List </h1>
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb pt-0">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="separator mb-5"></div>
+</div>
+
+@*<div class="row">
+    <div class="col-12 col-md-12 col-xl-4 col-left">
+        <div class="card mb-4">
+            <div class="card-body">
+
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                        data-backdrop="static" data-target="#exampleModalRight">
+                    Create New Product
+                </button>
+
+                
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-12 col-md-12 col-xl-8 col-right">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="col-12 col-md-12 col-xl-6 col-left">
+                    <form asp-action="ProductList" asp-controller="EgsProduct" asp-area="EgsOperations" method="get">
+                        <div class="float-left mr-3">
+                            <input name="searchText" placeholder="Enter Product Name" class="form-control" />
+                        </div>
+                        <div class="float-left">
+                            <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                            <a asp-action="Product" class="btn btn-warning float-left ml-3">Create New Product</a>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>*@
+
+<div class="card-body col-12">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="col-mb-12">
+               
+                <form asp-action="ProductList" asp-controller="EgsProduct" asp-area="EgsOperations" method="get">
+                    <div class="form-group">
+                        <div class="float-left mr-3">
+                            <input name="searchText" placeholder="Enter Product Name" class="form-control" />
+                        </div>
+                        <div class="float-left">
+                            <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                            <a asp-action="Product" asp-controller="EgsProduct" class="btn btn-warning float-left ml-3">Create New Product</a>
+                            @*<button type="button" class="btn btn-warning float-left ml-3" data-toggle="modal"
+                                    data-backdrop="static" data-target="#exampleModalRight">
+                                Create New Product
+                            </button>*@
+                        </div>
+                    </div>
+                </form>
+                <br />
+                <div class="modal fade modal-right" id="exampleModalRight" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalRight" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add New</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form>
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" class="form-control" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Details</label>
+                                        <textarea placeholder="" class="form-control" rows="2"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                        <select class="form-control">
+                                            <option label="&nbsp;">&nbsp;</option>
+                                            <option value="Flexbox">Flexbox</option>
+                                            <option value="Sass">Sass</option>
+                                            <option value="React">React</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                   id="customCheck1">
+                                            <label class="custom-control-label"
+                                                   for="customCheck1">Completed</label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary"
+                                        data-dismiss="modal">
+                                    Cancel
+                                </button>
+                                <button type="button" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @if (Model != null && Model.HoldAllProduct.Count() > 0)
+            {
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            @*<th>S/N</th>*@
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                Product Name
+                            </th>
+                            <th>
+                                Product Description
+                            </th>
+                            <th>
+                                Date Created
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HoldAllProduct)
+                        {
+                            //indx++;
+                            <tr>
+                                @*<td>@indx</td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductCategory)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Image)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductDescription)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
+                                </td>
+                                <td>
+                                    <span class="fe fe-edit">
+                                        @Html.ActionLink("Edit", "UpdateProduct", new { id = @item.ProductID, nid = @item.ProductCategory }, new { @class = "btn btn-success float-left ml-3" })
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- pager -->
+                @if (Model.Pager.EndPage > 1)
+                {
+
+                    <ul class="pagination">
+                        @if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a href="~/EgsOperations/EgsProduct/ProductList" class="page-link">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/EgsOperations/EgsProduct/ProductList?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                            </li>
+                        }
+
+                        @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                        {
+                            var myPage = pageIndex;
+                            <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                <a href="~/EgsOperations/EgsProduct/ProductList?pageIndex=@myPage" class="page-link"> @myPage </a>
+                            </li>
+                        }
+
+                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a href="~/EgsOperations/EgsProduct/ProductList?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/EgsOperations/EgsProduct/ProductList?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <h2>No Available Product(s)</h2>
+            }
+        </div>
+    </div>
+</div>

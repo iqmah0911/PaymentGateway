@@ -1,0 +1,117 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.HoldDisplayUserKYCInfoViewModel
+
+@{
+    ViewData["Title"] = "UserKYCInfo";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body col-6">
+
+    <h2 class="mb-2">
+        User KYC Info(s)
+    </h2>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="col-10 mb-6">
+
+                <form asp-action="UserKYCInfos" asp-controller="SysUserKYCInfo" asp-area="SysSetUp" method="get">
+                    <div class="float-left mr-3">
+                        <input name="searchText" placeholder="Enter User KYC Info" class="form-control" />
+                    </div>
+                    <div class="float-left">
+                        <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                        <a asp-action="UserKYCInfo" class="btn btn-warning float-left ml-3">Create New KYC Info</a>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            @if (Model != null && Model.HoldAllUserKYCInfo.Count() > 0)
+            {
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            @*<th>S/N</th>*@
+                            <th>
+                                Identification Type
+                            </th>
+                            <th>
+                                Identification Value
+                            </th>
+                            <th>
+                                Date Created
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HoldAllUserKYCInfo)
+                        {
+                            //indx++;
+                        <tr>
+                            @*<td>@indx</td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdentificationType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdentificationValue)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateCreated)
+                            </td>
+                            <td>
+                                <a asp-action="UpdateUserKYCInfo" asp-route-id="@item.UserKYCInfoID" class="btn btn-success float-left ml-3">
+                                    <span class="fe fe-edit">Edit</span>
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- pager -->
+                @if (Model.Pager.EndPage > 1)
+                {
+
+                    <ul class="pagination">
+                        @if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a href="~/SysSetup/SysUserKYCInfo/UserKYCInfos" class="page-link">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/SysSetup/SysUserKYCInfo/UserKYCInfos?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                            </li>
+                        }
+
+                        @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                        {
+                            var myPage = pageIndex;
+                            <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                <a href="~/SysSetup/SysUserKYCInfo/UserKYCInfos?pageIndex=@myPage" class="page-link"> @myPage </a>
+                            </li>
+                        }
+
+                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a href="~/SysSetup/SysUserKYCInfo/UserKYCInfos?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/SysSetup/SysUserKYCInfo/UserKYCInfos?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <h2>No Available KYC Info(s)</h2>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.WalletViewModel
+
+@{
+    ViewData["Title"] = "Wallet";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-12">
+    <h1> Bank </h1>
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb pt-0">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="separator mb-5"></div>
+</div>
+
+<div class="card-body">
+    <h1 class="mb-2">@ViewData["wallet"]</h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-mb-12">
+                <div class="float-left mr-3">
+                    <a asp-action="Wallets" class="btn btn-warning float-left">List of Wallets</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-mb-12">
+        <form asp-action="Wallet" asp-controller="EgsWallet" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="WalletAccountNumber" placeholder="Enter Wallet Account Number" class="form-control" />
+            <span asp-validation-for="WalletAccountNumber" class="text-danger"></span>
+            <br />
+            @Html.AntiForgeryToken()
+   
+            <input type="submit" value="Save" class="btn btn-info" />
+        </form>
+
+    </div>
+</div>

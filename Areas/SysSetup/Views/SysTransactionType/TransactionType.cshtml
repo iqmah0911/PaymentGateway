@@ -1,0 +1,42 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysTransactionTypeViewModel
+
+@{
+    ViewData["Title"] = "Transaction Type";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["SysTransactionType"]</h1>
+
+
+<div class="card-body">
+
+    <h1 class="mb-2">@ViewData["SysTransactionType"]</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="TransactionTypeList" class="btn btn-warning float-left">List of Transaction Type(s)</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-6 mb-6">
+        <form asp-action="TransactionType" asp-controller="SysTransactionType" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="TransactionType" placeholder="Enter The Type Of Transaction" class="form-control" />
+            <span asp-validation-for="TransactionType" class="text-danger"></span>
+            <br />
+            <input type="submit" value="Save" class="btn btn-info" />
+        </form>
+
+    </div>
+</div>

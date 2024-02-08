@@ -1,0 +1,167 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.CreateUserViewModel
+@{
+    ViewData["Title"] = "RegisterUser";
+}
+
+<section class="page-header page-header-text-light bg-secondary pb-5">
+    <div class="container">
+        <div class="row align-items-center">
+
+        </div>
+    </div>
+</section>
+
+<section class="login-area">
+    <div class="row m-0">
+        <div class="col-lg-8 col-md-12 p-0">
+            <div class="signup-image">
+                <img src="~/ui/images/bgregpay.jpg" alt="image">
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12 p-3 pb-5">
+            <div class="login-content">
+                <div class="d-table">
+                    <div class="d-table-cell">
+                        <div class="login-form">
+                            <h3>Register on EgolePay</h3>
+                          
+                            <p>Already Registered on EgolePay? <a asp-area="Identity" asp-page="/Account/Login">Sign In</a></p>
+                            <div class="form-group">
+                                @if (TempData["message"] != null)
+                                {
+                                    <span class="alert-success"> @TempData["message"];</span>
+                                }
+                                    @if (ViewBag.Message != null)
+                                    {
+                                        <span class="alert-success">@ViewBag.Message</span>
+                                    }
+
+                                    @if (ViewBag.ErrorMessage != null)
+                                    {
+                                        <span class="alert-danger">@ViewBag.ErrorMessage</span>
+                                    }
+                                </div>
+                            <br />
+
+
+                            <div style="justify-content:center;">
+                                <ul class="nav nav-tabs" style="align-self:center;">
+                                    <li class="active"><a data-toggle="tab" href="#home" class="btn btn-primary">Individual</a></li>&nbsp; &nbsp;
+                                    <li><a data-toggle="tab" href="#menu1" class="btn btn-primary">Corporate</a></li>
+                                </ul>
+                                <br />
+                            </div>
+                            <div class="tab-content">
+                                <div id="home" class="tab-pane fade in active">
+                                    <form asp-action="Register" asp-controller="Register" method="post">
+                                        @Html.AntiForgeryToken()
+
+                                        <div class="form-group">
+                                            <input asp-for="Email" placeholder="Enter Email" class="form-control" required />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="FirstName" placeholder="Enter First Name" class="form-control" />
+                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="MiddleName" placeholder="Enter Middle Name" class="form-control" />
+                                            <span asp-validation-for="MiddleName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="LastName" placeholder="Enter Last Name" class="form-control" />
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                            <br />
+                                            <input asp-for="PhoneNumber" placeholder="Enter Mobile Number" class="form-control" maxlength="11" required />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="BVN" placeholder="Enter BVN" class="form-control" required />
+                                            <span asp-validation-for="BVN" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="DOB" placeholder="Day-Month-Year" class="form-control" required />
+                                            <span asp-validation-for="DOB" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="StateID" asp-for="StateID" asp-items="@(new SelectList(ViewBag.ListofState, "StateID", "StateName"))"
+                                                    class="form-control" placeholder="Select State" required></select>
+                                            <span asp-validation-for="StateID" class="text-danger"></span>
+                                        </div>
+                                        <input type="submit" value="Register" class="btn btn-info" /><br />
+                                    </form><br />
+
+                                </div>
+                                <div id="menu1" class="tab-pane fade">
+
+
+                                    <form asp-action="RegisterCorporate" asp-controller="Register" method="post">
+                                        @Html.AntiForgeryToken()
+
+                                        <div class="form-group">
+                                            <input asp-for="Email" placeholder="Enter Email" class="form-control" required />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="FirstName" placeholder="Enter First Name" class="form-control" />
+                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="MiddleName" placeholder="Enter Middle Name" class="form-control" />
+                                            <span asp-validation-for="MiddleName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="LastName" placeholder="Enter Last Name" class="form-control" />
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                            <br />
+                                            <input asp-for="PhoneNumber" placeholder="Enter Mobile Number" class="form-control" maxlength="11" required />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input asp-for="rcNumber" placeholder="Enter rcNumber" class="form-control" required />
+                                            <span asp-validation-for="rcNumber" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="companyName" placeholder="Enter CompanyName" class="form-control" />
+                                            <span asp-validation-for="companyName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="incorporationDate" placeholder="Enter IncorporationDate" class="form-control" />
+                                            <span asp-validation-for="incorporationDate" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input asp-for="BVN" placeholder="Enter bvn" class="form-control" />
+                                            <span asp-validation-for="BVN" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="StateID" asp-for="StateID" asp-items="@(new SelectList(ViewBag.ListofState, "StateID", "StateName"))"
+                                                    class="form-control" placeholder="Select State" required></select>
+                                            <span asp-validation-for="StateID" class="text-danger"></span>
+                                        </div>
+
+                                        <input type="submit" value="Register" class="btn btn-info" /><br />
+
+                                    </form>
+
+
+                                </div>
+
+                            </div>
+                            <br />
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br clear="all" />
+</section>
+
+

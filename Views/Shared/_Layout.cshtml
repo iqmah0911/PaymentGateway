@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+    <link rel="shortcut icon" href="~/ui/images/favicon.png">
+    <title>@ViewData["Title"] - Recharge & Easily Online, Make Bill Payment, Booking</title>
+    <meta name="description" content="EgolePay - Recharge & Bill Payment Online">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900' type='text/css'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900' type='text/css'>
+    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" data-auto-replace-svg="nest"></script>
+    <link rel="stylesheet" type="text/css" href="~/ui/vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/ui/vendor/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="~/ui/vendor/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/ui/vendor/owl.carousel/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/ui/vendor/owl.carousel/assets/owl.theme.default.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/ui/css/stylesheet.css" />
+    <link rel="stylesheet" href="~/ui/css/custom.css" asp-append-version="true" />
+    <link href="~/ui/js/app.c0f3a37c.js" rel="preload" asp-append-version="true">
+    <link href="~/ui/js/chunk-vendors.2b23d750.js" rel="preload" asp-append-version="true">
+    <link href="~/ui/css/chunk-vendors.8ef3912e.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/ui/css/app.d49149c9.css" rel="stylesheet" asp-append-version="true">
+
+
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
+        <link rel="stylesheet" href="~/ui/vendor/bootstrap/css/bootstrap.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/ui/vendor/bootstrap/css/bootstrap.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/ui/vendor/font-awesome/css/all.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/ui/vendor/owl.carousel/assets/owl.carousel.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/ui/vendor/owl.carousel/assets/owl.theme.default.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/ui/css/stylesheet.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/ui/css/custom.css" asp-append-version="true" />
+        <link href="~/ui/js/app.c0f3a37c.js" rel="preload" asp-append-version="true">
+        <link href="~/ui/js/chunk-vendors.2b23d750.js" rel="preload" asp-append-version="true">
+        <link href="~/ui/css/chunk-vendors.8ef3912e.css" rel="stylesheet" asp-append-version="true">
+        <link href="~/ui/css/app.d49149c9.css" rel="stylesheet" asp-append-version="true">
+    </environment>
+    
+</head>
+
+<body>
+
+
+    <div id="main-wrapper" class="mb-n4">
+        <header id="header" class="bg-transparent text-3">
+
+            <div class="container">
+                <div class="header-row">
+                    <div class="header-column justify-content-start">
+
+                        <div class="logo"> <a asp-area="" asp-controller="HomeStore" asp-action="Index" class="d-flex" title="EgolePay"><img src="~/ui/images/EgolePay.png" alt="EgolePay" width="250" height="50"></a> </div>
+
+                        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#header-nav" aria-expanded="false"> <span></span> <span></span> <span></span> </button>
+
+                        <div class="header-column justify-content-end">
+                            <nav class="primary-menu navbar navbar-expand-lg">
+                                <div id="header-nav" class="navbar-collapse collapse" style="">
+                                    <ul class="navbar-nav">
+                                        <li> <a class="dropdown-toggle" asp-area="" asp-controller="HomeStore" asp-action="Index">Home<i class="arrow"></i></a></li>
+                                        <li> <a class="dropdown-toggle" asp-area="" asp-controller="HomeStore" asp-action="About">About<i class="arrow"></i></a></li>
+                                        <li> <a class="dropdown-toggle" asp-area="" asp-controller="HomeStore" asp-action="Fees">Fees<i class="arrow"></i></a></li>
+                                        <li> <a class="dropdown-toggle" href="#">Developers<i class="arrow"></i></a></li>
+                                        <li> <a class="dropdown-toggle" asp-area="" asp-controller="HomeStore" asp-action="ContactUs">Contact Us<i class="arrow"></i></a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+
+                    </div>
+                    <div class="header justify-content-end">
+                        <nav class="login-signup navbar navbar-expand">
+
+                            <ul class="navbar-nav">
+                                <li class="align-items-center h-auto ml-sm-2 mr-2"><a class="btn btn-sm btn-primary" asp-area="Identity" asp-page="/Account/Login">Log In</a></li>
+                                <li class="align-items-center h-auto ml-sm-2"><a class="btn btn-sm btn-primary" asp-area="SysSetup" asp-controller="Register" asp-action="RegisterUser">Sign Up</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div>
+            <partial name="_CookieConsentPartial" />
+            <div>
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <section class="account-create-area">
+        <div class="container">
+            <div class="account-create-content">
+                <h2>Apply for an account in minutes</h2>
+                <p>Get your EgolePay account today!</p>
+                <a asp-area="SysSetup" asp-controller="Register" asp-action="RegisterUser" class="btn btn-primary">Get Your EgolePay Account</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6 col-md-6">
+                    <div class="single-footer-widget">
+                        <h3>Company</h3>
+                        <ul class="list">
+                            <li><a asp-area="" asp-controller="HomeStore" asp-action="Index">Home</a></li>
+                            <li><a asp-area="" asp-controller="HomeStore" asp-action="About">About Us</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press & Media</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-md-6">
+                    <div class="single-footer-widget">
+                        <h3> Learn </h3>
+                        <ul class="list">
+                            <li><a asp-area="" asp-controller="HomeStore" asp-action="Index">Integrations</a></li>
+                            <li><a asp-area="" asp-controller="HomeStore" asp-action="Fees">Pricing</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Sitemap</a></li>
+                            <li><a href="#">Developer</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-md-6">
+                    <div class="single-footer-widget">
+                        <h3>Support</h3>
+                        <ul class="list">
+                            <li><a href="faq.html">FAQ's</a></li>
+                            @*<li><a asp-area="" asp-controller="Home" asp-action=" ">Privacy Policy</a></li>*@
+                            <li><a href="#">Terms &amp; Condition</a></li>
+                            <li><a href="#">Community</a></li>
+                            <li><a asp-area="" asp-controller="HomeStore" asp-action="ContactUs">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-md-6">
+                    <div class="single-footer-widget">
+                        <h3>Address</h3>
+                        <ul class="footer-contact-info">
+                            <li><span>Location:</span> 41, Industrial Avenue, Sabo Yaba </li>
+                            <li><span>Email:</span> <a href="mailto:hello@egolepay.com">hello@egolepay.com</a></li>
+                            <li><span>Phone:</span> <a href="tel:+2348185651652">+234-818-565-1652</a></li>
+                        </ul>
+                        <ul class="social-links">
+                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="footer-copyright" style="/* background: linear-gradient(90deg, #ee0979, #ff6a00); */background: #ddd;">
+            <ul class="nav justify-content-center">
+                <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-controller="HomeStore" asp-action="Index">Home</a> </li>
+            </ul>
+        </div>
+        <div class="copyright-area" style="background: #000000;">
+            <p class="copyright-text text-white">Copyright © @DateTime.Now.Year <a asp-area="" asp-controller="HomeStore" asp-action="https//www.egolepay.com" style="color: #ffffff;"><b style="color:white;">Egole Pay </b></a>  | Powered By <a asp-area="" asp-controller="#" asp-action="#" style="color: #ffffff;"><b>VFD Group</b></a>.</p>
+        </div>
+        <div class="map-image"><img src="~/ui/images/map.png" alt="map"></div>
+    </footer>
+
+    <a id="back-to-top" data-toggle="tooltip" title="Back to Top" href="javascript:void(0)"><i class="fa fa-chevron-up"></i></a>
+
+    <script src="~/ui/vendor/jquery/jquery.min.js"></script>
+    <script src="~/ui/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="~/ui/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/ui/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="~/ui/js/theme.js"></script>
+    <script src="~/ui/js/bootstrap.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/ui/js/chunk-vendors.2b23d750.js"></script>
+    <script src="~/ui/js/app.c0f3a37c.js"></script>
+
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+
+        <script src="~/ui/vendor/jquery/jquery.min.js"></script>
+        <script src="~/ui/vendor/bootstrap/js/bootstrap.js"></script>
+        <script src="~/ui/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/ui/vendor/owl.carousel/owl.carousel.min.js"></script>
+        <script src="~/ui/js/theme.js"></script>
+        <script src="~/ui/js/bootstrap.js"></script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script src="~/ui/js/chunk-vendors.2b23d750.js"></script>
+        <script src="~/ui/js/app.c0f3a37c.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
+        </script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @*@RenderSection("Scripts", required: false)*@
+
+
+
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>
+<html>
+
+<body>
+
+    <div id="main-wrapper" class="mb-n4">
+        <div>
+            <partial name="_CookieConsentPartial" />
+            <div>
+                <main role="main">
+                    @RenderBody()
+                </main>
+
+            </div>
+        </div>
+    </div>-->
+@*<a id="back-to-top" data-toggle="tooltip" title="Back to Top" href="javascript:void(0)"><i class="fa fa-chevron-up"></i></a>*@
+
+<!--<script src="~/ui/vendor/jquery/jquery.min.js"></script>
+    <script src="~/ui/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="~/ui/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/ui/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="~/ui/js/theme.js"></script>
+    <script src="~/ui/js/bootstrap.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/ui/js/chunk-vendors.2b23d750.js"></script>
+    <script src="~/ui/js/app.c0f3a37c.js"></script>
+
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+
+        <script src="~/ui/vendor/jquery/jquery.min.js"></script>
+        <script src="~/ui/vendor/bootstrap/js/bootstrap.js"></script>
+        <script src="~/ui/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/ui/vendor/owl.carousel/owl.carousel.min.js"></script>
+        <script src="~/ui/js/theme.js"></script>
+        <script src="~/ui/js/bootstrap.js"></script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script src="~/ui/js/chunk-vendors.2b23d750.js"></script>
+        <script src="~/ui/js/app.c0f3a37c.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
+        </script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>-->

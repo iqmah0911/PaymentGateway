@@ -1,0 +1,230 @@
+﻿@model PaymentGateway21052021.Areas.Dashboard.Models.DisplayProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<div class="container-fluid">
+
+    <div class="col-12">
+        <h1> My Profile </h1>
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+            <ol class="breadcrumb pt-0">
+                <li class="breadcrumb-item">
+                    <a href="#">Home</a>
+                </li>
+            </ol>
+        </nav>
+        <div class="separator mb-5"></div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-12 mb-4">
+            <div class="card">
+                <div>
+                    @*<div class="col-12"><a href="#"><img class="img-fluid border-radius" src="~/uii/img/profiles/avatar1.jpg"></a></div>*@
+
+                    @*<div class="col-md-4">
+                            <div id="imgPreview" class="thumbnail" style="display:block;height:120px;width:120px;">
+                                <img class="img-responsive" id="targetImg" style="height:120px;width:120px;" />
+                            </div>
+                        </div>*@
+
+                    @if (Model.Image != null)
+                    {
+                        <img src="~/UploadedPics/ProfilePics/@Model.Image" class="img-responsive img-thumbnail" style="cursor:pointer; width:100%;" />
+                    }
+                    else if (Model.Image == null)
+                    {
+                        @*<img src="~/images/blue-man.png" class="pull-left  card img-responsive" />      class="img-fluid border-radius" *@
+                        @*<div class="col-12"><img src="~/uii/img/profiles/avatar1.jpg"></div>*@
+                        <img src="~/uii/img/profiles/avatar1.jpg" class="img-responsive img-thumbnail" style="cursor:pointer; width:100%;" />
+                    }
+
+
+                    <h2 class="card-title text-center font-weight-600"> @ViewBag.FirstName  @ViewBag.LastName </h2>
+                    <form enctype="multipart/form-data" method="post" asp-action="UploadProfilePic" asp-controller="Profile">
+                        <input id="file" asp-for="Image" type="file" name="file">
+                        <input id="guestId" asp-for="UserID" type="hidden">
+                        @if (ViewBag.UploadErrMsg != null)
+                        {
+                            <span class="text-danger font-weight-bold">@ViewBag.UploadErrMsg</span>
+                            <br />
+                        }
+                        <input id="guestPickFileSubmit" class="btn btn-primary" type="submit" value="Upload">
+                    </form>
+                    <div class="card-footer">
+                        <p>
+                            <span class="text-danger font-weight-bold">*** Only jpg or jpeg format is allowed</span>
+                        </p>
+                    </div>
+                    @*<input class="form-control" type="file" id="imageBrowes" accept="image/x-png,image/jpeg" />  style="display:none;"style="display:none; margin-top: 10px;"*@
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-md-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"> PROFILE DESCRIPTIONS </h5>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 font-weight-bold">Full Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @ViewBag.FirstName
+                            @ViewBag.LastName
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 font-weight-bold">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @ViewBag.UserName
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 font-weight-bold">Bank Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            VFD Microfinance Bank Limited
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 font-weight-bold">Wallet Account Number</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @ViewBag.WalletAccountNumber
+                        </div>
+                    </div>
+                    @if (Model.IsGeneral == false && Model.IsFilled == false)
+                    {
+                        <hr />
+                        <form enctype="multipart/form-data" method="post" asp-action="UpdateInfo" asp-controller="Profile">
+                            <input id="userId" asp-for="UserID" type="hidden">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0 font-weight-bold">Business Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input asp-for="BusinessName" placeholder="Enter Business Name" class="form-control" required />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0 font-weight-bold">Business Address</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input asp-for="BusinessAddress" placeholder="Enter Business Address" class="form-control" required />
+                                </div>
+                            </div>
+                            <input id="guestSubmit" class="btn btn-primary" type="submit" value="Update Info">
+                        </form>
+                    }
+                    else if (Model.IsGeneral == false && Model.IsFilled == true)
+                    {
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0 font-weight-bold">Business Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @ViewBag.BusinessName
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0 font-weight-bold">Business Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @ViewBag.BusinessAddress
+                            </div>
+                        </div>
+                    }
+                    <br />
+                    <hr />
+                    @if (Model.DisplayAggViewModel != null)
+                    {
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h6 class="mb-0 font-weight-bold">Month</h6>
+                            </div>
+                            <div class="col-sm-6">
+                                <h6 class="mb-0 font-weight-bold">Commision Paid </h6>
+                            </div>
+
+                        </div>
+                        foreach (var ite in Model.DisplayAggViewModel.HoldAllCommsn)
+                        {
+                            <div class="row">
+
+                                <div class="col-sm-6 text-secondary">
+                                    @ite.monthname
+                                </div>
+                                <div class="col-sm-6 text-secondary">
+                                    @ite.Amount
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+
+                    }
+
+
+
+
+
+
+                    <!--<table class="table table-hover">
+    <thead>
+        <tr>-->
+                    @*<th>S/N</th>*@
+                    <!--<th>
+                Username
+            </th>
+            <th>
+                Wallet Number
+            </th>
+            <th>
+
+                Account Name
+            </th>
+        </tr>
+    </thead>
+    <tbody>-->
+                    @*<td>@indx</td>*@
+                    <!--<tr>
+                <td>
+                    @*@ViewBag.UserName*@
+                </td>
+                <td>
+                    @*@ViewBag.WalletAccountNumber*@
+                </td>
+                <td>
+                    @*@ViewBag.FirstName*@
+                    @*@ViewBag.LastName*@
+                </td>
+            </tr>
+        </tbody>
+    </table>-->
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

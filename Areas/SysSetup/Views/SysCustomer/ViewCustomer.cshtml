@@ -1,0 +1,178 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysCustomerViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Customer Detail";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <span class="alert-success">@ViewBag.ErrorMessage</span>
+                }
+            </div>
+        </div>
+
+        <div class="container-fluid disable-text-selection">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-2">
+                        <h1>Process Request </h1>
+
+                        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                            <ol class="breadcrumb pt-0">
+                                <li class="breadcrumb-item">
+                                    <a href="#">Home</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#">Process</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Request</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="separator mb-5"></div>
+                </div>
+            </div>
+
+ 
+            <div class="card-body">
+
+                <form asp-action=" " asp-controller=" " method="post">
+                    <div class="row">
+                        <input asp-for="UserID" class="form-control" hidden="hidden" />
+                        @if (Model.CompanyName == "" || Model.CompanyName == null)
+                        {
+                            <div class="col-md-4">
+                                <label>Full Name</label>
+                                <input asp-for="FullNames" class="form-control" readonly="readonly" />
+                            </div>
+                            <div class="col-md-4">
+                                <label> BVN</label>
+                                <input asp-for="BVN" class="form-control" readonly="readonly" />
+                            </div>
+                            <div class="col-md-4">
+                                <label> Email</label>
+                                <input asp-for="Email" class="form-control" readonly="readonly" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4">
+                                <label>CompanyName</label>
+                                <input asp-for="CompanyName" class="form-control" readonly="readonly" />
+                            </div>
+                            <div class="col-md-4">
+                                <label> BVN</label>
+                                <input asp-for="BVN" class="form-control" readonly="readonly" />
+                            </div>
+                            <div class="col-md-4">
+                                <label> Email</label>
+                                <input asp-for="Email" class="form-control" readonly="readonly" />
+                            </div>
+                        }
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>PhoneNumber</label>
+                            <input asp-for="PhoneNumber" class="form-control" readonly="readonly" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>BirthDate</label>
+                            <input asp-for="DOB" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Address</label>
+                            <input asp-for="Address" class="form-control" readonly="readonly" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label> Gender</label>
+                            <input asp-for="Gender" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>KYC</label>
+                            <input asp-for="KYC" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Date Created</label>
+                            <input asp-for="DateCreated" class="form-control" readonly="readonly" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label> Role</label>
+                            <input asp-for="Role" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>State</label>
+                            <input asp-for="StateName" class="form-control" readonly="readonly" />
+                        </div>
+
+                        <div class="col-md-12 p-3" style="display: inline-flex;">
+                            @if (Model.documents.Count < 1)
+                            {
+                                <div class="card d-flex flex-row mb-12">
+                                    <div class="d-flex flex-grow-1 min-width-zero">
+                                        <div style="padding: 0.20rem !important;" class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                                            <h2 class="card-body text-center"> No document(s) available for display</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model.documents)
+                                {
+                                    <div class="form-group pr-3">
+                                        <label>@item.DocumentName </label>
+                                        @Html.ActionLink("Download", "DownloadFile", new { fileName = item.DocumentPath }, new { @class = "btn btn-sm btn-primary" })
+                                    </div>
+
+                                }
+
+                            }
+                        </div>
+
+
+                    </div>
+
+                    <div class="card-footer">
+                        <p>
+                            @Html.ActionLink("Customer List", "CustomerDetailsView")
+                        </p>
+                    </div>
+                </form>
+            </div> 
+        </div> 
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

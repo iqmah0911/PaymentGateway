@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\EGS\**" />
+    <Content Remove="Areas\EGS\**" />
+    <EmbeddedResource Remove="Areas\EGS\**" />
+    <None Remove="Areas\EGS\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20210611131845_FourNewTables.cs" />
+    <Compile Remove="Migrations\20210611131845_FourNewTables.Designer.cs" />
+    <Compile Remove="Migrations\20210611134450_FourNewTablesPart2.cs" />
+    <Compile Remove="Migrations\20210611134450_FourNewTablesPart2.Designer.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.NET.Sdk.Razor" Version="2.2.0" />
+    <PackageReference Include="Serilog" Version="2.10.1-dev-01308" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Areas\Dashboard\Data\" />
+    <Folder Include="Areas\EgsOperations\Data\" />
+    <Folder Include="Areas\Reports\Controllers\" />
+    <Folder Include="Areas\Reports\Data\" />
+    <Folder Include="Areas\Reports\Models\" />
+    <Folder Include="Areas\Reports\Views\" />
+    <Folder Include="Areas\SysSetup\Data\" />
+    <Folder Include="Areas\SysSetup\Views\NewFolder\" />
+    <Folder Include="Repositories\Reports\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="Areas\SysSetup\Views\SysIdentificationType\IdentificationType.cshtml" />
+    <None Include="Areas\SysSetup\Views\SysIdentificationType\IdentificationTypesList.cshtml" />
+    <None Include="Areas\SysSetup\Views\SysIdentificationType\UpdateIdentificationType.cshtml" />
+    <None Include="Areas\SysSetup\Views\SysTransactionLimit\TransactionLimit.cshtml" />
+    <None Include="Areas\SysSetup\Views\SysTransactionLimit\TransactionLimitList.cshtml" />
+    <None Include="Areas\SysSetup\Views\SysTransactionLimit\UpdateTransactionLimit.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_CookieConsentPartial.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_LoginPartial.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings*json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

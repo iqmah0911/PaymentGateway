@@ -1,0 +1,49 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.EgsProductItemViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Product Item";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["ProductItem"]</h1>
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+            <div class="float-left mr-3">
+                <a asp-action="ProductItemList" class="btn btn-warning float-left">List of Product Items</a>
+            </div>
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+        </div><br />
+
+
+
+
+        <div class="col-6 mb-6">
+            <form asp-action="ProductItem" asp-controller="EgsProductItem" method="post">
+                @Html.AntiForgeryToken()
+                <label>Select Products</label>
+                <select id="productid" asp-for="ProductID" asp-items="@(new SelectList(ViewBag.ProductList, "ProductID", "ProductName"))"
+                        class="form-control" placeholder="Service Type"></select>
+                <span asp-validation-for="ProductID" class="text-danger"></span>
+                <br />
+                <br />
+                <label asp-for="ProductItemName"></label>
+                <input asp-for="ProductItemName" placeholder="Enter Product Item Name" class="form-control" />
+                <span asp-validation-for="ProductItemName" class="text-danger"></span>
+                <br />
+                <input type="submit" value="Save" class="btn btn-info" />
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+

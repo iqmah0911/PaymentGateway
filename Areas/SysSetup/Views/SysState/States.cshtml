@@ -1,0 +1,109 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.HoldDisplayStateViewModel
+
+@{
+    ViewData["Title"] = "States";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <div class="card">
+
+        <div class="card-body">
+            <h2 class="mb-2">States</h2>
+            <br />
+            <div class="col-10 mb-6">
+                <form asp-action="States" asp-controller="SysState" method="get">
+                    <div class="float-left mr-3">
+                        <input name="searchText" placeholder="Enter State Name" class="form-control" />
+                    </div>
+                    <div class="float-left">
+                        <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                        <a asp-action="State" class="btn btn-warning float-left">Create New State</a>
+                    </div>
+                </form>
+            </div>
+
+            @if (Model != null && Model.HoldAllStates.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            @*<th>S/N</th>*@
+                            <th>
+                                State Name
+                            </th>
+                            <th>
+                                Date Created
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HoldAllStates)
+                        {
+                            //indx++;
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StateName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateCreated)
+                            </td>
+                            <td>
+                                <a asp-action="UpdateState" asp-route-id="@item.StateID" class="btn btn-success float-left ml-3">
+                                    <span class="fe fe-edit">Edit</span>
+                                </a> |
+
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+                <!-- pager -->
+                @if (Model.Pager.EndPage > 1)
+                {
+
+                    <ul class="pagination">
+                        @if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a href="~/Systate/States" class="page-link">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/Systate/States?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                            </li>
+                        }
+
+                        @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                        {
+                            var myPage = pageIndex;
+                            <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                <a href="~/Systate/States?pageIndex=@myPage" class="page-link"> @myPage </a>
+                            </li>
+                        }
+
+                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a href="~/Systate/States?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/Systate/States?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <h2>No Available State(s)</h2>
+            }
+
+        </div>
+    </div>
+</div>

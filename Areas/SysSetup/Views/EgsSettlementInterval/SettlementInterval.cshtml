@@ -1,0 +1,45 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.EgsSettlementIntervalViewModel
+
+@{
+    ViewData["Title"] = "Settlement Interval";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["EgsSettlementInterval"]</h1>
+
+
+
+<div class="card-body">
+
+    <h1 class="mb-2">@ViewData["EgsSettlementInterval"]</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="SettlementIntervalList" class="btn btn-warning float-left">List of Settlement Interval(s)</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+
+
+
+            <div class="col-6 mb-6">
+                <form asp-action="SettlementInterval" asp-controller="EgsSettlementInterval" method="post">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="SettlementIntervalName" placeholder="Enter The Interval Of Settlement" class="form-control" />
+                    <span asp-validation-for="SettlementIntervalName" class="text-danger"></span>
+                    <br />
+                    <input type="submit" value="Save" class="btn btn-info" />
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.CreateStateViewModel
+
+@{
+    ViewData["Title"] = "Create a State";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h1 class="mb-2">@ViewData["Manage State"]</h1>
+
+
+    <div class="row">
+        <div class="col-12 col-md-12 col-xl-8 col-left">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form asp-action="State" asp-controller="SysState" method="post">
+                        <div class="form-group">
+                            @Html.AntiForgeryToken()
+                            <label>Enter State Name</label>
+                            <input asp-for="StateName" placeholder="Enter State Name" class="form-control" />
+                            <span asp-validation-for="StateName" class="text-danger"></span>
+                        </div>
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12 col-xl-4 col-right">
+            <div class="card mb-4">
+                <div class="card-body mx-auto">
+                    <div class="float-left mr-3">
+                        <a asp-action="States" asp-controller="SysState" class="btn btn-warning float-left">List of States</a>
+                    </div>
+                    <div class="float-left">
+                        @if (ViewBag.Message != null)
+                        {
+                            <span class="alert-success">@ViewBag.Message</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

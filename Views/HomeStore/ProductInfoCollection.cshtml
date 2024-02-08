@@ -1,0 +1,250 @@
+﻿@model PaymentGateway21052021.Models.OrderDetailsModel
+
+@{
+    ViewData["Title"] = "Product Info";
+}
+
+<section class="page-header page-header-text-light bg-secondary">
+    <div class="container">
+        <div class="row align-items-center">
+            
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row my-5">
+
+        <div class="col-10 mb-6">
+
+            <form asp-action="ProductInfoCollection" asp-controller="HomeStore" method="get">
+            </form>
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Order Details</h2>
+            <p class="lead">Product Recharge Details</p>
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+                <div>
+
+
+                    @if (TempData["InvoiceModeId"].ToString() == "1")
+                    {
+
+                    <form asp-action="ProductInfoCollection" asp-controller="HomeStore" method="post">
+
+
+                        @Html.AntiForgeryToken()
+                        <br />
+
+
+                        <input asp-for="Email" type="email" placeholder="Enter Email Address" class="form-control" autocomplete="off"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+
+                        <br />
+                        <input asp-for="PhoneNumber" placeholder="Enter Phone No" class="form-control" maxlength="11" autocomplete="off"/>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        <br />
+                        <label>Select Product Item</label>
+                        <select id="prodItemID" asp-for="ProductItemID" asp-items="@(new SelectList(ViewBag.ProductItemList, "ProductItemID", "ProductItemName"))"
+                                class="form-control" placeholder="Service Type" onchange="DoPostBack();"></select>
+                        <br />
+                        <input asp-for="AmountRate" placeholder="Enter Amount" class="form-control" readonly id="AmountRateReadOnly" />
+                        <span asp-validation-for="AmountRate" class="text-danger"></span><br />
+
+                        <br />
+                        <input asp-for="AmountRate" type="hidden" class="form-control" id="hfAmountRate" />
+                        <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" value="@TempData["InvoiceModeId"].ToString()" />
+                        <input asp-for="ProductID" type="hidden" class="form-control" id="ProductID" />
+                        <input asp-for="ProductItemID" type="hidden" class="form-control" id="ProductItemID" />
+                        <input asp-for="ProductName" type="hidden" class="form-control" id="ProductName" />
+                        <input asp-for="ProductItemName" type="hidden" class="form-control" id="ProductItemName" />
+
+                        <div class="d-flex">
+                            <button type="submit" value="Continue with Card" name="card" class="btn d-inline-block btn-link p-0 mr-auto "> Continue With Card </button>
+                            <button class="btn btn-warning d-inline-block ml-auto" name="wallet" value="Pay with Wallet" type="submit"
+                                    @*onclick="location.href='/Identity/Account/Login?loginType=1';"*@>
+                                Pay With Wallet
+                            </button>
+                        </div>
+
+
+                    </form>
+                    }
+                    else if (TempData["InvoiceModeId"].ToString() == "2")
+                    {
+                <form asp-action="InvoiceVerification" asp-controller="HomeStore" method="post">
+                    <br />
+
+                    <input asp-for="ReferenceNo" placeholder="Enter Reference Number" class="form-control" id="refNo" autocomplete="off"/>
+                    <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" value="@TempData["InvoiceModeId"].ToString()" />
+
+                    <br />
+                    <div class="d-flex">
+                        <button type="submit" value="Continue with Card" name="card" class="btn d-inline-block btn-link p-0 mr-auto "> Continue With Card </button>
+                        <button class="btn btn-warning d-inline-block ml-auto" name="wallet" value="Pay with Wallet" type="submit"
+                                @*onclick="location.href='/Identity/Account/Login?loginType=1';"*@>
+                            Pay With Wallet
+                        </button>
+                    </div>
+
+
+                </form>
+                    }
+                    else if (TempData["InvoiceModeId"].ToString() == "3")
+                    {
+                <form asp-action="InvoicePVerification" asp-controller="HomeStore" method="post">
+                    <br />
+                    <input asp-for="Email" type="email" placeholder="Enter Email Address" class="form-control" autocomplete="off"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+
+                    <br />
+                    <input asp-for="PhoneNumber" placeholder="Enter Phone No" class="form-control" maxlength="11" autocomplete="off"/>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <br />
+                    <input asp-for="ReferenceNo" placeholder="Enter Reference Number" class="form-control" id="refNo" autocomplete="off"/>
+                    <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" value="@TempData["InvoiceModeId"].ToString()" />
+                    <input asp-for="ProductID" type="hidden" class="form-control" value="@ViewBag.productid" />
+                    <br />
+                    <div class="d-flex">
+                        <button type="submit" value="Verify" class="btn d-inline-block btn-link p-0 mr-auto "> Proceed </button>
+                        <button class="btn btn-warning d-inline-block ml-auto" name="wallet" value="Pay with Wallet" type="submit">
+                            Pay With Wallet
+                        </button>
+                    </div>
+
+                </form>
+                    }
+                    else if (TempData["InvoiceModeId"].ToString() == "4")
+                    {
+                <form asp-action="InvoiceEVerification" asp-controller="HomeStore" method="post">
+                    <br />
+                    <input asp-for="meter" type="text" placeholder="Enter Meter Number" class="form-control" autocomplete="off"/>
+                    <span asp-validation-for="meter" class="text-danger"></span>
+
+                    <br />
+                    @*<input asp-for="vendType" placeholder="Enter vendType" class="form-control" />*@
+                    <select asp-for="vendType" asp-items="@StaticDrpDwnListItems.VendTypeList()" class="form-control">
+                        <option value="">Please select one</option>
+                    </select>
+                    <span asp-validation-for="vendType" class="text-danger"></span>
+
+                    <br />
+                    @*<input asp-for="discoCode" placeholder="Enter Disco" class="form-control" id="refNo" />*@
+                    <select asp-for="disco" asp-items="@StaticDrpDwnListItems.DiscoCodeList()" class="form-control">
+                        <option value="">Please select one</option>
+                    </select>
+                    <span asp-validation-for="disco" class="text-danger"></span>
+                    <input asp-for="ProductModeID" type="hidden" class="form-control" id="hfProductModeID" value="@TempData["InvoiceModeId"].ToString()" />
+                    <input asp-for="ProductID" type="hidden" class="form-control" value="@ViewBag.productid" />
+                        
+                    <br />
+                  
+                    <div class="d-flex">
+                        @*<button type="submit" value="Continue with Card" name="card" class="btn d-inline-block btn-link p-0 mr-auto "> Continue With Card </button>*@
+                        <button class="btn btn-warning d-inline-block ml-auto" name="wallet" value="Pay with Wallet" type="submit">
+                            Pay With Wallet
+                        </button>
+                    </div>
+
+                </form>
+                    }
+                    <br />
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*@section Script{
+        }*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        
+        function DoPostBack() {
+            //alert("changed");
+            var select = document.getElementById("prodItemID");
+            var option = select.options[select.selectedIndex];
+            var selectedValue = $('#prodItemID').val();
+            if (selectedValue != "0") {
+
+                $('#hfAmountRate').val('0.00');
+                $('#AmountRateReadOnly').val('0.00');
+
+	            $.post('@Url.Action("GetRates", "HomeStore")', { selection : selectedValue }, function (data) {
+                    // handle the server response here
+                    var content = JSON.parse(data);
+                    console.log(content.value)
+                    $('#hfAmountRate').val(content.value.amountRate);
+                    $('#AmountRateReadOnly').val(content.value.amountRate);
+                    $("#AmountRateReadOnly").attr("disabled", "disabled");
+                    $('#ProductID').val(content.value.productID);
+                    $('#ProductName').val(content.value.productName);
+                    $('#ProductItemID').val(content.value.productItemID);
+                    $('#ProductItemName').val(content.value.productItemName);
+
+	            });
+
+            }
+
+        }
+
+        $('#drpProductItem').change(function () {
+            alert("changed");
+        // respond to the change event in here
+            var selectedValue = $('#drpProductItem').val();
+            alert("selectedValue = " + selectedValue);
+
+        });
+
+
+    </script>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="container">
+    <div class="card-body">-->
+@*<h1 class="mb-2">@ViewData["Bank"]</h1>*@
+
+@*<div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="ProductInfoCollection" class="btn btn-warning float-left">List of Product Items</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+<!--</div>
+
+</div>-->

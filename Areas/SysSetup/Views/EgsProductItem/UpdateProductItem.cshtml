@@ -1,0 +1,57 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.EgsProductItemViewModel
+@{
+    ViewData["Title"] = "Update Product Item";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewData["Title"] = "Update Product Item";
+}
+
+<div class="card-body">
+
+    <h2 class="mb-2">Update Product Item</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="ProductItemList" class="btn btn-warning float-left">List of Product Item(s)</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+
+
+            <div class="col-6 mb-6">
+
+                <form asp-action="UpdateProductItem" asp-controller="EgsProductItem" method="post">
+                    @Html.AntiForgeryToken()
+                    <label>Select Products</label>
+                    <select id="productid" asp-for="ProductID" asp-items="@(new SelectList(ViewBag.ProductList, "ProductID", "ProductName"))"
+                            class="form-control" placeholder="Service Type"></select>
+                    <span asp-validation-for="ProductID" class="text-danger"></span>
+                    <br />
+                    <br />
+                    <label asp-for="ProductItemName"></label>
+                    <input asp-for="ProductItemName" placeholder="Enter Product Item Name" class="form-control" />
+                    <span asp-validation-for="ProductItemName" class="text-danger"></span>
+                    <br />
+                    <input type="hidden" asp-for="ProductItemID" />
+                    <input type="submit" value="Update Product Item" class="btn btn-info" />
+
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+  
+</div>

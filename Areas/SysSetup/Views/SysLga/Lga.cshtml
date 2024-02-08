@@ -1,0 +1,54 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysLgaViewModel
+@*@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers*@
+@{
+    ViewData["Title"] = "Local Government Areas";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h1 class="mb-2">@ViewData["SysLga"]</h1>
+
+
+    <div class="row">
+        <div class="col-12 col-md-12 col-xl-8 col-left">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form asp-action="Lga" asp-controller="SysLga" method="post">
+                        <div class="form-group">
+                            @Html.AntiForgeryToken()
+                            <label>Select Products</label>
+                            <select id="StateID" asp-for="StateID" asp-items="@(new SelectList(ViewBag.StateList, "StateID", "StateName"))"
+                                    class="custom-select" placeholder="Service Type"></select>
+                            <span asp-validation-for="StateID" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="LgaName" placeholder="Enter LGA" class="form-control" />
+                            <span asp-validation-for="LgaName" class="text-danger"></span>
+                        </div>
+                        <input type="submit" value="Save" class="btn btn-info" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12 col-xl-4 col-right">
+            <div class="card mb-4">
+                <div class="card-body mx-auto">
+                    <div class="float-left mr-3">
+                        <a asp-action="Lgas" class="btn btn-warning float-left">List of Local Government</a>
+                    </div>
+                    <div class="float-left">
+                        @if (ViewBag.Message != null)
+                        {
+                            <span class="alert-success">@ViewBag.Message</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

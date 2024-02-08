@@ -1,0 +1,63 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.UpdateWalletViewModel
+@{
+    ViewData["Title"] = "Update Wallet";
+}
+
+<div class="col-12">
+    <h1> @ViewData["Title"] </h1>
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb pt-0">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="separator mb-5"></div>
+</div>
+
+<div class="card-body">
+
+    @*<div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="Banks" class="btn btn-warning float-left">List of Banks</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="col-mb-12"> 
+
+        <form asp-action="UpdateWallet" asp-controller="EgsWallet" method="post">
+            @Html.AntiForgeryToken()
+            <Label>@Model.FirstName </Label>
+            <label>@Model.LastName</label>
+            <br />
+
+            <label class="col"> Wallet Account Number:@Model.WalletAccountNumber </label>
+            <br />
+
+            <label class="form-check-label">
+                @Html.CheckBox("IsActive")
+                Status
+            </label>
+            <br />
+
+            @*@Html.AntiForgeryToken()
+        <input asp-for="WalletAccountNumber" placeholder="Enter Bank Account Number" class="form-control" />
+        <span asp-validation-for="WalletAccountNumber" class="text-danger"></span>
+        <br />*@
+
+
+            <input type="hidden" asp-for="WalletID" />
+            <input type="submit" value="Update Wallet" class="btn btn-info" />
+        </form>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.DocumentsViewModel
+
+@{
+    ViewData["Title"] = "Update Document";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h2 class="mb-2">Update Document</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="Documents" class="btn btn-warning float-left">Create Required Document(s)</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 mb-6">
+
+        <form asp-action="UpdateDocument" asp-controller="SysDocument" method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-group row">
+                <input asp-for="documentID" hidden="hidden"/>
+                <div class="form-group col-lg-4 pl-2">
+                    <label>Document Name</label>
+                    <input asp-for="documentName" placeholder="Enter Document Name" class="form-control" />
+                    <span asp-validation-for="documentName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-4 pl-2">
+                    <label>Role</label>
+                    <select id="roleid" asp-for="RoleID" class="form-control" 
+                            asp-items="@(new SelectList(ViewBag.Role, "RoleID", "RoleName"))">
+                        <option value="">Select Role</option>
+                    </select>
+                    <span asp-validation-for="RoleID" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-4 pr-2">
+                    <label>Document Type</label>
+                    <select asp-for="documentType" asp-items="@StaticDrpDwnListItems.DocumentTypeList()" class="form-control">
+                        <option value="">Please select one</option>
+                    </select>
+                    <span asp-validation-for="documentType" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <input type="submit" value="Save" class="btn btn-info" />
+        </form>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.HoldDisplayProductItems
+@{
+    ViewData["Title"] = "Product Item List";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body col-12">
+
+    <h2 class="mb-2">
+        Product Item(s)
+    </h2>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="col-10 mb-12">
+
+                <form asp-action="ProductItemList" asp-controller="EgsProductItem" asp-area="SysSetup" method="get">
+                    <div class="float-left mr-3">
+                        <input name="searchText" placeholder="Enter Product Item Name" class="form-control" />
+                    </div>
+                    <div class="float-left">
+                        <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                        <a asp-action="ProductItem" class="btn btn-warning float-left ml-3">Create New Product Item</a>
+                    </div>
+
+                </form>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+
+            </div>
+
+
+            @if (Model != null && Model.HoldAllProductItems.Count() > 0)
+            {
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            @*<th>S/N</th>*@
+                            <th>
+                                Product
+                            </th>
+                            <th>
+                                Product Item
+                            </th>
+                            <th>
+                                Date Created
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HoldAllProductItems)
+                        {
+                            //indx++;
+                            <tr>
+                                @*<td>@indx</td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductItemName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
+                                </td>
+                                <td>
+                                    <a asp-action="UpdateProductItem" asp-route-id="@item.ProductItemID" class="btn btn-success float-left ml-3">
+                                        <span class="fe fe-edit">Edit</span>
+                                    </a>
+                                    @*<a asp-action="Delete" asp-route-id="@item.ProductItemID" class="btn btn-danger float-left ml-3">
+                                            <span class="context-menu-icon-delete">Delete</span>
+                                        </a>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- pager -->
+                @if (Model.Pager.EndPage > 1)
+                {
+
+                    <ul class="pagination">
+                        @if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a href="~/SysSetup/EgsProductItem/ProductItemList" class="page-link">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/SysSetup/EgsProductItem/ProductItemList?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                            </li>
+                        }
+
+                        @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                        {
+                            var myPage = pageIndex;
+                            <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                <a href="~/SysSetup/EgsProductItem/ProductItemList?pageIndex=@myPage" class="page-link"> @myPage </a>
+                            </li>
+                        }
+
+                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a href="~/SysSetup/EgsProductItem/ProductItemList?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/SysSetup/EgsProductItem/ProductItemList?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <h2>No Available Product Item(s)</h2>
+            }
+        </div>
+    </div>
+</div>

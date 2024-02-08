@@ -1,0 +1,109 @@
+﻿@model PaymentGateway21052021.Areas.Invoices.Models.NCableDatum
+
+
+@{
+    ViewData["Title"] = "Pay Product With Wallet";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="col-10 mb-6">
+        <div class="float-left">
+            @if (ViewBag.Message != null)
+            {
+                <span class="alert-success">@ViewBag.Message</span>
+            }
+            <div class="row">
+                @if (ViewBag.SuccessMessage != null)
+                {
+                    <span style="color:green;">@ViewBag.SuccessMessage</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12 text-center mt-5">
+        <h2 class="text-8">Order Details</h2>
+    </div>
+    @if (Model.code == "200")
+    {
+        <div class="col-lg-12 ">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+                <div class="row">
+                    @foreach (var item in Model.data)
+                    {
+                        @foreach (var ite in item.availablePricingOptions)
+                        {
+                            <div class="col-md-3">
+                                <form asp-action="CablePayment" asp-controller="HomeStore" method="post">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row d-flex">
+                                                <div class="form-group mx-auto"><b>Months: @ite.monthsPaidFor </b> </div>
+
+                                            </div>
+                                            <div class="row d-flex">
+                                                <div class="form-group  mx-auto"><b>Price: @ite.price  </b> </div>
+                                            </div>
+                                            <div class="row d-flex">
+                                                <div class="form-group  mx-auto"><b>Bouquet: @item.name </b> </div>
+                                            </div>
+                                            <div class="row d-flex">
+                                                <div class="form-group  mx-auto"><b>invoicePeriod: @ite.invoicePeriod</b> </div>
+                                            </div>
+
+                                            <input type="text" asp-for="msisdn" value="@Model.msisdn " hidden="hidden" />
+                                            <input type="text" asp-for="email" value="@Model.email" hidden="hidden" />
+                                            <input type="text" asp-for="service_type" value="@Model.service_type" hidden="hidden" />
+                                            <input type="text" asp-for="account_ID" value="@Model.account_ID" hidden="hidden" />
+                                            <input type="text" asp-for="trans_id" value="@Model.trans_id" hidden="hidden" />
+                                            <input type="text" asp-for="prdID" value="@Model.prdID" hidden="hidden" />
+                                            <input type="text" asp-for="code" value="@item.code" hidden="hidden" />
+                                            <input type="text" asp-for="name" value="@Model.name" hidden="hidden" />
+                                            <input type="text" asp-for="amount" value="@ite.price" hidden="hidden" />
+                                            <div class="d-flex">
+                                                <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> SELECT </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    }
+
+
+
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-12 ">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+                <div class="row">
+                    <div class="col-md-3">
+                        <form asp-action=" " asp-controller="HomeStore" method="post">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="d-flex">
+                                        <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> Kindly Retry </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+</div>
+

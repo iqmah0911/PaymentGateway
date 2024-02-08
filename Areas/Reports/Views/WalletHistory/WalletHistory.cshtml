@@ -1,0 +1,314 @@
+﻿@model PaymentGateway21052021.Areas.Reports.Models.WalletHistoryModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Wallet History";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+ 
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="mb-2">Wallet History Report</h1>
+            <div class="card-body">
+                <div class="col-10 mb-5">
+                     
+                        <div class="alert alert-danger" role="alert">
+                            <b>Note:</b>Wallet Reports can only be spooled for one month
+                        </div>
+                     
+                    <div class="float-left">
+                        @if (ViewBag.Message != null)
+                        {
+                            <span class="alert-success">@ViewBag.Message</span>
+                        }
+
+                        @if (ViewBag.Error != null)
+                        {
+                            <span class="alert-success">@ViewBag.Error</span>
+                        }
+                         
+                    </div>
+                </div>
+
+                @*<div class="row">
+                    <div class="alert alert-danger" role="alert">
+                        Note:Wallet Reports can only be spooled for one month
+                    </div> 
+                </div>*@
+
+
+            <ul class="nav nav-tabs justify-content-center">
+                @if (ViewBag.role == 5 || ViewBag.role == 3 || ViewBag.role == 2 || ViewBag.role == 12 || ViewBag.role == 13)
+                {
+                    <li class="active"><a data-toggle="tab" href="#home" class="btn btn-primary">Wallet History</a></li>
+                    <li class="active"><a data-toggle="tab" href="#home2" class="btn btn-primary">Wallet Summary</a></li>
+
+                }
+                @if (ViewBag.role == 2 || ViewBag.role == 12 || ViewBag.role == 13)
+                {
+                    <li><a data-toggle="tab" href="#menu1" class="btn btn-primary">Wallet Funding</a></li>
+                    <li><a data-toggle="tab" href="#menu2" class="btn btn-primary">Transfer / Deposit Summary</a></li>
+                    @*<li><a data-toggle="tab" href="#menu2" class="btn btn-primary">Weekly Teller's Report</a></li>*@
+                }
+                @if (ViewBag.role == 2 ) 
+                { 
+                    <li><a data-toggle="tab" href="#wktrns2" class="btn btn-primary">Weekly Teller's Report</a></li>
+                }
+                @if (ViewBag.role == 11)
+                {
+                    <li><a data-toggle="tab" href="#menu1" class="btn btn-primary">Wallet Funding</a></li>
+                    @*<li style="display:none"><a data-toggle="tab" href="#menu2" class="btn btn-primary ">Search By State</a></li>*@
+                }
+            </ul>
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <br />
+                    <div class="col-lg-12">
+                        <br />
+                        <div class="row">
+                            <h4>Select Start Date to End Date </h4>
+                        </div><br />
+                        <form asp-action="WalletHistory" asp-controller="WalletHistory" method="post">
+                            <div class="row">
+                                @if (ViewBag.role == 2 || ViewBag.role == 12 || ViewBag.role == 13)
+                                {
+                                    <section class="col-md-4">
+                                        Wallet Account
+                                        <select id="Userid" asp-for="UserID" asp-items="@(new SelectList(ViewBag.AgentList, "itemValue", "itemName"))"
+                                                class="form-control" placeholder="Agents">
+                                        </select>
+                                    </section>
+                                }
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        Transaction Type
+                                        <select asp-for="TransactionType" class="form-control">
+                                            <option value="ALL"> ALL</option>
+                                            <option value="CREDIT"> CREDIT / INWARD</option>
+                                            <option value="DEBIT"> DEBIT / OUTWARD</option>
+                                        </select>
+                                    </label>
+                                    <span asp-validation-for="TransactionType" class="text-danger"></span>
+                                </section>
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        Start Date
+                                        <input id="Sdate" type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                    </label>
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </section>
+
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        End Date
+                                        <input id="Edate" type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                    </label>
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </section>
+                            </div>
+
+                            <input type="submit" value="Search" class="btn btn-primary" />
+                        </form>
+                    </div>
+
+                </div>
+                <div id="home2" class="tab-pane fade">
+                    <br />
+                    <div class="col-lg-12">
+                        <br />
+                        <div class="row">
+                            <h4>Search By Activity Summary -> Report Period [Start Date to End Date] </h4>
+                        </div><br />
+                        <form asp-action="WalletActivitySummary" asp-controller="WalletHistory" method="post">
+                            <div class="row">
+                                @*<section class="col-md-4">
+                            <label style="width: 100%;">
+                                Transaction Type
+                                <select asp-for="TransactionType" class="form-control">
+                                    <option value="ALL"> ALL</option>
+                                    <option value="CREDIT"> CREDIT / INWARD / REFUND</option>
+                                    <option value="DEBIT"> DEBIT / OUTWARD / REVERSAL</option>
+                                </select>
+                            </label>
+                            <span asp-validation-for="TransactionType" class="text-danger"></span>
+                        </section>*@
+                                @if (ViewBag.role == 2 || ViewBag.role == 12 || ViewBag.role == 13)
+                                {
+                                    <section class="col-md-4">
+                                        Wallet Account
+                                        <select id="Userid" asp-for="UserID" asp-items="@(new SelectList(ViewBag.AgentList, "itemValue", "itemName"))"
+                                                class="form-control" placeholder="Agents">
+                                            @*<option value="0"> -- Select -- </option>*@
+                                        </select>
+                                    </section>
+                                }
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        Start Date
+                                        <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                    </label>
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </section>
+
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        End Date
+                                        <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                    </label>
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </section>
+                            </div>
+
+                            <input type="submit" value="Search" class="btn btn-primary" />
+                        </form>
+                    </div>
+
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <div class="col-lg-12">
+                        <br />
+                        <div class="row">
+                            <h4>Search Wallet Funding </h4>
+                        </div><br />
+                        <form asp-action="WalletFundHistory" asp-controller="WalletHistory" method="post">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    Wallet Account
+                                    <select id="Userid" asp-for="UserID" asp-items="@(new SelectList(ViewBag.AgentList, "itemValue", "itemName"))"
+                                            class="form-control" placeholder="Agents">
+                                        @*<option value=""> -- Select -- </option>*@
+                                    </select>
+                                    @*<span asp-validation-for="UserID" class="text-danger"></span>*@
+                                </div>
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        Start Date
+                                        <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                    </label>
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </section>
+
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        End Date
+                                        <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                    </label>
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </section>
+
+                            </div>
+                            <input type="submit" value="Search" class="btn btn-primary" />
+                        </form>
+                    </div>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <div class="col-lg-12">
+                        <br />
+                        <div class="row">
+                            <h4>Search Transfers </h4>
+                        </div><br />
+                        <form asp-action="WalletTransferSummary" asp-controller="WalletHistory" method="post">
+                            <div class="row">
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        Transaction Type
+                                        <select asp-for="TransactionType" class="form-control">
+                                            <option value="CREDIT"> CREDIT / INWARD / DEPOSIT</option>
+                                            <option value="DEBIT"> DEBIT / OUTWARD / INTER BANK TRANSFER</option>
+                                        </select>
+                                    </label>
+                                    <span asp-validation-for="TransactionType" class="text-danger"></span>
+                                </section>
+                                <div class="col-md-4">
+                                    Wallet Account
+                                    <select id="Userid" asp-for="UserID" asp-items="@(new SelectList(ViewBag.AgentList, "itemValue", "itemName"))"
+                                            class="form-control" placeholder="Agents">
+                                        @*<option value=""> -- Select -- </option>*@
+                                    </select>
+                                    @*<span asp-validation-for="UserID" class="text-danger"></span>*@
+                                </div>
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        Start Date
+                                        <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                                    </label>
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </section>
+
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        End Date
+                                        <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                                    </label>
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </section>
+
+                            </div>
+                            <input type="submit" value="Search" class="btn btn-primary" />
+                        </form>
+                    </div>
+                </div>
+
+                <div id="wktrns2" class="tab-pane fade">
+                    <div class="col-lg-12">
+                        <br />
+                        <div class="row">
+                            <h4>W Transfers </h4>
+                        </div><br />
+                        <form asp-action="WeeklyTransactions" asp-controller="WalletHistory" method="post">
+                            <div class="row">
+                                <section class="col-md-4">
+                                    <label style="width: 100%;">
+                                        WeekDay 
+                                        <select asp-for="TransactionType" class="form-control">
+                                            <option value="THURSDAY"> THURSDAY</option>
+                                            <option value="FRIDAY"> FRIDAY</option>
+                                        </select>
+                                    </label>
+                                    <span asp-validation-for="TransactionType" class="text-danger"></span>
+                                </section>
+                             
+
+                            </div>
+                            <input type="submit" value="Search" class="btn btn-primary" />
+                        </form>
+                    </div>
+                </div>
+                
+
+
+            </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $("#Startdate").datepicker({
+        format: "dd/MM/yyyy",
+        startDate: "-10y",
+        endDate: "0d",
+        calendarWeeks: true
+       
+    });
+
+    $("#Enddate").datepicker({
+        format: "dd/MM/yyyy",
+        startDate: "-10y",
+        endDate: "0d",
+        calendarWeeks: true,
+         
+    });
+
+   
+</script>
+
+

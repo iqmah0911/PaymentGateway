@@ -1,0 +1,119 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.CreateUserViewModel
+@*@model PaymentGateway21052021.Models.EgsUpgradeAccount*@
+
+@{
+    ViewData["Title"] = "Upgrade Account";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <span class="alert-success">@ViewBag.ErrorMessage</span>
+                }
+            </div>
+        </div>
+
+        <div class="container-fluid disable-text-selection">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-2">
+                        <h1>Process Request </h1>
+
+                        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                            <ol class="breadcrumb pt-0">
+                                <li class="breadcrumb-item">
+                                    <a href="#">Home</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#">Process</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Request</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="separator mb-5"></div>
+                </div>
+            </div>
+
+
+            <div class="card-body">
+
+                <form asp-action="OperationUser" asp-controller="EgsUsers" method="post">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>First Name</label>
+                            <input asp-for="FirstName" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label> Last Name</label>
+                            <input asp-for="LastName" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Email Address</label>
+                            <input asp-for="Email" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Mobile</label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Address</label>
+                            <input asp-for="Address" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label> Gender</label>
+                            <input asp-for="Gender" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="card-footer">
+                        <p>
+                            @Html.ActionLink("<<< Back To Users' List", "OperationUsers", "EgsUsers", "", new { @class = "btn btn-info" })
+                            <button type="submit" class="btn btn-info">Process >> </button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#comentdiv").hide();
+    })
+
+    function getComment() {
+        var select = document.getElementById("ProcessedID");
+        var option = select.options[select.selectedIndex];
+        var selectedValue = $('#ProcessedID').val();
+
+        if (selectedValue == "true") {
+            $("#comentdiv").hide();
+        }
+        else if (selectedValue == "false") {
+            //alert('show coment div')
+            $("#comentdiv").show();
+        }
+    }
+
+</script>
+

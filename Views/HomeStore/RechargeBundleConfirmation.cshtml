@@ -1,0 +1,88 @@
+﻿@model PaymentGateway21052021.Areas.Invoices.Models.Roots
+
+@{
+    ViewData["Title"] = "Pay Product With Wallet";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    @*<div class="row my-5">*@
+
+        <div class="col-10 mb-6">
+
+            @*<form asp-action="ProductWallet" asp-controller="HomeStore" method="get">
+                </form>*@
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                <div class="row">
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <span style="color:green;">@ViewBag.SuccessMessage</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Order Details</h2>
+        </div>
+
+        <div class="col-lg-12 ">
+            @*col-lg-6 col-xl-5 mx-auto*@
+            @**@
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+                @**@
+
+                <div class="row">
+                    @foreach (var item in Model.product)
+                    {
+                        <div class="col-md-3">
+                            <form asp-action="PayDataBundle" asp-controller="HomeStore" method="post">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row d-flex">
+                                            <div class="form-group mx-auto"><b>Data: @item.allowance </b> </div>
+
+                                        </div>
+                                        <div class="row d-flex">
+                                            <div class="form-group  mx-auto"><b>Validity: @item.validity </b> </div>
+                                        </div>
+                                        <div class="row d-flex">
+                                            <div class="form-group  mx-auto"><b>Operator: @Model.network </b> </div>
+                                        </div>
+                                        <div class="row d-flex">
+                                            <div class="form-group  mx-auto"><b>Price: @item.price</b> </div>
+                                        </div>
+                                        @*<div class="row d-flex">
+                                        <div class="form-group  mx-auto"><b>Product_Id: @item.SKU </b> </div>
+                                    </div>*@
+                                        <input type="text" asp-for="network" value="@Model.network " hidden="hidden" />
+                                        <input type="text" asp-for="bundle" value="@item.code" hidden="hidden" />
+                                        <input type="text" asp-for="serviceCode" value="BDA" hidden="hidden" />
+                                        @*<input type="text" asp-for="msisdn" value="@ViewBag.msisdn" hidden="hidden" />*@
+                                        <input type="text" asp-for="ProductID" value="@Model.ProductID" hidden="hidden" />
+                                        <input type="text" asp-for="ProductModeID" value="@Model.ProductModeID" hidden="hidden" />
+                                        <input type="text" asp-for="phone" value="@Model.phone" hidden="hidden" />
+                                        <input type="text" asp-for="Amount" value="@item.price" hidden="hidden" />
+                                        <div class="d-flex">
+                                            <button class="btn btn-warning d-inline-block ml-auto" value="Pay with Wallet" type="submit"> SELECT </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    @*</div>*@
+</div>
+
+

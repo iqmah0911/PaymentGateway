@@ -1,0 +1,202 @@
+﻿ @model PaymentGateway21052021.Areas.SysSetup.Models.HoldDisplaySettlementBasisViewModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    ViewData["Title"] = "Settlement Basis";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card-body">
+
+    <h1 class="mb-2">Settlement Splitting</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5"> 
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+
+
+            <div class="col-10 mb-5">
+
+                @*<form asp-action="SettlementMerchantMappingRS" asp-controller="EgsSettlementBasis" method="post">*@
+                @*<div>
+                        <input asp-for="ProductID" value="@ViewBag.ProductID" type="text" hidden />
+                        <input asp-for="ProductItemID" value="@ViewBag.ProductItemID" type="text" hidden />
+                        <input asp-for="MerchantID" value="@ViewBag.MerchantID" type="text" hidden />
+                        <input asp-for="SettlementIntervalID" value="@ViewBag.SettlementIntervalID" type="text" hidden />
+                        <input asp-for="SettlementTypeID" value="@ViewBag.SettlementTypeID" type="text" hidden />
+                    </div>*@
+
+                @if (Model != null && Model.HoldAllSettlementBasis.Count() > 0)
+                {
+                    <table class="table" id="tblSubMerchants">
+
+
+                        <thead>
+                            <tr>
+                                @*<th>S/N</th>*@
+                                <th>
+                                    MerchantID
+                                </th>
+                                <th>
+                                    Merchant Name
+                                </th>
+                                @* <th>
+                                        Product Category Code
+                                    </th>*@
+                                <th>
+                                    Rate
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.HoldAllSettlementBasis)
+                            {
+                                //indx++;
+                                <tr>
+                                    @*<td>@indx</td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MerchantID)
+                                    </td>
+                                    <td>
+                                        <input asp-for="SubMerchantID" value="@item.SubMerchantID" type="text" hidden />
+                                        @Html.DisplayFor(modelItem => item.SubMerchantName)
+                                    </td>
+                                    @*  <td>
+                                            @Html.DisplayFor(modelItem => item.ProductCategoryCode)
+                                        </td>*@
+                                    <td>
+                                        <input asp-for="SplittingRate" type="number" id="txtSplit" />
+                                        @*@Html.TextBoxFor(modelItem => item.SplittingRate)  value="@item.SplittingRate"*@
+                                    </td>
+
+                                    <input id="prdid" asp-for="ProductID" value="@ViewBag.ProductID" type="text" hidden />
+                                    <input id="prditemid" asp-for="ProductItemID" value="@ViewBag.ProductItemID" type="text" hidden />
+                                    <input id="merid" asp-for="MerchantID" value="@ViewBag.MerchantID" type="text" hidden />
+                                    <input id="setintid" asp-for="SettlementIntervalID" value="@ViewBag.SettlementIntervalID" type="text" hidden />
+                                    <input id="settypeid" asp-for="SettlementTypeID" value="@ViewBag.SettlementTypeID" type="text" hidden />
+
+                                </tr>
+                            }
+
+                            <br />
+
+                        </tbody>
+                    </table>
+
+                    @*<input type="submit" value="Save" class="btn btn-info" />  onclick="setsettlement()"    *@
+                    <input type="button" id="btnSave" value="Save" class="btn btn-info" />
+
+                    <!-- pager -->
+                    @if (Model.Pager.EndPage > 1)
+                    {
+
+                        <ul class="pagination">
+                            @if (Model.Pager.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a href="~/SysSetup/EgsSettlementBasis/SettlementMerchantMapping" class="page-link">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a href="~/SysSetup/EgsSettlementBasis/SettlementMerchantMapping?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                                </li>
+                            }
+
+                            @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                            {
+                                var myPage = pageIndex;
+                                <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                    <a href="~/SysSetup/EgsSettlementBasis/SettlementMerchantMapping?pageIndex=@myPage" class="page-link"> @myPage </a>
+                                </li>
+                            }
+
+                            @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a href="~/SysSetup/EgsSettlementBasis/SettlementMerchantMapping?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a href="~/SysSetup/EgsSettlementBasis/SettlementMerchantMapping?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+
+                else
+                {
+                    <h2>No Available Merchant Mapping(s)</h2>
+                }
+
+                @*</form>*@
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>*@
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //alert('ready');
+        //$("#btnSave").on("click", function () {
+        $('#btnSave').click(function () {
+            //alert('clicked')
+            //Loop through the Table rows and build a JSON array.
+            var settlements = new Array();
+            $("#tblSubMerchants TBODY TR").each(function () {
+
+                var settlement = {};
+
+                var tr = $(this).closest('tr');
+                var merchantID = tr.find('td:eq(1) input').val();
+                var splittingRate = tr.find('td:eq(2) input').val();
+
+                settlement.SubMerchantID = merchantID;
+                settlement.SplittingRate = splittingRate;
+                settlement.ProductId = $('#prdid').val();
+                settlement.ProductItemID = $('#prditemid').val();
+                settlement.SettlementIntervalID = $('#setintid').val();
+                settlement.SettlementTypeID = $('#settypeid').val();
+
+                settlements.push(settlement);
+            });
+
+            var dataSettlement = JSON.stringify(settlements)
+
+            $.ajax({
+                type: "post",
+                cache: false,
+                url: "/SysSetup/EgsSettlementBasis/InsertSettlements",
+                data: dataSettlement,
+                dataType: "json",
+                contentType: "application/json",
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (result) {
+                    alert("No Connection to server");
+                },
+            });
+
+        });
+    });
+
+
+</script>

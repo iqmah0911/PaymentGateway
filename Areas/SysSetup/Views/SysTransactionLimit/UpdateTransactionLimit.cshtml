@@ -1,0 +1,45 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysTransactionLimitViewModel
+@{
+    ViewData["Title"] = "Update Transaction Limits";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h2 class="mb-2">Transaction Limit</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="TransactionLimitList" class="btn btn-warning float-left">List of Transaction Limits</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 mb-6">
+
+        <form asp-action="UpdateTransactionLimit" asp-controller="SysTransactionLimit" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="TransactionLimitName" placeholder="Enter Transaction Limit Name" class="form-control" />
+            <span asp-validation-for="TransactionLimitName" class="text-danger"></span>
+            <br />
+            <input asp-for="TransactionLimit" placeholder="Enter Transaction Limit" class="form-control" />
+            <span asp-validation-for="TransactionLimit" class="text-danger"></span>
+            <br />
+            <input asp-for="TransactionBalance" placeholder="Enter Transaction Balance" class="form-control" />
+            <span asp-validation-for="TransactionBalance" class="text-danger"></span>
+            <br />
+            <input type="hidden" asp-for="TransactionLimitID" />
+            <input type="submit" value="Update Transaction Limit" class="btn btn-info" />
+        </form>
+    </div>
+</div>

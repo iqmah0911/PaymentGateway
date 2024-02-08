@@ -1,0 +1,265 @@
+﻿@model PaymentGateway21052021.Areas.Wallets.Models.TransferViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Transfer";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/Receipt.css" rel="stylesheet" />
+@*<script src="~/js/site.js"></script>*@
+
+<br />
+<br />
+<div class="container">
+    <div class="row my-5">
+        <div class="col-10 mb-6">
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="mt-4 mt-lg-0">
+                        <span class="alert-danger">@ViewBag.ErrorMessage</span>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center mt-5">
+            <h2 class="text-8">Transfer Details</h2>
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-white shadow-sm rounded p-3 p-sm-4 mb-0 mb-sm-4">
+
+                <form asp-action="Transfer" asp-controller="Transfer" method="post" onsubmit="btnFsubmit.disabled = true; return true;">
+
+                    <div id="beneficiaryrow">
+
+                        @*<input id="usid" asp-for="walletId" type="number" hidden="hidden" />*@
+
+                        <div class="row d-flex">
+                            <div class="form-group mx-auto">
+                                <label><b>Select Bank:</b></label>
+                                <select id="BankCode" asp-for="toBank" asp-items="@(new SelectList(ViewBag.ListofBanks, "BankCode", "BankName"))"
+                                        class="form-control" placeholder="Select Bank" required></select>
+                            </div>
+                        </div>
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                <label> <b>Account Number:</b></label>
+                                <input id="targetAcc" asp-for="toAccount" type="number" placeholder="Enter AccountNumber" class="form-control" required />
+                                <span asp-validation-for="toAccount" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row d-flex">
+                        <div class="form-group mx-auto">
+                            <label> <b>Beneficiary:</b></label>
+                            <select id="BeneficiaryId" asp-for="BeneficiaryID" asp-items="@(new SelectList(ViewBag.Beneficiary, "BeneficaryID", "BeneficiaryName"))"
+                                    class="form-control" onchange="getBeneficiary()">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="btnverifyrec">
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                @*<button type="submit" class="btn btn-info" id="btnVerfy" onclick="VerifyAccount()" ondblclick="alert('Verification in Progress,kindly wait')">
+                                        Verify
+                                    </button>*@
+                                <button type="button" class="btn btn-info" id="btnVerfy" onclick="VerifyAccount()" ondblclick="alert('Verification in Progress,kindly wait')">
+                                    Verify
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex">
+                        <div class="form-group mx-auto">
+                            <label> <b>Receiver:</b></label>
+                            <input asp-for="Receiver" id="Receiver" type="text" class="form-control" style="width: 350px;" readonly="readonly" />
+                        </div>
+                    </div>
+
+
+                    <div class="Onsuccesssfulverification">
+
+
+                        <div class="row d-flex">
+                            <div class="form-group mx-auto">
+                                <label> <b>Transfer Amount:</b></label>
+                                <input asp-for="transAmount" type="number" placeholder="Enter Transfer Amount " class="form-control" required />
+                                <span asp-validation-for="transAmount" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                <label>  <b>Transfer PIN:</b></label>
+                                <input asp-for="transferpin" type="password" placeholder="Enter Transfer PIN" class="form-control" required />
+                                <span asp-validation-for="transferpin" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                <label>  <b>Narration</b></label>
+                                <input asp-for="Narration" type="text" placeholder="Enter Narration" class="form-control" required />
+                                <span asp-validation-for="Narration" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="row d-flex">
+                            <div class="form-group  float-right">
+                                <button type="button" class="btn btn-outline-info" id="btnoutline">
+                                    <span>&#43;</span> Save as beneficiary
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row d-flex">
+                            <div class="form-group  mx-auto">
+                                @if (ViewBag.Successful == null)
+                                {
+                                    @*<input type="submit" value="Send" class="btn btn-info " id="btnFsubmit" /><br />*@
+                                    @*<button type="submit" class="btn btn-info" id="btnFsubmit" onclick="$('#btnFsubmit').attr('disabled', 'disabled');"
+                                                ondblclick="alert('Transaction in Progress,kindly wait')">
+                                            Send
+                                        </button>*@
+
+                                    <button type="submit" class="btn btn-info" id="btnFsubmit" ondblclick="alert('Transaction in Progress,kindly wait')">
+                                        Send
+                                    </button>
+                                }
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
+<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+<script src="~/js/json2.js"></script>
+
+<script src="~/js/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+       // alert("hello ready for this");
+
+        $(".Onsuccesssfulverification").hide();
+    });
+
+
+    function VerifyAccount() {
+        //alert("this product");
+            var url = '@Url.Content("~/")' + "Wallets/Transfer/Verify";
+            var select = document.getElementById("BankCode");
+            var option = select.options[select.selectedIndex];
+        var selectedValue = $('#BankCode').val();
+        var accnumber = $('#targetAcc').val();
+
+        if (selectedValue != "0") {
+
+            $.getJSON(url, { BankCode: selectedValue, accnumber: accnumber }, function (data) {
+                //alert(data.name);
+                console.log(data.name);
+                $("#Receiver").val(data.name);
+                if (data.name == "Invalid Bank or Account") {
+                    //alert("Invalid Bank or Account");
+                    $(".Onsuccesssfulverification").hide();
+
+                }
+                if (data.name != "Invalid Bank or Account") {
+                    $(".Onsuccesssfulverification").show();
+                    $(".btnverifyrec").hide();
+                }
+              });
+            }
+    }
+
+        $('#btnoutline').click(function () {
+            //alert('clicked')
+            var beneficiarys = new Array();
+            var beneficiary = {};
+
+            var bankid = $('#BankCode').val();
+            var acctnum = $('#targetAcc').val();
+            var receivername = $('#Receiver').val();
+
+            $.ajax({
+                type: "post",
+                cache: false,
+                url: "/Wallets/Transfer/InsertBeneficiary",
+                data: "{'toBank':'" + bankid + "','toAccount':'" + acctnum + "','Receiver':'" + receivername + "' }",                     //databeneficiary,
+                dataType: "json",
+                contentType: "application/json",
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (result) {
+                    alert("No Connection to server");
+                },
+            });
+
+        });
+
+    function getBeneficiary() {
+        //alert("hello get Beneficiary id called " + $('#BeneficiaryId').val());
+        $("#beneficiaryrow").hide();
+
+        var benfid = $('#BeneficiaryId').val();
+
+        //alert("hello id " + benfid)
+
+        var url = '@Url.Content("~/")' + "Wallets/Transfer/VerifyBeneficiary" ; //+ benfid;
+
+        $.getJSON(url, { benfid: benfid }, function (data) {
+                //alert(data.name);
+                //console.log(data.name);
+                $("#Receiver").val(data.name);
+                if (data.name == "Invalid Beneficiary ") {
+                    //alert("Invalid Bank or Account");
+                    $(".Onsuccesssfulverification").hide();
+
+                }
+                if (data.name != "Invalid Beneficiary") {
+                    $(".Onsuccesssfulverification").show();
+                    $(".btnverifyrec").hide();
+                }
+              });
+
+
+
+
+    }
+
+
+</script>
+
+
+
+
+
+
+
+

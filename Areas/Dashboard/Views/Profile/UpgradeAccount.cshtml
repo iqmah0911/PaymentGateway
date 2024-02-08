@@ -1,0 +1,188 @@
+﻿@model PaymentGateway21052021.Areas.Dashboard.Models.SysViewModel
+
+@{
+    ViewData["Title"] = "Upgrade Account";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="mb-2">Upgrade Account</h1>
+        <div class="col-10 mb-5">
+
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                @if (ViewBag.Error != null)
+                {
+                    <span class="alert-success">@ViewBag.Error</span>
+                }
+            </div>
+
+            <div class="col-10 mb-5">
+                @*<h4>Upgrade Account</h4>*@
+                <form asp-action="UpgradeAccount" asp-controller="Profile" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select id="RoleID" asp-for="RoleID" asp-items="@(new SelectList(ViewBag.Roles, "RoleID", "RoleName"))"
+                                    class="form-control" placeholder="Service Type" onchange="getRequiredDocuments()"></select>
+                            <span asp-validation-for="RoleID" class="text-danger"></span>
+                            <br />
+                        </div>
+                        <div class="col-md-4">
+                            <select id="IdentificationTypeID" asp-for="IdentificationTypeID" asp-items="@(new SelectList(ViewBag.IdentificationTypeList, "IdentificationTypeID", "IdentificationTypeName"))"
+                                    class="form-control" placeholder="Service Type" required></select>
+                            <span asp-validation-for="IdentificationTypeID" class="text-danger"></span>
+                            </div>
+                            <br />
+                            <div class="col-md-4">
+                                <input asp-for="IdentificationValue" placeholder="Enter Identification Value" class="form-control" autocomplete="off" required />
+                                <span asp-validation-for="IdentificationValue" class="text-danger"></span>
+                            </div><br />
+                                <div class="row " id="aggrecol">
+                                    <div class="col-md-4">
+                                        @*<label>Select Bank</label>*@
+                                        <select id="BankID" asp-for="BankID" asp-items="@(new SelectList(ViewBag.BankList, "BankID", "BankName"))"
+                                                class="form-control" placeholder="Service Type"></select>
+                                        <span asp-validation-for="BankID" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @*<label>Enter Account Number</label>*@
+                                        <input asp-for="BankAccount" placeholder="Enter Account Number" class="form-control" />
+                                        <span asp-validation-for="BankAccount" class="text-danger"></span>
+                                    </div>
+                                    @*<div class="col-md-4">
+                    <input asp-for="CompanyName" placeholder="Enter CompanyName" class="form-control" />
+                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                </div>*@
+                                </div>
+                                <br />
+                        </div>
+                                @*<div class="row">
+                <div class="col-md-10">
+                    <input asp-for="Address" placeholder="Enter Address" class="form-control" autocomplete="off" required />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+            <br />*@
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label> Business Name</label>
+                                        <input asp-for="BusinessName" class="form-control" autocomplete="off" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Business Address</label>
+                                        <input asp-for="BusinessAddress" class="form-control" autocomplete="off" required />
+                                    </div>
+                                </div>
+                                @*<p style="color:red;"><h6>Only Pdf files allowed</h6></p>*@
+                                <div class="row docbody">
+
+
+                                </div>
+                                <div class="row agentbody">
+                                </div>
+                                <br />
+                                <input type="submit" value="Save" class="btn btn-info" />
+</form>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#aggrecol").hide();
+    })
+
+    function getRequiredDocuments() {
+
+      //alert('ready');
+        var url = '@Url.Content("~/")' + "Dashboard/Profile/GetDocuments";
+        var select = document.getElementById("RoleID");
+        var option = select.options[select.selectedIndex];
+        var selectedValue = $('#RoleID').val();
+
+        if (selectedValue != "") {
+            if (selectedValue == 3) {
+                $("#aggrecol").show();
+                $(".agentbody").empty();
+                $(".docbody").show();
+               
+
+                $.getJSON(url, { roleId: selectedValue }, function (data) {
+
+                    for (var key in data) {
+              //var optionhtml = '<div class="row"><label>' + data[key].documentName + '</label>' + "  " + '<div class="btn btn-primary"> <input id="file' + data[key].documentID + '" name = "files" type="file" /> </div> </div>';
+
+                        //var optionhtml = '<div class="row">' + '<div class="col-md-5">' + '<div class="form-group pr-3">' +
+                        //    '<label class="control-label">' + data[key].documentName + '</label>' + '</div>' + '</div>' +
+                        //    '<div class="col-md-7">' + '<div class="btn btn-primary">' +
+                        //    '<input id="file' + data[key].documentID + '" name="files" type="file" />' +
+                        //    '</div>' +
+                        //    '</div>' +
+                        //    '</div>' +'<br>';
+                        var optionhtml = '<div class="col-md-12 p-3" style="display: inline-flex;">' + '<div class="form-group">' +
+                            '<label class="control-label pr-3 pl-2">' + data[key].documentName + '</label>' +
+                            '<input id="file' + data[key].documentID + '" name="files" type="file" class="btn btn-primary pr-2"/>' +
+                            '</div>' + '</div>' + '<br>';
+
+               $(".docbody").append(optionhtml);
+                    }
+                });
+            }
+
+            else if (selectedValue == 5) {
+                $("#aggrecol").hide();
+                $(".docbody").empty();
+                $(".agentbody").show();
+
+                $.getJSON(url, { roleId: selectedValue }, function (data) {
+
+                    for (var key in data) {
+                        //var optionhtml = '<div class="row"><label>' + data[key].documentName + '</label><br/>' + "  " + '<div class="btn btn-primary"> <input id="file' + data[key].documentID + '" name = "files" type="file" /> </div> </div><br/>';
+
+                        var optionhtml = '<div class="col-md-12 p-3" style="display: inline-flex;">' + '<div class="form-group">' +
+                            '<label class="control-label pr-3 pl-2">' + data[key].documentName + '</label>' +
+                            '<input id="file' + data[key].documentID + '" name="files" type="file" class="btn btn-primary pr-2"/>' +
+                            '</div>' + '</div>'
+                            ////<div class="form-group"><label class="control-label pr-3 pl-2">Utility Bill</label>
+                            //< input id = "file6" name = "files" type = "file" class="btn btn-primary pr-2" ></div >
+                        //var optionhtml = '<div class="row">' + '<div class="col-md-12 p-3">' + '<div class="form-group pr-3">' +
+                        //    '<label class="control-label pr-3 pl-2">' + data[key].documentName + '</label>' + '</div>' + '</div>' +
+                        //    '<div class="col-md-7">' + '<div class="btn btn-primary">' +
+                        // '</div>' +
+                        //    '</div>'
+                            + '<br>';
+
+                        $(".agentbody").append(optionhtml);
+                    }
+                });
+
+                
+
+            }
+             
+        } 
+ }
+
+</script>
+
+
+
+
+
+
+

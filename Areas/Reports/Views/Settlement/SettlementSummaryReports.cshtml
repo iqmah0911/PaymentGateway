@@ -1,0 +1,156 @@
+﻿@model PaymentGateway21052021.Areas.Reports.Models.HoldSettlementViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = $"Settlement Summary report for the period {ViewBag.SettlementMonthStart}{ViewBag.SettlementDayStart}{ViewBag.SettlementYearStart} - {ViewBag.SettlementMonthEnd} {ViewBag.SettlementDayEnd} {ViewBag.SettlementYearEnd}";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+ 
+<link href="~/DataTables-1.10.18/css/jquery.dataTables.css" rel="stylesheet" /> 
+<link href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+<style>
+    /*===============================Datatables Overrides=====================================================*/
+    table.dataTable {
+        width: 100% !important;
+    }
+
+    .sorting.no-sort-sign, .sorting_asc.no-sort-sign, .sorting_desc.no-sort-sign {
+        /*display:none;*/
+        background-image: none !important;
+        cursor: initial !important;
+    }
+    /*=====================================================================================================*/
+</style>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-2">
+                <h1>Reports</h1>
+
+                <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                    <ol class="breadcrumb pt-0">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Reports</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Settlements</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="separator mb-5"></div>
+        </div>
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <h4 class="mb-2">
+                        Transaction report for the period  @ViewBag.SettlementMonthStart @ViewBag.SettlementDayStart @ViewBag.SettlementYearStart  -  @ViewBag.SettlementMonthEnd @ViewBag.SettlementDayEnd @ViewBag.SettlementYearEnd
+                    </h4>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+
+
+
+            @if (Model != null && Model.HoldAllSettlement.Count() > 0)
+            {
+                <div id="formBg" style="width:95%; margin-right:auto; margin-left:auto;padding-top:40px;">
+                    <table id="offrptTable" class="table table-responsive table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th>SettlementID</th>
+                                <th>MerchantID</th>
+                                <th>Narration</th>
+                                <th>AmountSettled</th>
+                                <th>AccountNo</th>
+                                <th>DateCreated</th>
+                                <th>BankID</th>
+                                <th>Product</th>
+                                <th>TotalCollection</th>
+                                <th>PaymentStatus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.HoldAllSettlement)
+                            {
+                                <tr>
+                                    <td>@item.SettlementSummaryID</td>
+                                    <td>@item.MerchantID</td>
+                                    <td>@item.Narration</td>
+                                    <td><span>&#8358;</span>@item.AmountSettled </td>
+                                    <td>@item.AccountNo</td>
+                                    <td>@item.DateCreated.ToString("dd/MMMM/yyyy")</td>
+                                    <td>  @item.BankName  </td>
+                                    <td>  @item.ProductName  </td>
+                                    <td>  @item.TotalCollection  </td>
+                                    <td>
+                                        @if (item.PaymentStatus == true)
+                                        {
+                                            <span>Paid</span>
+                                        }
+                                        else
+                                        {
+                                            <span>UnPaid</span>
+                                        }
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th id="amt-summed" style="padding:0">Total:<span>&#8358;</span>@ViewBag.baseamount</th>
+                                <th></th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> TotalCollection:<span>&#8358;</span> @ViewBag.baseCollection </th>
+                                <th> </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <p>No data returned for your selection</p>
+                    <a asp-action="SettlementSummaryReport" asp-controller="Settlement" class="btn btn-primary">Back to selection</a>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+<script src="~/js/Agentreport.js"></script>

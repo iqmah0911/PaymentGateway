@@ -1,0 +1,131 @@
+﻿@model PaymentGateway21052021.Areas.Reports.Models.HoldDisplayInvoiceTrans
+@using System.ComponentModel.DataAnnotations;
+@{
+    ViewData["Title"] = $"Transaction Summary report for the period {ViewBag.OfferingMonthStart} {ViewBag.OfferingDayStart} {ViewBag.OfferingYearStart} - {ViewBag.OfferingMonthEnd} {ViewBag.OfferingDayEnd} {ViewBag.OfferingYearEnd}";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body col-12">
+
+    <h2 class="mb-2">
+       Nasarawa Transaction Summary Report
+    </h2>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="col-10 mb-12">
+
+                <form asp-action="NasReportSummary" asp-controller="Agents" asp-area="Reports" method="get">
+                    <div class="float-left mr-3">
+                        <input name="searchText" placeholder="Enter Product" class="form-control" />
+                    </div>
+                    <div class="float-left">
+                        <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                    </div>
+                </form>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+
+            </div>
+
+
+            @if (Model != null && Model.HoldRPTInvoiceTrans.Count() > 0)
+            {
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HoldRPTInvoiceTrans)
+                        {
+                            //indx++;
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td class="font-weight-bold"><span>&#8358;</span>@item.TotalAmt</td>
+                            </tr>
+                            @*<tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProductItemName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalAmt)
+                                    </td>
+                                </tr>*@
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th id="amt-summed" style="padding:0">Total:<span>&#8358;</span>@ViewBag.baseamount</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- pager -->
+                @if (Model.Pager.EndPage > 1)
+                {
+
+                    <ul class="pagination">
+                        @if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a href="~/Reports/Agents/TransReportList" class="page-link">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/Reports/Agents/TransReportList?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                            </li>
+                        }
+
+                        @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                        {
+                            var myPage = pageIndex;
+                            <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                <a href="~/Reports/Agents/TransReportList?pageIndex=@myPage" class="page-link"> @myPage </a>
+                            </li>
+                        }
+
+                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a href="~/Reports/Agents/TransReportList?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="~/Reports/Agents/TransReportList?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <div class="col-12 mb-5">
+                    <div class="float-left mr-3">
+                        <h4 class="mb-2">
+                            Transaction report for the period  @ViewBag.OfferingMonthStart @ViewBag.OfferingDayStart @ViewBag.OfferingYearStart  -  @ViewBag.OfferingMonthEnd @ViewBag.OfferingDayEnd @ViewBag.OfferingYearEnd
+                        </h4>
+                    </div>
+                    <div class="float-left">
+                        @if (ViewBag.Message != null)
+                        {
+                            <span class="alert-success">@ViewBag.Message</span>
+                        }
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+

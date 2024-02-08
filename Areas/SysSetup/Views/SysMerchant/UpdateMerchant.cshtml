@@ -1,0 +1,80 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.UpdateUserViewModel
+
+@{
+    ViewData["Title"] = "Update Merchant";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+            <div class="float-left mr-3">
+                <a asp-action="SystemUsers" class="btn btn-warning float-left">List of System Merchant</a>
+            </div>
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-6 mb-6">
+    <form asp-action="UpdateMerchant" asp-controller="SysMerchant" method="post">
+        @Html.AntiForgeryToken()
+        <input asp-for="MerchantID" hidden="hidden" />
+        <label>Enter Merchant Code</label>
+        <input asp-for="MerchantCode" placeholder="Enter Merchant Code" class="form-control" />
+        <span asp-validation-for="MerchantCode" class="text-danger"></span>
+        <br />
+        <label>Enter Email</label>
+        <input asp-for="Email" placeholder="Enter Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+        <br />
+        <label>Enter First Name</label>
+        <input asp-for="FirstName" placeholder="Enter First Name" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+        <br />
+        <label>Enter Middle Name</label>
+        <input asp-for="MiddleName" placeholder="Enter MiddleName" class="form-control" />
+        <span asp-validation-for="MiddleName" class="text-danger"></span>
+        <br />
+        <label>Enter Last Name</label>
+        <input asp-for="LastName" placeholder="Enter LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+        <br />
+        <label>Enter AccountNo</label>
+        <input asp-for="AccountNo" placeholder="Enter AccountNo" class="form-control" />
+        <span asp-validation-for="AccountNo" class="text-danger"></span>
+        <br />
+        <label>Enter Company</label>
+        <input asp-for="CompanyName" placeholder="Enter Company Name" class="form-control" />
+        <span asp-validation-for="CompanyName" class="text-danger"></span>
+        <br />
+        <label>Enter Address</label>
+        <input asp-for="Address" placeholder="Enter Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+        <br />
+        <label>PhoneNumber</label>
+        <input asp-for="PhoneNumber" placeholder="Enter PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        <br />
+        <label>Select State</label>
+        <select id="StateID" asp-for="StateID" asp-items="@(new SelectList(ViewBag.ListofState, "StateID", "StateName"))"
+                class="form-control" placeholder="Service Type"></select>
+        <span asp-validation-for="StateID" class="text-danger"></span>
+        <br />
+        <label class="font-weight-bold form-check-label mb-3" for="isactive">IsActive</label>
+        <input asp-for="IsActive" placeholder="" type="checkbox" class="form-check-input ml-3" id="isactive" />
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+        <br />  
+
+        <input type="hidden" asp-for="UserID" />
+
+        <input type="submit" value="Update" class="btn btn-info" />
+    </form>
+
+</div>

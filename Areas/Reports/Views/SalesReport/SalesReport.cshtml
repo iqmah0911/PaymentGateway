@@ -1,0 +1,86 @@
+﻿@model PaymentGateway21052021.Areas.Reports.Models.SalesReportModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Sales Report";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="card">
+        <h1 class="mb-2">Sales Report</h1>
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    @*<a asp-action="SystemUsers" class="btn btn-warning float-left">List of System Users</a>*@
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+
+
+
+
+
+            <div class="col-lg-12">
+                <div class="row">
+                    <h4>Select Start Date to End Date </h4>
+                </div><br />
+                <form asp-action="SalesReport" asp-controller="SalesReport" method="post">
+                    <div class="row">
+                        <section class="col-md-6">
+                            <label style="width: 100%;">
+                                Start Date
+                                <input type="date" asp-for="StartDate" class="form-control col-md-12" autocomplete="off" />
+                            </label>
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </section>
+
+                        <section class="col-md-6">
+                            <label style="width: 100%;">
+                                End Date
+                                <input type="date" asp-for="EndDate" class="form-control col-md-12" autocomplete="off" />
+                            </label>
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                        </section>
+                    </div>
+
+                    <input type="submit" value="Search" class="btn btn-primary" />
+
+                    @*<section id="btnSearchSec" style="margin-top:24px;">
+                            <button class="btn btn-primary">Search</button>
+                        </section>*@
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    $("#StartDate").datepicker({
+        format: "dd/MM/yyyy",
+        startDate: "-10y",
+        endDate: "0d",
+        calendarWeeks: true
+    });
+
+    $("#EndDate").datepicker({
+        format: "dd/MM/yyyy",
+        startDate: "-10y",
+        endDate: "0d",
+        calendarWeeks: true
+    });
+
+</script>
+
+

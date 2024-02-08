@@ -1,0 +1,44 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysBankViewModel
+
+@{
+    ViewData["Title"] = "Update Bank";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h2 class="mb-2">Update Bank</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="Banks" class="btn btn-warning float-left">List of Banks</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 mb-6">
+
+        <form asp-action="UpdateBank" asp-controller="SysBank" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="BankName" placeholder="Enter Bank Name" class="form-control" />
+            <span asp-validation-for="BankName" class="text-danger"></span>
+            <br />
+            @Html.AntiForgeryToken()
+            <input asp-for="BankCode" placeholder="Enter Bank Code" class="form-control" />
+            <span asp-validation-for="BankCode" class="text-danger"></span>
+            <br />
+            <input type="hidden" asp-for="BankID" />
+            <input type="submit" value="Update Bank" class="btn btn-info" />
+        </form>
+    </div>
+</div>

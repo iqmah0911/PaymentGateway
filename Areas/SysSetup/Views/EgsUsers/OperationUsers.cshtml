@@ -1,0 +1,144 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.HoldCustomerViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Operation User Details";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container-fluid disable-text-selection">
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-2">
+                <h1>User's Data</h1>
+
+                <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                    <ol class="breadcrumb pt-0">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Operations User</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Data</li>
+                    </ol>
+                </nav>
+            </div>
+
+
+            <div class="separator mb-5"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <form asp-action="OperationUsers" asp-controller="EgsUsers" asp-area="SysSetUp" method="get">
+            <div class="float-left mr-3">
+                <input name="searchText" placeholder="Search User Name" class="form-control" />
+            </div>
+            <div class="float-left">
+                <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+            </div>
+
+        </form>
+    </div>
+
+
+    @if (Model != null && Model.HoldAllCustomers.Count() > 0)
+    {
+
+        <div class="row">
+            <div class="col-12 list" data-check-all="checkAll">
+                <div class="d-flex flex-row mb-3">
+                    <div class="d-flex flex-grow-1 min-width-zero">
+                        <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                            <h3 class="mb-0 text-muted text-small w-15 w-xs-100"> User. ID </h3>
+                            <h3 class="mb-0 text-muted text-small w-15 w-xs-100"> User. Name </h3>
+                            <h3 class="mb-0 text-muted text-small w-15 w-xs-100">Email </h3>
+                            <h3 class="mb-0 text-muted text-small w-15 w-xs-100">Phone </h3>
+                            <h3 class="w-15 w-xs-100"> <span> Action </span> </h3>
+                        </div>
+                    </div>
+                </div>
+
+                @foreach (var item in Model.HoldAllCustomers)
+                {
+                    <div class="card d-flex flex-row mb-3">
+                        <div class="d-flex flex-grow-1 min-width-zero">
+                            <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                                <h5 class="mb-0 text-muted text-small w-15 w-xs-100">
+                                    @Html.DisplayFor(modelItem => item.UserID)
+                                </h5>
+                                <h5 class="mb-0 text-muted text-small w-15 w-xs-100">@Html.DisplayFor(modelItem => item.FullNames)</h5>
+                                <h5 class="mb-0 text-muted text-small w-15 w-xs-100">@Html.DisplayFor(modelItem => item.Email)</h5>
+                                <h5 class="mb-0 text-muted text-small w-15 w-xs-100">@Html.DisplayFor(modelItem => item.PhoneNumber)</h5>
+                                <a href="@Url.Action("ViewOperationUsers","EgsUsers"  ,new {  id=item.UserID  })" class="btn btn-primary btn-sm"> View Details</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                @if (Model.Pager.EndPage > 1)
+                {
+                    <nav class="mt-4 mb-3">
+                        <ul class="pagination justify-content-center mb-0">
+                            @if (Model.Pager.CurrentPage > 1)
+                            {
+                                <li class="page-item ">
+                                    <a class="page-link first" href="~/SysSetup/SysCustomer/CustomerDetailsView">
+                                        <i class="simple-icon-control-start"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item ">
+                                    <a class="page-link prev" href="~/SysSetup/SysCustomer/CustomerDetailsView?page=@(Model.Pager.CurrentPage - 1)">
+                                        <i class="simple-icon-arrow-left"></i>
+                                    </a>
+                                </li>
+                            }
+                            @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+                            {
+                                var myPage = pageIndex;
+                                <li class="page-item @(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                                    <a class="page-link" href="~/SysSetup/SysCustomer/CustomerDetailsView?pageIndex=@myPage">  @myPage </a>
+                                </li>
+                            }
+                            @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                            {
+                                <li class="page-item ">
+                                    <a class="page-link next" href="~/SysSetup/SysCustomer/CustomerDetailsView?pageIndex=@(Model.Pager.CurrentPage + 1)" aria-label="Next">
+                                        <i class="simple-icon-arrow-right"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item ">
+                                    <a class="page-link last" href="~/SysSetup/SysCustomer/CustomerDetailsView?pageIndex=@(Model.Pager.TotalPages)">
+                                        <i class="simple-icon-control-end"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+
+                }
+            </div>
+
+
+        </div>
+    }
+    else
+    {
+        <div class="mb-5">
+            <div class="card d-flex flex-row mb-12">
+                <div class="d-flex flex-grow-1 min-width-zero">
+                    <div style="padding: 0.20rem !important;" class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                        <h2 class="card-body text-center"> No user available for display</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+

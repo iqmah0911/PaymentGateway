@@ -1,0 +1,45 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysUserTypeVIewModel
+@{
+    ViewData["Title"] = "System User Type";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["SysUserType"]</h1>
+
+<div class="card-body">
+
+    <h2 class="mb-2">User Type</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="UserTypeList" class="btn btn-warning float-left">List of User Type(s)</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+            <br />
+            <div class="col-10 mb-10">
+                <form asp-action="UserType" asp-controller="SysUserType" method="post">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="UserType" placeholder="Enter User Type" class="form-control" />
+                    <span asp-validation-for="UserType" class="text-danger"></span>
+                    <br />
+                    <input type="submit" value="Save" class="btn btn-info" />
+                </form>
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+   
+</div>

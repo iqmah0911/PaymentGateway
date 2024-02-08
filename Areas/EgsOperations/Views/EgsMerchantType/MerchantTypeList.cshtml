@@ -1,0 +1,114 @@
+﻿
+@model PaymentGateway21052021.Areas.EgsOperations.Models.HoldDisplayMerchantTypeViewModel
+
+@{
+    ViewData["Title"] = "MerchantTypeList";
+}
+
+<div class="col-12">
+    <h1> Merchant Type(s) </h1>
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb pt-0">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="separator mb-5"></div>
+</div>
+
+<div class="card-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="col-mb-12">
+
+                <form asp-action="MerchantTypeList" asp-controller="EgsMerchantType" asp-area="EgsOperations" method="get">
+                    <div class="float-left mr-3">
+                        <input name="searchText" placeholder="Enter Merchant Type" class="form-control" />
+                    </div>
+                    <div class="float-left">
+                        <input type="submit" value="Search" class="btn btn-info float-left mr-3" />
+                        <a asp-action="MerchantType" class="btn btn-warning float-left ml-3">Create New Merchant Type(s)</a>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            @if (Model != null && Model.HoldAllMerchantType.Count() > 0)
+            {
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            @*<th>S/N</th>*@
+                            <th>
+                                Merchant Type
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HoldAllMerchantType)
+                        {
+                            //indx++;
+                        <tr>
+                            @*<td>@indx</td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MerchantTypeName)
+                            </td>
+                            <td>
+                                <a asp-action="UpdateMerchantType" asp-route-id="@item.MerchantTypeID" class="btn btn-success float-left ml-3">
+                                    <span class="fe fe-edit">Edit</span>
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- pager -->
+                @if (Model.Pager.EndPage > 1)
+                {
+
+        <ul class="pagination">
+            @if (Model.Pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a href="~/EgsOperations/EgsMerchantType/MerchantTypeList" class="page-link">First</a>
+                </li>
+                <li class="page-item">
+                    <a href="~/EgsOperations/EgsMerchantType/MerchantTypeList?page=@(Model.Pager.CurrentPage - 1)" class="page-link">Previous</a>
+                </li>
+            }
+
+            @for (var pageIndex = Model.Pager.StartPage; pageIndex <= Model.Pager.EndPage; pageIndex++)
+            {
+                var myPage = pageIndex;
+                <li class="@(pageIndex == Model.Pager.CurrentPage ? "active" : "") page-item">
+                    <a href="~/EgsOperations/EgsMerchantType/MerchantTypeList?pageIndex=@myPage" class="page-link"> @myPage </a>
+                </li>
+            }
+
+            @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a href="~/EgsOperations/EgsMerchantType/MerchantTypeList?pageIndex=@(Model.Pager.CurrentPage + 1)" class="page-link">Next</a>
+                </li>
+                <li class="page-item">
+                    <a href="~/EgsOperations/EgsMerchantType/MerchantTypeList?pageIndex=@(Model.Pager.TotalPages)" class="page-link">Last</a>
+                </li>
+            }
+        </ul>
+                }
+            }
+            else
+            {
+                <h2>No Available Merchant Type(s)</h2>
+            }
+        </div>
+    </div>
+</div>

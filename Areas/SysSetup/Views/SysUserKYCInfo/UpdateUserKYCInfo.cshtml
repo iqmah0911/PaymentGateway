@@ -1,0 +1,43 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.UpdateUserKYCInfoViewModel
+@{
+    ViewData["Title"] = "Update KYC Info";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h2 class="mb-2">KYC Info</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="UserKYCInfos" class="btn btn-warning float-left">List of KYC Infos</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 mb-6">
+
+        <form asp-action="UpdateUserKYCInfo" asp-controller="SysUserKYCInfo" method="post">
+            @Html.AntiForgeryToken()
+            <select id="IdentificationTypeID" asp-for="IdentificationTypeID" asp-items="@(new SelectList(ViewBag.IdentificationTypeList, "IdentificationTypeID", "IdentificationTypeName"))"
+                    class="form-control" placeholder="Service Type"></select>
+            <span asp-validation-for="IdentificationTypeID" class="text-danger"></span>
+            <br />
+            <input asp-for="IdentificationValue" placeholder="Enter Identification Value" class="form-control" />
+            <span asp-validation-for="IdentificationValue" class="text-danger"></span>
+            <br />
+            <input type="hidden" asp-for="UserKYCInfoID" />
+            <input type="submit" value="Update" class="btn btn-info" />
+        </form>
+    </div>
+</div>

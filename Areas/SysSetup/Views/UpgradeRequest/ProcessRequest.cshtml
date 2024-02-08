@@ -1,0 +1,221 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.UpgradeAccountViewModel
+@*@model PaymentGateway21052021.Models.EgsUpgradeAccount*@
+
+@{
+    ViewData["Title"] = "Upgrade Account";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-10 mb-5">
+
+            <div class="float-left">
+                @if (ViewBag.Message != null)
+                {
+                    <span class="alert-success">@ViewBag.Message</span>
+                }
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <span class="alert-success">@ViewBag.ErrorMessage</span>
+                }
+            </div>
+        </div>
+
+        <div class="container-fluid disable-text-selection">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-2">
+                        <h1>Process Request </h1>
+
+                        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                            <ol class="breadcrumb pt-0">
+                                <li class="breadcrumb-item">
+                                    <a href="#">Home</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#">Process</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Request</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="separator mb-5"></div>
+                </div>
+            </div>
+
+
+            <div class="card-body">
+
+                <form asp-action="ProcessAggregator" asp-controller="UpgradeRequest" method="post">
+                    
+                    <div class="row">
+                        <input asp-for="Email" hidden="hidden" />
+                        <input asp-for="RoleRequestId" hidden="hidden" />
+                        <input asp-for="UpgradeAccountID" hidden="hidden" />
+
+                        @*<div class="col-md-4">
+                            <label>Mobile</label>
+                            <input asp-for="PhoneNumber" class="form-control" readonly="readonly" />
+                        </div>*@
+                        <div class="col-md-6">
+                            <label>Address</label>
+                            <input asp-for="Address" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-6">
+                            <label> Email</label>
+                            <input asp-for="Email" class="form-control" readonly="readonly" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>State</label>
+                            <input asp-for="StateName" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-4">
+                            <label> Business Name</label>
+                            <input asp-for="BusinessName" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Business Address</label>
+                            <input asp-for="BusinessAddress" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        @*<div class="col-md-4">
+            <label>KYC</label>
+            <input asp-for="KYC" class="form-control" readonly="readonly" />
+        </div>*@
+                        <div class="col-md-4">
+                            <label>Current Role</label>
+                            <input asp-for="Role" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Requesting Role</label>
+                            <input asp-for="RoleRequestName" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Request Date</label>
+                            <input asp-for="DateCreated" class="form-control" readonly="readonly" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Approve / Decline</label>
+                            @{
+                                List<SelectListItem> listItems = new List<SelectListItem>();
+                                
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Approved",
+                                    Value = "True",
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Declined",
+                                    Value = "false",
+                                });
+                            }
+                            <select id="ProcessedID" asp-for="IsProcessed" asp-items="@(new SelectList(listItems, "Value", "Text"))"
+                                    class="form-control" onchange="getComment()"></select>
+                        </div>
+
+                        <div class="col-md-4" id="comentdiv">
+                            <label>Comment</label>
+                            <input asp-for="Comment" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12 p-3" style="display: inline-flex;">
+                            @if (Model.documents.Count < 1)
+                            {
+                                <div class="card d-flex flex-row mb-12">
+                                    <div class="d-flex flex-grow-1 min-width-zero">
+                                        <div style="padding: 0.20rem !important;" class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                                            <h2 class="card-body text-center"> No document(s) available for display</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model.documents)
+                                {
+                                    <div class="form-group pr-3">
+                                        <label>@item.DocumentName </label>
+                                        @Html.ActionLink("Download", "DownloadFile", new { fileName = item.DocumentPath }, new { @class = "btn btn-sm btn-primary" })
+                                    </div>
+
+                                }
+
+                            }
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="card-footer">
+                        <p>
+                             @Html.ActionLink("<<< Back To Request List", "AllRequestList", "UpgradeRequest","", new { @class = "btn btn-info" }) 
+                            <button type="submit" class="btn btn-info">Process >> </button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#comentdiv").hide();
+    })
+
+    function getComment() {
+        var select = document.getElementById("ProcessedID");
+        var option = select.options[select.selectedIndex];
+        var selectedValue = $('#ProcessedID').val();
+
+        if (selectedValue == "true") {
+            $("#comentdiv").hide();
+        }
+        else if (selectedValue == "false") {
+            //alert('show coment div')
+            $("#comentdiv").show();
+        }
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

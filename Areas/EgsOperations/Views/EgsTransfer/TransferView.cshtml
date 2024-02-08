@@ -1,0 +1,87 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.EgsTransferViewModel
+
+@{
+    ViewData["Title"] = "Transfer";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+ 
+<div class="container-fluid disable-text-selection">
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-2">
+                <h1>Transfer View</h1>
+
+                <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                    <ol class="breadcrumb pt-0">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Transfer</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="separator mb-5"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-mb-12">
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+            <br />
+
+
+            <div class="col-10 mb-10">
+                <form asp-action=" " asp-controller=" " method="post">
+
+                    <label> Transaction Method</label>
+                    <select asp-for="TransactionMethodID" asp-items="@(new SelectList(ViewBag.TransMethod, "TransactionMethodID", "TransactionMethod"))"
+                            class="form-control"></select>
+                    <span asp-validation-for="TransactionMethodID" class="text-danger"></span>
+                    <br />
+                    <label> Transaction Type</label>
+                    <select asp-for="TransactionTypeID" asp-items="@(new SelectList(ViewBag.TransType, "TransactionTypeID", "TransactionType"))"
+                            class="form-control"></select>
+                    <span asp-validation-for="TransactionTypeID" class="text-danger"></span>
+                    <br />
+                    <label>Bank</label>
+                    <select asp-for="BankID" asp-items="@(new SelectList(ViewBag.BankCodes, "BankID", "BankName"))"
+                            class="form-control"></select>
+                    <span asp-validation-for="BankID" class="text-danger"></span>
+                    <br />
+                    <label>Transfer Amount</label>
+                    <input asp-for="TransferAmount" class="form-control" />
+                    <span asp-validation-for="TransferAmount" class="text-danger"></span>
+
+                    <input type="submit" value="Send" class="btn btn-info" />
+                </form>
+
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</div>
+

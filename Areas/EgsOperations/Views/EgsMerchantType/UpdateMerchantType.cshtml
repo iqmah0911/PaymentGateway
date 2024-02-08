@@ -1,0 +1,45 @@
+﻿@model PaymentGateway21052021.Areas.EgsOperations.Models.EgsMerchantTypeViewModel
+@{
+    ViewData["Title"] = "Update MerchantType";
+}
+
+<div class="col-12">
+    <h1> Update Merchant Type </h1>
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb pt-0">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="separator mb-5"></div>
+</div>
+
+<div class="card-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="col-mb-12">
+                <div class="float-left mr-3">
+                    <a asp-action="MerchantTypeList" class="btn btn-warning float-left">List of MerchantType</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-mb-12">
+        <form asp-action="UpdateMerchantType" asp-controller="EgsMerchantType" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="MerchantTypeID" placeholder="Enter MerchantType" class="form-control" />
+            <span asp-validation-for="MerchantTypeName" class="text-danger"></span>
+            <br /><br />
+            <input type="hidden" asp-for="MerchantTypeID" />
+            <input type="submit" value="Update MerchantType" class="btn btn-info" />
+        </form>
+    </div>
+</div>

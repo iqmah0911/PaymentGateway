@@ -1,0 +1,55 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.EgsProductCategoryViewModel
+@{
+    ViewData["Title"] = "Update Product Category";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body">
+
+    <h2 class="mb-2">Product Category</h2>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="ProductCategoriesList" class="btn btn-warning float-left">List of Product Categories</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div><br />
+
+
+
+            <div class="col-6 mb-6">
+
+                <form asp-action="UpdateProductCategory" asp-controller="SysProductCategory" method="post">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="ProductCategoryName" placeholder="Enter Product Category Name" class="form-control" />
+                    <span asp-validation-for="ProductCategoryName" class="text-danger"></span>
+                    <br />
+                    <label>Image</label>
+                    <input asp-for="Image" type="file" class="form-control" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                    <br />
+                    <input asp-for="ProductCategoryCode" placeholder="Enter Product Category Code" class="form-control" />
+                    <span asp-validation-for="ProductCategoryCode" class="text-danger"></span>
+                    <br />
+                    <input asp-for="FormCategoryType" placeholder="Enter Form Category Type" class="form-control" />
+                    <span asp-validation-for="FormCategoryType" class="text-danger"></span>
+                    <br />
+                    <input type="hidden" asp-for="ProductCategoryID" />
+                    <input type="submit" value="Update Product Category" class="btn btn-info" />
+                </form>
+            </div>
+
+        </div>
+
+        </div>
+    </div>
+
+    

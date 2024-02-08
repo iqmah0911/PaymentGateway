@@ -1,0 +1,43 @@
+﻿@model PaymentGateway21052021.Areas.SysSetup.Models.SysIdentificationTypeViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Identification Type";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>@ViewData["IdentificatonType"]</h1>
+
+<div class="card-body">
+
+    <h2 class="mb-2">Identificaton Type</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col-10 mb-5">
+                <div class="float-left mr-3">
+                    <a asp-action="IdentificationTypesList" class="btn btn-warning float-left">List of Identificaton Types</a>
+                </div>
+                <div class="float-left">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="alert-success">@ViewBag.Message</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-6 mb-6">
+        <form asp-action="IdentificatonType" asp-controller="SysIdentificatonType" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="IdentificationType" placeholder="Enter Identificaton Type" class="form-control" />
+            <span asp-validation-for="IdentificationType" class="text-danger"></span>
+            <br />
+            <input type="submit" value="Save" class="btn btn-info" />
+        </form>
+
+    </div>
+</div>
